@@ -2,11 +2,11 @@
   <img src="logo.png" alt="Maniac Logo" width="400"/>
 </p>
 
-# Maniac: The Kubernetes for AI
+# Maniac: Simple Containers for State-of-the-Art, Model-Agnostic AI Agents
 
-Welcome to Maniac, an open-source platform for deploying and managing performant AI-powered applications with flexibility. Maniac brings the principles of containerization and orchestration to AI, allowing you to treat AI models like cloud servers: interchangeable, scalable, and adaptable.
+Welcome to Maniac, the open-source platform that makes it easy to build, deploy, and manage state-of-the-art AI agents. Maniac brings the power of containerization and orchestration to the world of AI, letting you package any task into a portable container that runs on any model, anywhere.
 
-## Core Analogy: Kubernetes for AI
+## Core Analogy: Kubernetes
 
 In modern software development, Kubernetes allows you to package an application and its dependencies into a single, portable container that can be deployed on any server, in any cloud. This eliminates vendor lock-in and provides massive scalability.
 
@@ -14,7 +14,7 @@ Maniac applies this same revolutionary concept to AI. Instead of building your a
 
 ## What is a Model Container?
 
-A Model Container is a self-contained package that holds everything required to execute a specific AI task. It's an abstract AI program, much like a DSPy program, that can be deployed across any supported Large Language Model. 
+A Model Container is a self-contained package that holds everything your AI agent needs to perform its task. Think of it as an abstract, model-agnostic program (much like in DSPy) that can be deployed across any supported Large Language Model, ensuring your agent always has access to the best tools for the job. 
 
 Each container bundles:
 
@@ -42,4 +42,4 @@ By decoupling the AI task from the underlying model, Maniac empowers you to buil
 - **Cost-Effective**: Route tasks to the most cost-efficient model that meets your performance requirements.
 - **Highly Performant**: Automatically use the best-performing model for every task, every time.
 
-This documentation will guide you through the architecture of Maniac and show you how to start building your own Model Containers.
+This documentation will guide you through the Maniac architecture and show you how to start building your own powerful, model-agnostic AI agents.
