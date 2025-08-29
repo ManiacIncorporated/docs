@@ -4,7 +4,7 @@
 
 # Simple Containers for Deploying and Scaling State-of-the-Art, Model-Agnostic AI Agents
 
-Welcome to Maniac, the open-source platform that makes it easy to build, deploy, and manage state-of-the-art AI agents. Maniac brings the power of containerization and orchestration to the world of AI, letting you package any task into a portable container that runs on any model, anywhere.
+Welcome to Maniac, the open-source platform that makes it easy to build, deploy, and manage state-of-the-art AI agents. With just 3 lines of code, Maniac brings the power of containerization and orchestration to the world of AI, letting you package any task into a portable container that runs on any model, anywhere.
 
 ## Core Analogy: Kubernetes
 
@@ -31,8 +31,8 @@ Each container bundles:
 
 The Maniac ecosystem is composed of two key services: always on, automatically optimizing using your live production data:
 
-1.  **Maniac Finetune/Optimize**: The "container factory." This service auto-trains LoRAs and optimizes the prompts within a container to ensure they are maximally effective for each target model on the container task.
-2.  **Maniac Router**: The "control plane" or orchestrator. The Router intelligently deploys Model Containers to the best-suited model from a cluster of available options. It constantly evaluates model performance and routes tasks dynamically, ensuring your application always runs on the most effective and efficient infrastructure.
+1.  **Container Factory**: This service auto-trains LoRAs and auto-optimizes the prompts within a container to ensure they are maximally effective for each target model on the container task.
+2.  **Control Plane**: This service intelligently deploys Model Containers to the best-suited model from a cluster of available options. It constantly evaluates model performance and routes tasks dynamically, ensuring your application always runs on the most effective and efficient infrastructure.
 
 By decoupling the AI task from the underlying model, Maniac empowers you to build applications that are:
 
