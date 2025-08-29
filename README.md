@@ -2,7 +2,7 @@
 
 Welcome to Maniac, an open-source platform for deploying and managing performant AI-powered applications with flexibility. Maniac brings the principles of containerization and orchestration to AI, allowing you to treat AI models like cloud servers: interchangeable, scalable, and adaptable.
 
-## The Core Analogy: Kubernetes for AI
+## Core Analogy: Kubernetes for AI
 
 In modern software development, Kubernetes allows you to package an application and its dependencies into a single, portable container that can be deployed on any server, in any cloud. This eliminates vendor lock-in and provides massive scalability.
 
