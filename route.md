@@ -1,6 +1,6 @@
-# Maniac Router: The AI Control Plane
+# Maniac Router: The Model Control Plane
 
-**Maniac Router** is the orchestrator or "control plane" of the Maniac platform. It is the component that brings the "Kubernetes for AI" analogy to life. The Router takes an incoming request and an AI Container, and intelligently deploys it to the best possible model from a dynamic cluster of options. 
+**Maniac Router** is the orchestrator or "control plane" of the Maniac platform. It is the component that brings the "Kubernetes for AI" analogy to life. The Router takes an incoming request and a Model Container, and intelligently deploys it to the best possible model from a dynamic cluster of options. 
 
 ## Purpose
 
@@ -8,7 +8,7 @@ The primary purpose of the Maniac Router is to decouple the application from the
 
 1.  **Model Ranking**: Continuously evaluating and ranking the performance of all available models (both base models and fine-tuned LoRAs) for various tasks.
 2.  **Intelligent Routing**: Selecting the optimal model for a given task based on performance, cost, and other business logic.
-3.  **Dynamic Deployment**: Deploying the specified AI Container to the chosen model and returning the result to the application.
+3.  **Dynamic Deployment**: Deploying the specified Model Container to the chosen model and returning the result to the application.
 4.  **Load Balancing**: Distributing requests across the model cluster to ensure high availability and performance.
 
 ## Architecture
