@@ -2,7 +2,7 @@
   <img src="logo.png" alt="Maniac Logo" width="400"/>
 </p>
 
-# Maniac: Simple Containers for State-of-the-Art, Model-Agnostic AI Agents
+# Maniac: Simple Containers for Deploying and Scaling State-of-the-Art, Model-Agnostic AI Agents
 
 Welcome to Maniac, the open-source platform that makes it easy to build, deploy, and manage state-of-the-art AI agents. Maniac brings the power of containerization and orchestration to the world of AI, letting you package any task into a portable container that runs on any model, anywhere.
 
