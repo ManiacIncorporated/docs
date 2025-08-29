@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="logo.png" alt="Maniac Logo" width="400"/>
+</p>
+
 # Maniac: The Kubernetes for AI
 
 Welcome to Maniac, an open-source platform for deploying and managing performant AI-powered applications with flexibility. Maniac brings the principles of containerization and orchestration to AI, allowing you to treat AI models like cloud servers: interchangeable, scalable, and adaptable.
@@ -20,6 +24,10 @@ Each container bundles:
 - **Judge Prompt**: A specialized prompt used to evaluate the model's output, enabling continuous, automated quality control.
 
 ## How It Works
+
+<p align="center">
+  <img src="demo.png" alt="Maniac Demo"/>
+</p>
 
 The Maniac ecosystem is composed of three key services:
 
