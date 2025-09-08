@@ -4,15 +4,16 @@ Get up and running with Maniac in under 5 minutes.
 
 ## Prerequisites
 
-- Python 3.8 or higher
-- An API key from the Maniac platform
+- Python 3.9 or higher
+- For Vertex AI: Google Cloud project with Anthropic models enabled
+- For OpenAI: OpenAI API key
 
 ## Installation
 
-Install the Maniac Python SDK using pip:
+Install the Maniac Python library using pip:
 
 ```bash
-pip install maniac-ai
+pip install maniac
 ```
 
 ## Basic Setup
@@ -20,105 +21,142 @@ pip install maniac-ai
 ### 1. Import and Initialize
 
 ```python
-from maniac import ManiacClient
+from maniac import Maniac
 
-# Initialize the client with your API key
-client = ManiacClient(
-    api_key="your-api-key-here",
-    environment="production"  # or "sandbox" for testing
+# For Vertex AI (recommended)
+client = Maniac(
+    provider="vertex",
+    project_id="your-gcp-project-id",
+    region="us-east5"
+)
+
+# For OpenAI
+client = Maniac(
+    provider="openai",
+    api_key="your-openai-api-key"
 )
 ```
 
-### 2. Create Your First Model Container
+### 2. Using the Chat Completions API
 
 ```python
-# Define your task
-container = client.create_container(
-    name="math-solver",
-    task_type="math_problem_solving",
-    description="Solves mathematical equations and word problems"
+# Standard chat completions interface
+response = client.chat.completions.create(
+    model="claude-opus-4",
+    messages=[
+        {"role": "system", "content": "You are a helpful math tutor."},
+        {"role": "user", "content": "A train travels 120 miles in 2 hours. What is its average speed?"}
+    ],
+    temperature=0.0,
+    task_label="math-problems",
+    judge_prompt="Is the mathematical calculation correct and clearly explained?"
 )
 
-# The platform will automatically:
-# - Select optimal base models
-# - Generate task-specific prompts
-# - Begin continuous optimization
+print(response["choices"][0]["message"]["content"])
+# Output: "The average speed is 60 miles per hour. This is calculated by dividing distance (120 miles) by time (2 hours): 120 ÷ 2 = 60 mph."
 ```
 
-### 3. Make Your First Request
+### 3. Using the Responses API
 
 ```python
-# Send a request to your optimized container
-response = client.complete(
-    container_id="math-solver",
-    prompt="A train travels 120 miles in 2 hours. What is its average speed?",
-    optimize=True  # Enable automatic optimization
+# Simplified responses interface
+response = client.responses.create(
+    model="claude-opus-4",
+    input="A train travels 120 miles in 2 hours. What is its average speed?",
+    instructions="You are a helpful math tutor. Solve the problem step by step.",
+    temperature=0.0,
+    max_tokens=1024,
+    task_label="math-problems",
+    judge_prompt="Is the mathematical calculation correct and clearly explained?"
 )
 
-print(response.text)
-# Output: "The average speed is 60 miles per hour."
-
-# View performance metrics
-print(f"Model used: {response.model}")
-print(f"Latency: {response.latency_ms}ms")
-print(f"Cost: ${response.cost:.4f}")
+print(response["output_text"])
+# Output: "The average speed is 60 miles per hour..."
 ```
 
-## Next Steps
+## Key Features
 
-Now that you've made your first optimized request, explore more features:
+### Task Labeling
+Group related inferences for optimization and tracking:
 
-- [Configure multiple models](../features/routing.md) for intelligent routing
-- [Fine-tune models](../features/finetuning.md) on your specific data
-- [Monitor performance](../guides/performance.md) and optimize costs
+```python
+# All inferences with the same task_label are grouped together
+response1 = client.chat.completions.create(
+    model="claude-opus-4",
+    messages=[{"role": "user", "content": "Question 1"}],
+    task_label="customer-support",
+    judge_prompt="Is this response helpful and professional?"
+)
+
+response2 = client.chat.completions.create(
+    model="claude-opus-4", 
+    messages=[{"role": "user", "content": "Question 2"}],
+    task_label="customer-support",  # Same task label
+    judge_prompt="Is this response helpful and professional?"
+)
+```
+
+### Available Models
+- **Vertex AI**: `claude-opus-4`, `claude-opus-4.1`, `claude-sonnet-4`
+- **OpenAI**: `gpt-4o`, `gpt-4`, `gpt-3.5-turbo`, `o1-mini`
+
+### Batch Processing (Vertex AI only)
+```python
+from maniac import create_vertex_client
+
+client = create_vertex_client(project_id="your-project")
+
+# Create batch requests
+requests = [
+    {
+        "messages": [{"role": "user", "content": "Question 1"}],
+        "custom_id": "req_1"
+    },
+    {
+        "messages": [{"role": "user", "content": "Question 2"}], 
+        "custom_id": "req_2"
+    }
+]
+
+# Submit batch job
+job_name = client.provider.submit_batch_job(
+    requests=requests,
+    model="claude-opus-4",
+    bucket_name="your-gcs-bucket"
+)
+
+# Check status
+status = client.provider.get_batch_job_status(job_name)
+print(f"Job state: {status['state']}")
+
+# Get results when complete
+if status['state'] == 'JOB_STATE_SUCCEEDED':
+    results = client.provider.get_batch_results(job_name)
+```
 
 ## Example: Building a Customer Support Agent
 
-Here's a complete example of building an optimized customer support agent:
-
 ```python
-from maniac import ManiacClient
+from maniac import Maniac
 
-client = ManiacClient(api_key="your-api-key")
+client = Maniac(provider="vertex", project_id="your-project")
 
-# Create a specialized container for customer support
-support_container = client.create_container(
-    name="customer-support",
-    task_type="conversation",
-    config={
-        "tone": "friendly and professional",
-        "knowledge_base": "support_docs.json",
-        "languages": ["en", "es", "fr"]
-    }
-)
-
-# Process customer queries
-def handle_customer_query(query: str, customer_id: str):
-    response = client.complete(
-        container_id="customer-support",
-        prompt=query,
-        context={
-            "customer_id": customer_id,
-            "history": client.get_conversation_history(customer_id)
-        },
-        optimize=True
+def handle_customer_query(query: str):
+    response = client.responses.create(
+        model="claude-opus-4",
+        input=query,
+        instructions="You are a helpful customer support agent. Be friendly, professional, and provide clear solutions.",
+        temperature=0.0,
+        max_tokens=1024,
+        task_label="customer-support",
+        judge_prompt="Is this response helpful, professional, and does it address the customer's question clearly?"
     )
     
-    # Log for continuous improvement
-    client.log_interaction(
-        container_id="customer-support",
-        prompt=query,
-        response=response.text,
-        customer_id=customer_id
-    )
-    
-    return response.text
+    return response["output_text"]
 
 # Use in your application
-answer = handle_customer_query(
-    "How do I reset my password?",
-    customer_id="cust_123"
-)
+answer = handle_customer_query("How do I reset my password?")
+print(answer)
 ```
 
 ## Troubleshooting

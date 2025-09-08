@@ -2,43 +2,152 @@
   <img src="logo.png" alt="Maniac Logo" width="400"/>
 </p>
 
-# Self-Improving, Model-Agnostic Containers for Packaging State-of-the-Art AI Agents
+# Maniac: LLM-Agnostic AI Program Orchestration
 
-Welcome to Maniac, the open-source platform that makes it easy to continually optimize state-of-the-art AI agents. With just 3 lines of code, Maniac brings the power of containerization and orchestration to the world of AI, letting you package any task into a self-improving, portable container that runs on any model, anywhere. With Maniac, you never have to worry about being locked into a single model vendor or being forced to upgrade to a new model just to get access to new features; your containers evaluate and optimize for you.
+Maniac provides a unified interface for deploying AI programs across any LLM provider or model. Each inference creates an **AI Program Container** that continuously optimizes both prompts and LoRA fine-tuning parameters across all models, ensuring optimal performance regardless of which model the Control Plane allocates.
 
-## Core Analogy: Kubernetes
+## What Maniac Does
 
-In modern software development, Kubernetes allows you to package an application and its dependencies into a single, portable container that can be deployed on any server, in any cloud. This eliminates vendor lock-in and provides massive scalability.
+Maniac is a Python library that provides:
 
-Maniac applies this same revolutionary concept to AI. Instead of building your application for a single, monolithic AI model (like GPT-4 or Claude 3), Maniac lets you package your AI-driven task into a portable **Model Container**.
+- **Unified API**: Single interface for OpenAI and Vertex AI (Anthropic Claude) models
+- **Telemetry & Tracking**: Automatic logging of all inferences for optimization
+- **Task Organization**: Group related inferences with task labels
+- **Quality Assessment**: Judge prompts for continuous evaluation
+- **Batch Processing**: Efficient batch inference for Vertex AI models
+- **Provider Abstraction**: Switch between providers without code changes
 
-## What is a Model Container?
+## Quick Start
 
-A Model Container is a self-contained package that holds everything your AI agent needs to perform its task. Think of it as an abstract, model-agnostic program (much like in DSPy) that can be deployed across any supported Large Language Model, ensuring your agent always has access to the best tools for the job. 
+```python
+from maniac import Maniac
 
-Each container bundles:
+# Initialize with your preferred provider
+client = Maniac(provider="vertex", project_id="your-project")
+# or
+client = Maniac(provider="openai", api_key="your-key")
 
-- **Task-Specific LoRAs**: Lightweight, fine-tuned adapters that make any base model an expert on your specific task.
-- **Optimized Prompts**: A set of prompts that are individually optimized for different models, ensuring the best performance no matter where the container is deployed.
-- **System Prompt**: The core instructions that define the task and the AI's persona or objective.
-- **Judge Prompt**: A specialized prompt used to evaluate the model's output, enabling continuous, automated quality control.
+# Customer support ticket analysis
+response = client.responses.create(
+    model="claude-opus-4",
+    input="Customer reports: 'Payment failed but was charged anyway. Order #12345'", 
+    instructions="You are a customer support analyst. Categorize the issue, determine urgency, and suggest resolution steps.",
+    temperature=0.0,
+    max_tokens=1024,
+    task_label="support-ticket-analysis",
+    judge_prompt="You are comparing two customer support analyses for the same ticket. Is response A's categorization and resolution plan at least as accurate and actionable as response B's?"
+)
 
-## How It Works
+print(response["output_text"])
+```
 
-<p align="center">
-  <img src="demo.png" alt="Maniac Demo"/>
-</p>
+## Core Concepts
 
-The Maniac ecosystem is composed of two key services: always on, automatically optimizing using your live production data:
+### AI Program Containers
 
-1.  **Container Factory**: This service auto-trains LoRAs and auto-optimizes the prompts within a container to ensure they are maximally effective for each target model on the container task.
-2.  **Control Plane**: This service intelligently deploys Model Containers to the best-suited model from a cluster of available options. It constantly evaluates model performance and routes tasks dynamically, ensuring your application always runs on the most effective and efficient infrastructure.
+Every inference line creates an AI Program Container that:
 
-By decoupling the AI task from the underlying model, Maniac empowers you to build applications that are:
+- **Continuously optimizes prompts and LoRA adaptations** across all models simultaneously
+- **Maintains unified optimization state** combining prompt engineering and fine-tuning metrics
+- **Handles seamless model switching** with pre-optimized prompts and LoRA weights
+- **Automatically balances prompt vs LoRA optimization** based on model capabilities
 
-- **Model-Agnostic**: Swap models in and out without changing your application code.
-- **Future-Proof**: Seamlessly integrate new, state-of-the-art models as they become available.
-- **Cost-Effective**: Route tasks to the most cost-efficient model that meets your performance requirements.
-- **Highly Performant**: Automatically use the best-performing model for every task, every time.
+### Task Labels & Judge Prompts
 
-This documentation will guide you through the Maniac architecture and show you how to start building your own powerful, model-agnostic AI agents.
+Maniac uses task labels to group related inferences and judge prompts to define quality criteria:
+
+```python
+# All inferences with the same task_label are grouped together
+client.chat.completions.create(
+    model="claude-opus-4",
+    messages=[{"role": "user", "content": "Analyze this contract"}],
+    task_label="legal-document-analysis",
+    judge_prompt="Is the legal analysis thorough and does it identify key risks?"
+)
+```
+
+### Supported Providers
+
+- **Vertex AI (Recommended)**: Claude Opus 4, Claude Sonnet 4 via Google Cloud
+- **OpenAI**: GPT-4o, GPT-4, GPT-3.5-turbo, O1-mini
+
+## Key Features
+
+### Two API Interfaces
+
+**Chat Completions API** (OpenAI-compatible):
+```python
+response = client.chat.completions.create(
+    model="claude-opus-4",
+    messages=[
+        {"role": "system", "content": "You are a financial auditor."},
+        {"role": "user", "content": "Review this expense report..."}
+    ],
+    task_label="expense-audit",
+    judge_prompt="Is the audit thorough and compliant?"
+)
+```
+
+**Responses API** (Simplified):
+```python
+response = client.responses.create(
+    model="claude-opus-4",
+    input="Expense report data...",
+    instructions="You are a financial auditor. Review for compliance and accuracy.",
+    task_label="expense-audit",
+    judge_prompt="Is the audit thorough and compliant?"
+)
+```
+
+### Batch Processing
+
+Process multiple requests efficiently (Vertex AI only):
+
+```python
+requests = [
+    {"messages": [{"role": "user", "content": "Question 1"}], "custom_id": "req_1"},
+    {"messages": [{"role": "user", "content": "Question 2"}], "custom_id": "req_2"}
+]
+
+job_name = client.provider.submit_batch_job(
+    requests=requests,
+    model="claude-opus-4",
+    bucket_name="your-gcs-bucket"
+)
+
+# Check status and get results
+status = client.provider.get_batch_job_status(job_name)
+if status['state'] == 'JOB_STATE_SUCCEEDED':
+    results = client.provider.get_batch_results(job_name)
+```
+
+## Installation
+
+```bash
+pip install maniac
+```
+
+**For Vertex AI:** Requires Google Cloud project with Anthropic models enabled
+**For OpenAI:** Requires OpenAI API key
+
+## Enterprise Benefits
+
+- **Vendor Independence**: Single API maintains operations across model providers
+- **Automatic Optimization**: Continuous prompt and LoRA improvements using production data  
+- **Quality Assurance**: Judge prompts ensure consistent output quality
+- **Cost Management**: Efficient batch processing and provider flexibility
+- **Complete Audit Trail**: All inferences logged for compliance and optimization
+
+## Documentation
+
+- [Quick Start Guide](getting-started/quickstart.md)
+- [Python SDK Reference](api/python-sdk.md)
+- [Installation & Authentication](getting-started/installation.md)
+- [Best Practices](guides/best-practices.md)
+
+## Support
+
+For issues and questions:
+- GitHub Issues: [github.com/maniaclabs/maniac](https://github.com/maniaclabs/maniac)
+- Documentation: [docs.maniac.ai](https://docs.maniac.ai)
+- Email: support@maniac.ai

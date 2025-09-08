@@ -1,62 +1,104 @@
-# Installation
+# Installation Guide
 
-## System Requirements
+This guide will help you install and configure the Maniac Python library.
 
-### Minimum Requirements
-- Python 3.8 or higher
-- 2GB RAM
-- 1GB available disk space
-- Internet connection for API calls
+## Prerequisites
 
-### Recommended Requirements
-- Python 3.10+
-- 8GB RAM (for local model caching)
-- 10GB available disk space
-- Stable broadband connection
+- **Python 3.9 or higher**
+- For Vertex AI: Google Cloud project with access to Anthropic models
+- For OpenAI: OpenAI API account and key
 
-## Installation Methods
+## Installation
 
-### Via pip (Recommended)
+Install the Maniac library using pip:
 
 ```bash
-pip install maniac-ai
+pip install maniac
 ```
 
-### Via conda
+## Provider Setup
+
+### Vertex AI Setup (Recommended)
+
+#### 1. Install Dependencies
+
+Maniac automatically handles Vertex AI dependencies, but you can install them explicitly:
 
 ```bash
-conda install -c maniac maniac-ai
+pip install anthropic[vertex] google-cloud-aiplatform google-cloud-storage
 ```
 
-### From Source
+#### 2. Google Cloud Authentication
 
+Set up Google Cloud authentication using one of these methods:
+
+**Option A: Application Default Credentials (Recommended)**
 ```bash
-git clone https://github.com/ManiacIncorporated/maniac-python
-cd maniac-python
-pip install -e .
+gcloud auth application-default login
 ```
 
-### Docker
+**Option B: Service Account Key**
+```bash
+export GOOGLE_APPLICATION_CREDENTIALS="/path/to/service-account-key.json"
+```
+
+#### 3. Test Vertex AI Installation
+
+```python
+from maniac import create_vertex_client
+
+client = create_vertex_client(
+    project_id="your-gcp-project-id",
+    region="us-east5"
+)
+
+# Test with a simple request
+response = client.chat.completions.create(
+    model="claude-opus-4",
+    messages=[{"role": "user", "content": "Hello!"}],
+    task_label="installation-test",
+    judge_prompt="Is this a friendly greeting response?"
+)
+
+print(response["choices"][0]["message"]["content"])
+```
+
+### OpenAI Setup
+
+#### 1. API Key Setup
+
+Get your API key from [OpenAI Platform](https://platform.openai.com/api-keys) and set it:
 
 ```bash
-docker pull maniac/maniac-ai:latest
-docker run -it maniac/maniac-ai:latest
+export OPENAI_API_KEY=your-openai-api-key
+```
+
+#### 2. Test OpenAI Installation
+
+```python
+from maniac import create_openai_client
+
+client = create_openai_client(api_key="your-openai-api-key")
+
+# Test with a simple request
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[{"role": "user", "content": "Hello!"}],
+    task_label="installation-test",
+    judge_prompt="Is this a friendly greeting response?"
+)
+
+print(response["choices"][0]["message"]["content"])
 ```
 
 ## Verify Installation
 
-After installation, verify everything is working:
+Check that Maniac is installed correctly:
 
 ```python
 import maniac
-print(maniac.__version__)
-# Output: 1.0.0
-
-# Test connection
-from maniac import ManiacClient
-client = ManiacClient(api_key="your-api-key")
-print(client.health_check())
-# Output: {"status": "healthy", "version": "1.0.0"}
+print(f"Maniac version: {maniac.__version__}")
+print("Available components:", maniac.__all__)
 ```
 
 ## Optional Dependencies
