@@ -5,8 +5,7 @@ Get up and running with Maniac in under 5 minutes.
 ## Prerequisites
 
 - Python 3.9 or higher
-- For Vertex AI: Google Cloud project with Anthropic models enabled
-- For OpenAI: Access provisioned automatically via Maniac API key
+- Maniac API key (all model providers handled automatically)
 
 ## Installation
 
@@ -23,18 +22,8 @@ pip install maniac
 ```python
 from maniac import Maniac
 
-# For Vertex AI (recommended)
-client = Maniac(
-    provider="vertex",
-    project_id="your-gcp-project-id",
-    region="us-east5"
-)
-
-# For OpenAI
-client = Maniac(
-    provider="openai",
-    api_key="your-maniac-api-key"
-)
+# Simple initialization - Maniac handles all providers automatically
+client = Maniac(api_key="your-maniac-api-key")
 ```
 
 ### 2. Using the Chat Completions API
@@ -43,6 +32,7 @@ client = Maniac(
 # Standard chat completions interface
 response = client.chat.completions.create(
     model="claude-opus-4",
+    fallback="gpt-4o",  # Automatic fallback if primary unavailable
     messages=[
         {"role": "system", "content": "You are a helpful math tutor."},
         {"role": "user", "content": "A train travels 120 miles in 2 hours. What is its average speed?"}
@@ -82,6 +72,7 @@ print(response["choices"][0]["message"]["content"])
 # Simplified responses interface
 response = client.responses.create(
     model="claude-opus-4",
+    fallback="gpt-4o",  # Automatic fallback if primary unavailable
     input="A train travels 120 miles in 2 hours. What is its average speed?",
     instructions="You are a helpful math tutor. Solve the problem step by step.",
     temperature=0.0,
@@ -176,42 +167,44 @@ Answer: A is better than B (YES/NO)
 )
 ```
 
-### Available Models
-- **Vertex AI**: `claude-opus-4`, `claude-opus-4.1`, `claude-sonnet-4`
-- **OpenAI**: `gpt-4o`, `gpt-4`, `gpt-3.5-turbo`, `o1-mini`
+### Available Models (Provider routing automatic)
+- **Claude Models**: `claude-opus-4`, `claude-sonnet-4`, `claude-haiku-3`
+- **GPT Models**: `gpt-4o`, `gpt-4-turbo`, `gpt-4`, `gpt-3.5-turbo`, `o1-mini`
+- **Gemini Models**: `gemini-pro`, `gemini-1.5-pro`
+- **Open Source**: `llama-3.1-70b`, `mixtral-8x7b`, `codestral`
 
-### Batch Processing (Vertex AI only)
+### Batch Processing
 ```python
-from maniac import create_vertex_client
+from maniac import Maniac
 
-client = create_vertex_client(project_id="your-project")
+client = Maniac(api_key="your-maniac-api-key")
 
-# Create batch requests
+# Create batch requests - Maniac routes automatically
 requests = [
     {
+        "model": "claude-opus-4",
+        "fallback": "gpt-4o",
         "messages": [{"role": "user", "content": "Question 1"}],
-        "custom_id": "req_1"
+        "task_label": "batch-processing"
     },
     {
-        "messages": [{"role": "user", "content": "Question 2"}], 
-        "custom_id": "req_2"
+        "model": "claude-opus-4", 
+        "fallback": "gpt-4o",
+        "messages": [{"role": "user", "content": "Question 2"}],
+        "task_label": "batch-processing"
     }
 ]
 
-# Submit batch job
-job_name = client.provider.submit_batch_job(
-    requests=requests,
-    model="claude-opus-4",
-    bucket_name="your-gcs-bucket"
-)
+# Submit batch job - provider routing handled automatically
+batch_id = client.submit_batch(requests=requests)
 
 # Check status
-status = client.provider.get_batch_job_status(job_name)
-print(f"Job state: {status['state']}")
+status = client.get_batch_status(batch_id)
+print(f"Batch state: {status['state']}")
 
 # Get results when complete
-if status['state'] == 'JOB_STATE_SUCCEEDED':
-    results = client.provider.get_batch_results(job_name)
+if status['state'] == 'completed':
+    results = client.get_batch_results(batch_id)
 ```
 
 ## Example: Building a Customer Support Agent
@@ -219,11 +212,12 @@ if status['state'] == 'JOB_STATE_SUCCEEDED':
 ```python
 from maniac import Maniac
 
-client = Maniac(provider="vertex", project_id="your-project")
+client = Maniac(api_key="your-maniac-api-key")
 
 def handle_customer_query(query: str):
     response = client.responses.create(
         model="claude-opus-4",
+        fallback="gpt-4o",  # Automatic fallback
         input=query,
         instructions="You are a helpful customer support agent. Be friendly, professional, and provide clear solutions.",
         temperature=0.0,

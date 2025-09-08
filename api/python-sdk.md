@@ -16,43 +16,26 @@ pip install maniac
 from maniac import Maniac
 
 client = Maniac(
-    provider="vertex",           # "vertex" or "openai" 
-    project_id="your-project",   # Required for Vertex AI
-    region="us-east5",          # Optional, default "us-east5"
-    api_key="your-maniac-api-key",         # Provisioned via Maniac
-    base_url=None              # Optional OpenAI base URL
+    api_key="your-maniac-api-key",  # Your Maniac API key
+    base_url=None                   # Optional custom endpoint
 )
 ```
 
 **Parameters:**
-- `provider` (str): AI provider - "vertex" (recommended) or "openai"
-- `project_id` (str): Google Cloud project ID (required for Vertex AI)
-- `region` (str): Google Cloud region (optional, default: "us-east5")
-- `api_key` (str): API key (required for OpenAI)
-- `base_url` (str): Base URL for OpenAI API (optional)
+- `api_key` (str): Your Maniac API key (handles all provider routing)
+- `base_url` (str): Optional custom API endpoint (for enterprise deployments)
 
-### Factory Functions
+### Factory Functions (Legacy - use Maniac() instead)
 
 ```python
-from maniac import create_vertex_client, create_openai_client, create_client
+from maniac import Maniac
 
-# Vertex AI client
-client = create_vertex_client(
-    project_id="your-project",
-    region="us-east5"
-)
+# Recommended: Direct initialization
+client = Maniac(api_key="your-maniac-api-key")
 
-# OpenAI client  
-client = create_openai_client(
-    api_key="your-maniac-api-key",
-    base_url="https://api.openai.com/v1"  # optional
-)
-
-# Generic client
-client = create_client(
-    provider="vertex",
-    project_id="your-project"
-)
+# Legacy factory functions (deprecated)
+from maniac import create_client
+client = create_client(api_key="your-maniac-api-key")
 ```
 
 ## Chat Completions API
@@ -64,6 +47,7 @@ Standard OpenAI-compatible chat completions interface.
 ```python
 response = client.chat.completions.create(
     model="claude-opus-4",
+    fallback="gpt-4o",                           # Optional fallback model
     messages=[
         {"role": "system", "content": "You are a helpful assistant."},
         {"role": "user", "content": "Hello!"}
@@ -72,7 +56,7 @@ response = client.chat.completions.create(
     max_tokens=1024,
     top_p=1.0,
     stream=False,
-    task_label="conversation",                    # Required
+    task_label="conversation",                   # Required
     judge_prompt="""
 You are comparing two conversational responses to the same user query. Is response A better than response B?
 
@@ -98,12 +82,13 @@ Answer: A is better than B (YES/NO)
 ```
 
 **Required Parameters:**
-- `model` (str): Model name
+- `model` (str): Primary model name (e.g., "claude-opus-4", "gpt-4o") 
 - `messages` (List[Dict]): Chat messages in OpenAI format
 - `task_label` (str): Task identifier for grouping and optimization
 - `judge_prompt` (str): Evaluation criteria for quality assessment
 
 **Optional Parameters:**
+- `fallback` (str): Fallback model if primary unavailable
 - `temperature` (float): Randomness (0.0-2.0)
 - `max_tokens` (int): Maximum response tokens
 - `top_p` (float): Nucleus sampling parameter
@@ -177,12 +162,13 @@ Simplified interface using input/instructions pattern.
 ```python
 response = client.responses.create(
     model="claude-opus-4",
+    fallback="gpt-4o",                       # Optional fallback model
     input="Analyze this customer feedback",
     instructions="You are a customer success manager. Categorize the feedback and suggest actions.",
     additional_instructions="Focus on actionable insights.",  # Optional
     temperature=0.0,
     max_tokens=2048,
-    task_label="feedback-analysis",           # Required  
+    task_label="feedback-analysis",          # Required  
     judge_prompt="""
 You are comparing two feedback analysis responses for the same customer feedback dataset. Is response A better than response B?
 
@@ -209,12 +195,13 @@ Answer: A is better than B (YES/NO)
 ```
 
 **Required Parameters:**
-- `model` (str): Model name
+- `model` (str): Primary model name (e.g., "claude-opus-4", "gpt-4o")
 - `input` (str): The content to process
 - `task_label` (str): Task identifier 
 - `judge_prompt` (str): Evaluation criteria
 
 **Optional Parameters:**
+- `fallback` (str): Fallback model if primary unavailable
 - `instructions` (str): System instructions/role definition
 - `additional_instructions` (str): Additional context or constraints
 - `temperature` (float): Randomness (0.0-2.0)
@@ -242,92 +229,110 @@ Answer: A is better than B (YES/NO)
 
 ## Supported Models
 
-### Vertex AI Models
-- `claude-opus-4` → `claude-opus-4@20250514`
-- `claude-opus-4.1` → `claude-opus-4-1@20250805`  
-- `claude-sonnet-4` → `claude-sonnet-4@20250514`
+Maniac automatically routes to the optimal provider for each model:
 
-### OpenAI Models
-- `gpt-4o`
-- `gpt-4-turbo`
-- `gpt-4`
-- `gpt-3.5-turbo`
-- `o1-mini`
+### Claude Models (Anthropic via Vertex AI)
+- `claude-opus-4` - Most capable model for complex reasoning
+- `claude-sonnet-4` - Balanced performance and speed  
+- `claude-haiku-3` - Fast model for simple tasks
 
-## Batch Processing (Vertex AI Only)
+### GPT Models (OpenAI)
+- `gpt-4o` - Latest multimodal model
+- `gpt-4-turbo` - High performance model
+- `gpt-4` - Classic high-quality model
+- `gpt-3.5-turbo` - Fast and cost-effective
+- `o1-mini` - Reasoning-optimized model
+
+### Gemini Models (Google)
+- `gemini-pro` - Google's advanced model
+- `gemini-1.5-pro` - Latest version with long context
+
+### Open Source Models
+- `llama-3.1-70b` - Meta's large language model
+- `mixtral-8x7b` - Mistral's mixture-of-experts model
+- `codestral` - Specialized for code generation
+
+## Batch Processing
 
 ### Submit Batch Job
 
 ```python
 requests = [
     {
+        "model": "claude-opus-4",
+        "fallback": "gpt-4o",
         "messages": [{"role": "user", "content": "Question 1"}],
-        "custom_id": "req_1",
+        "task_label": "batch-analysis",
+        "judge_prompt": "Is this response accurate and helpful?",
         "max_tokens": 1024,
         "temperature": 0.0
     },
     {
+        "model": "claude-opus-4", 
+        "fallback": "gpt-4o",
         "messages": [{"role": "user", "content": "Question 2"}],
-        "custom_id": "req_2"
+        "task_label": "batch-analysis",
+        "judge_prompt": "Is this response accurate and helpful?",
+        "max_tokens": 1024
     }
 ]
 
-job_name = client.provider.submit_batch_job(
-    requests=requests,
-    model="claude-opus-4", 
-    bucket_name="your-gcs-bucket",
-    input_file_prefix="batch_input",    # Optional
-    output_file_prefix="batch_output",  # Optional
-    max_tokens=4096,                   # Common parameters
-    temperature=0.0
-)
+# Maniac handles provider routing automatically
+batch_id = client.submit_batch(requests=requests)
 ```
 
 ### Check Job Status
 
 ```python
-status = client.provider.get_batch_job_status(job_name)
+status = client.get_batch_status(batch_id)
 
 print(status)
 # {
-#     "name": "projects/.../batchPredictionJobs/123",
-#     "display_name": "batch_prediction_claude-opus-4_1234567890", 
-#     "state": "JOB_STATE_RUNNING",
-#     "create_time": "2024-01-01T12:00:00Z",
-#     "update_time": "2024-01-01T12:05:00Z",
-#     "error": None
+#     "batch_id": "batch_123456",
+#     "state": "processing",
+#     "created_at": "2024-01-01T12:00:00Z",
+#     "updated_at": "2024-01-01T12:05:00Z",
+#     "completed": 150,
+#     "total": 200,
+#     "failed": 2
 # }
 ```
 
 ### Get Batch Results
 
 ```python
-if status['state'] == 'JOB_STATE_SUCCEEDED':
-    results = client.provider.get_batch_results(job_name)
+if status['state'] == 'completed':
+    results = client.get_batch_results(batch_id)
     
     for result in results:
-        print(f"Request: {result['custom_id']}")
+        print(f"Model used: {result['model_used']}")
         print(f"Response: {result['response']}")
+        print(f"Fallback used: {result['fallback_used']}")
 ```
 
-## Provider Access
+## Model Management
 
-### Direct Provider Methods
+### Get Available Models
 
 ```python
-# Access underlying provider for advanced features
-vertex_provider = client.provider
+# Get all available models
+models = client.get_available_models()
+print(models)
 
-# Get available models
-models = vertex_provider.get_available_models()
-print(models)  # ['claude-opus-4', 'claude-opus-4.1', 'claude-sonnet-4']
+# Get models by category
+claude_models = client.get_available_models(category="claude")
+gpt_models = client.get_available_models(category="gpt")
+open_source = client.get_available_models(category="open-source")
+```
 
-# Create JSONL for batch processing
-jsonl_content = vertex_provider.create_batch_jsonl(
-    requests=batch_requests,
-    model="claude-opus-4",
-    temperature=0.0
-)
+### Model Information
+
+```python
+# Get model details
+info = client.get_model_info("claude-opus-4")
+print(f"Provider: {info['provider']}")
+print(f"Context length: {info['max_context']}")
+print(f"Capabilities: {info['capabilities']}")
 ```
 
 ## Telemetry and Logging

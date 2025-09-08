@@ -5,8 +5,7 @@ This guide will help you install and configure the Maniac Python library.
 ## Prerequisites
 
 - **Python 3.9 or higher**
-- For Vertex AI: Google Cloud project with access to Anthropic models
-- For OpenAI: Access is provisioned automatically via Maniac API key
+- **Maniac API key** (provides access to all model providers automatically)
 
 ## Installation
 
@@ -16,76 +15,42 @@ Install the Maniac library using pip:
 pip install maniac
 ```
 
-## Provider Setup
+## Setup
 
-### Vertex AI Setup (Recommended)
+### 1. Get Your Maniac API Key
 
-#### 1. Install Dependencies
+Sign up at [maniac.ai](https://maniac.ai) to get your API key that provides access to all supported models.
 
-Maniac automatically handles Vertex AI dependencies, but you can install them explicitly:
+### 2. Configure Authentication
 
-```bash
-pip install anthropic[vertex] google-cloud-aiplatform google-cloud-storage
-```
-
-#### 2. Google Cloud Authentication
-
-Set up Google Cloud authentication using one of these methods:
-
-**Option A: Application Default Credentials (Recommended)**
-```bash
-gcloud auth application-default login
-```
-
-**Option B: Service Account Key**
-```bash
-export GOOGLE_APPLICATION_CREDENTIALS="/path/to/service-account-key.json"
-```
-
-#### 3. Test Vertex AI Installation
-
-```python
-from maniac import create_vertex_client
-
-client = create_vertex_client(
-    project_id="your-gcp-project-id",
-    region="us-east5"
-)
-
-# Test with a simple request
-response = client.chat.completions.create(
-    model="claude-opus-4",
-    messages=[{"role": "user", "content": "Hello!"}],
-    task_label="installation-test",
-    judge_prompt="Is this a friendly greeting response?"
-)
-
-print(response["choices"][0]["message"]["content"])
-```
-
-### OpenAI Setup
-
-#### 1. API Key Setup
-
-OpenAI access is automatically provisioned through your Maniac API key. Set your Maniac API key:
+Set your API key via environment variable:
 
 ```bash
 export MANIAC_API_KEY=your-maniac-api-key
 ```
 
-#### 2. Test OpenAI Installation
+### 3. Test Installation
 
 ```python
-from maniac import create_openai_client
+from maniac import Maniac
 
-client = create_openai_client(api_key="your-maniac-api-key")
+client = Maniac(api_key="your-maniac-api-key")
 
-# Test with a simple request
+# Test with any model - Maniac handles provider routing
 response = client.chat.completions.create(
-    model="gpt-4o",
+    model="claude-opus-4",
+    fallback="gpt-4o",
     messages=[{"role": "user", "content": "Hello!"}],
     task_label="installation-test",
-    judge_prompt="Is this a friendly greeting response?"
+    judge_prompt="""
+You are comparing two greeting responses. Is response A better than response B?
+
+Consider these criteria:
+- Is response A more friendly and welcoming than B?
+- Is response A more appropriate for the context than B?
+
+Answer: A is better than B (YES/NO)
+"""
 )
 
 print(response["choices"][0]["message"]["content"])

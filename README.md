@@ -10,26 +10,25 @@ Maniac provides a unified interface for deploying AI programs across any LLM pro
 
 Maniac is a Python library that provides:
 
-- **Unified API**: Single interface for OpenAI and Vertex AI (Anthropic Claude) models
+- **Model-First Approach**: Specify any model and Maniac routes to the optimal provider
+- **Automatic Fallbacks**: Built-in fallback to alternative models if primary unavailable
 - **Telemetry & Tracking**: Automatic logging of all inferences for optimization
 - **Task Organization**: Group related inferences with task labels
 - **Quality Assessment**: Judge prompts for continuous evaluation
-- **Batch Processing**: Efficient batch inference for Vertex AI models
-- **Provider Abstraction**: Switch between providers without code changes
+- **Provider Agnostic**: Access any model without worrying about underlying provider
 
 ## Quick Start
 
 ```python
 from maniac import Maniac
 
-# Initialize with your preferred provider
-client = Maniac(provider="vertex", project_id="your-project")
-# or
-client = Maniac(provider="openai", api_key="your-maniac-api-key")
+# Initialize with your API key - Maniac handles all providers automatically
+client = Maniac(api_key="your-maniac-api-key")
 
 # Customer support ticket analysis
 response = client.responses.create(
     model="claude-opus-4",
+    fallback="gpt-4o",  # Automatic fallback if primary model unavailable
     input="Customer reports: 'Payment failed but was charged anyway. Order #12345'", 
     instructions="You are a customer support analyst. Categorize the issue, determine urgency, and suggest resolution steps.",
     temperature=0.0,
@@ -82,6 +81,7 @@ Maniac uses task labels to group related inferences and judge prompts to define 
 # All inferences with the same task_label are grouped together
 client.chat.completions.create(
     model="claude-opus-4",
+    fallback="gpt-4o",  # Automatic provider fallback
     messages=[{"role": "user", "content": "Analyze this contract"}],
     task_label="legal-document-analysis",
     judge_prompt="""
@@ -108,10 +108,14 @@ Answer: A is better than B (YES/NO)
 )
 ```
 
-### Supported Providers
+### Supported Models
 
-- **Vertex AI (Recommended)**: Claude Opus 4, Claude Sonnet 4 via Google Cloud
-- **OpenAI**: GPT-4o, GPT-4, GPT-3.5-turbo, O1-mini
+Maniac automatically routes to the optimal provider for each model:
+
+- **Claude Models**: claude-opus-4, claude-sonnet-4, claude-haiku-3
+- **GPT Models**: gpt-4o, gpt-4-turbo, gpt-4, gpt-3.5-turbo, o1-mini
+- **Gemini Models**: gemini-pro, gemini-1.5-pro
+- **Open Source**: llama-3.1-70b, mixtral-8x7b, codestral
 
 ## Key Features
 
@@ -121,6 +125,7 @@ Answer: A is better than B (YES/NO)
 ```python
 response = client.chat.completions.create(
     model="claude-opus-4",
+    fallback="gpt-4o",  # Optional fallback model
     messages=[
         {"role": "system", "content": "You are a financial auditor."},
         {"role": "user", "content": "Review this expense report..."}
@@ -154,6 +159,7 @@ Answer: A is better than B (YES/NO)
 ```python
 response = client.responses.create(
     model="claude-opus-4",
+    fallback="gpt-4o",  # Optional fallback model
     input="Expense report data...",
     instructions="You are a financial auditor. Review for compliance and accuracy.",
     task_label="expense-audit",
@@ -209,8 +215,7 @@ if status['state'] == 'JOB_STATE_SUCCEEDED':
 pip install maniac
 ```
 
-**For Vertex AI:** Requires Google Cloud project with Anthropic models enabled
-**For OpenAI:** Access provisioned automatically via Maniac API key
+**Prerequisites:** Just your Maniac API key - all model providers are handled automatically
 
 ## Enterprise Benefits
 

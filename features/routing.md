@@ -1,195 +1,224 @@
-# Provider Selection
+# Model Selection & Fallbacks
 
-Maniac provides a unified interface across multiple AI providers, allowing you to switch between OpenAI and Vertex AI without changing your application code.
+Maniac provides intelligent model selection with automatic provider routing and fallback capabilities. Simply specify your desired model and optional fallback - Maniac handles all provider complexity automatically.
 
-## Supported Providers
+## Model Selection
 
-### Vertex AI (Recommended)
-
-Access Anthropic Claude models through Google Cloud:
+Choose from a wide range of models across different providers. Maniac automatically routes to the optimal provider for each model:
 
 ```python
 from maniac import Maniac
 
-client = Maniac(
-    provider="vertex",
-    project_id="your-gcp-project", 
-    region="us-east5"  # Optional, default is us-east5
-)
-```
+# Simple initialization - Maniac handles all provider routing
+client = Maniac(api_key="your-maniac-api-key")
 
-**Available Models:**
-- `claude-opus-4` → `claude-opus-4@20250514`
-- `claude-opus-4.1` → `claude-opus-4-1@20250805`  
-- `claude-sonnet-4` → `claude-sonnet-4@20250514`
-
-**Features:**
-- Batch processing support
-- Google Cloud integration
-- Enterprise-grade reliability
-- Advanced model versions
-
-### OpenAI
-
-Access GPT models through OpenAI API:
-
-```python
-from maniac import Maniac
-
-client = Maniac(
-    provider="openai",
-    api_key="your-maniac-api-key",
-    base_url="https://api.openai.com/v1"  # Optional
-)
-```
-
-**Available Models:**
-- `gpt-4o`
-- `gpt-4-turbo`
-- `gpt-4`
-- `gpt-3.5-turbo`
-- `o1-mini`
-
-**Features:**
-- Direct OpenAI API access
-- Full GPT model support
-- Custom base URL support
-
-## Provider Switching
-
-The same code works across both providers:
-
-```python
-# This works with both Vertex AI and OpenAI
+# Use any model with automatic provider routing
 response = client.chat.completions.create(
-    model="claude-opus-4",  # or "gpt-4o" 
-    messages=[
-        {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", "content": "Explain quantum computing"}
-    ],
-    temperature=0.7,
-    max_tokens=1024,
-    task_label="educational-content",
+    model="claude-opus-4",    # Maniac routes to Anthropic via Vertex AI
+    fallback="gpt-4o",        # Automatic fallback to OpenAI if needed
+    messages=[{"role": "user", "content": "Hello"}],
+    task_label="conversation",
     judge_prompt="""
-You are comparing two educational explanations of the same topic. Is response A better than response B?
+You are comparing two conversational responses to the same user query. Is response A better than response B?
 
 Consider these criteria:
 
-CLARITY:
-- Does response A use language more appropriate for the target audience than B?
-- Does response A explain complex concepts in more understandable terms than B?
-- Does response A have better logical flow and structure than B?
+HELPFULNESS:
+- Does response A address the user's needs more appropriately than B?
+- Does response A provide more useful information than B?
 
-ACCURACY:
-- Is response A's scientific/technical information more correct than B's?
-- Does response A have fewer misleading or false statements than B?
-
-COMPLETENESS:
-- Does response A cover key concepts more adequately than B?
-- Does response A provide more relevant examples or analogies than B?
+APPROPRIATENESS:
+- Does response A use more suitable tone and language than B?
+- Does response A maintain better professional boundaries than B?
 
 Answer: A is better than B (YES/NO)
 """
 )
 ```
 
-## Factory Functions
+## Available Models
 
-Use convenience functions for cleaner initialization:
+### Claude Models (Anthropic via Vertex AI)
+- `claude-opus-4` - Most capable model for complex reasoning
+- `claude-sonnet-4` - Balanced performance and speed
+- `claude-haiku-3` - Fast model for simple tasks
 
-### Vertex AI Client
+### GPT Models (OpenAI)
+- `gpt-4o` - Latest multimodal model
+- `gpt-4-turbo` - High performance model  
+- `gpt-4` - Classic high-quality model
+- `gpt-3.5-turbo` - Fast and cost-effective
+- `o1-mini` - Reasoning-optimized model
 
-```python
-from maniac import create_vertex_client
+### Gemini Models (Google)
+- `gemini-pro` - Google's advanced model
+- `gemini-1.5-pro` - Latest version with long context
 
-client = create_vertex_client(
-    project_id="your-project",
-    region="us-east5"
-)
-```
+### Open Source Models  
+- `llama-3.1-70b` - Meta's large language model
+- `mixtral-8x7b` - Mistral's mixture-of-experts model
+- `codestral` - Specialized for code generation
 
-### OpenAI Client
+## Fallback Strategy
 
-```python
-from maniac import create_openai_client
+Configure automatic fallbacks for reliability. Maniac will seamlessly switch to your fallback model if the primary is unavailable:
 
-client = create_openai_client(
-    api_key="your-maniac-api-key",
-    base_url="https://api.openai.com/v1"  # Optional
-)
-```
-
-### Generic Client
-
-```python
-from maniac import create_client
-
-# Vertex AI
-vertex_client = create_client(
-    provider="vertex",
-    project_id="your-project"
-)
-
-# OpenAI  
-openai_client = create_client(
-    provider="openai",
-    api_key="your-maniac-api-key"
-)
-```
-
-## Provider-Specific Features
-
-### Vertex AI Batch Processing
-
-Only available with Vertex AI provider:
+### Basic Fallback
 
 ```python
-vertex_client = create_vertex_client(project_id="your-project")
-
-# Submit batch job
-job_name = vertex_client.provider.submit_batch_job(
-    requests=[
-        {"messages": [{"role": "user", "content": "Question 1"}], "custom_id": "req_1"},
-        {"messages": [{"role": "user", "content": "Question 2"}], "custom_id": "req_2"}
-    ],
+# Single fallback
+response = client.responses.create(
     model="claude-opus-4",
-    bucket_name="your-gcs-bucket"
+    fallback="gpt-4o",
+    input="Analyze this financial data",
+    instructions="You are a financial analyst",
+    task_label="financial-analysis",
+    judge_prompt="""
+You are comparing two financial analyses. Is response A better than response B?
+
+Consider these criteria:
+- Is response A's analysis more thorough than B's?
+- Is response A's reasoning more sound than B's?
+- Are response A's recommendations more actionable than B's?
+
+Answer: A is better than B (YES/NO)
+"""
 )
-
-# Check status
-status = vertex_client.provider.get_batch_job_status(job_name)
-
-# Get results when complete
-if status['state'] == 'JOB_STATE_SUCCEEDED':
-    results = vertex_client.provider.get_batch_results(job_name)
 ```
 
-### Model Information
-
-Get provider-specific model information:
+### Multiple Fallback Options
 
 ```python
-# Get available models for current provider
-if client.provider_type == "vertex":
-    models = client.provider.get_available_models()
-    print(models)  # ['claude-opus-4', 'claude-opus-4.1', 'claude-sonnet-4']
-elif client.provider_type == "openai":
-    # OpenAI models are accessed directly
-    models = ["gpt-4o", "gpt-4-turbo", "gpt-4", "gpt-3.5-turbo", "o1-mini"]
+# Multiple fallbacks for maximum reliability
+response = client.chat.completions.create(
+    model="claude-opus-4",
+    fallback=["gpt-4o", "gemini-pro", "llama-3.1-70b"],  # Try in order
+    messages=[{"role": "user", "content": "Critical business decision analysis"}],
+    task_label="business-analysis",
+    judge_prompt="""
+You are comparing two business analyses. Is response A better than response B?
+
+Consider these criteria:
+- Does response A provide better strategic insights than B?
+- Is response A's risk assessment more comprehensive than B's?
+- Are response A's recommendations more practical than B's?
+
+Answer: A is better than B (YES/NO)
+"""
+)
 ```
 
-## Environment Configuration
+## Model Selection Strategies
 
-Set environment variables for easier configuration:
+### Performance-First
+Use the most capable models with fast fallbacks:
 
-### Vertex AI
-
-```bash
-export GOOGLE_CLOUD_PROJECT=your-project-id
-export GOOGLE_CLOUD_REGION=us-east5
+```python
+response = client.responses.create(
+    model="claude-opus-4",      # Best reasoning
+    fallback="gpt-4o",          # Strong alternative
+    input="Complex legal analysis...",
+    task_label="legal-analysis"
+)
 ```
 
-### OpenAI
+### Cost-Optimized
+Start with efficient models, fallback to premium when needed:
+
+```python
+response = client.responses.create(
+    model="claude-haiku-3",     # Fast and cost-effective
+    fallback="claude-sonnet-4", # Better quality fallback
+    input="Simple document summary...",
+    task_label="document-processing"
+)
+```
+
+### Speed-Optimized
+Prioritize low latency:
+
+```python
+response = client.responses.create(
+    model="gpt-3.5-turbo",      # Fast response
+    fallback="claude-haiku-3",  # Also fast
+    input="Quick customer inquiry...",
+    task_label="customer-support"
+)
+```
+
+## Model Information
+
+Get information about available models:
+
+```python
+# List all available models
+models = client.get_available_models()
+print(models)
+
+# Get model details
+info = client.get_model_info("claude-opus-4")
+print(f"Provider: {info['provider']}")
+print(f"Context length: {info['max_context']}")
+print(f"Capabilities: {info['capabilities']}")
+
+# Check model availability
+is_available = client.check_model_availability("claude-opus-4")
+if not is_available:
+    print("Primary model unavailable, will use fallback")
+```
+
+## Best Practices
+
+### 1. Choose Models by Use Case
+- **Complex reasoning**: `claude-opus-4`, `gpt-4o`
+- **Balanced tasks**: `claude-sonnet-4`, `gpt-4-turbo`  
+- **Simple/fast tasks**: `claude-haiku-3`, `gpt-3.5-turbo`
+- **Code generation**: `codestral`, `gpt-4o`
+
+### 2. Configure Appropriate Fallbacks
+```python
+# Good fallback strategy (similar capabilities)
+model="claude-opus-4", fallback="gpt-4o"
+
+# Poor fallback strategy (very different capabilities)
+model="claude-opus-4", fallback="gpt-3.5-turbo"
+```
+
+### 3. Use Task Labels Consistently
+Keep task labels consistent regardless of model choice:
+
+```python
+# Both requests use same task_label for optimization
+response1 = client.chat.completions.create(
+    model="claude-opus-4", fallback="gpt-4o",
+    messages=messages, task_label="legal-review"
+)
+
+response2 = client.chat.completions.create(
+    model="gpt-4o", fallback="claude-sonnet-4", 
+    messages=messages, task_label="legal-review"  # Same task label
+)
+```
+
+### 4. Monitor Model Usage
+Track which models are being used:
+
+```python
+response = client.chat.completions.create(
+    model="claude-opus-4",
+    fallback="gpt-4o",
+    messages=messages,
+    task_label="analysis"
+)
+
+# Check which model was actually used
+print(f"Model used: {response['model']}")
+print(f"Was fallback used: {response.get('fallback_used', False)}")
+```
+
+## Environment Variables
+
+Set your API key via environment variable:
 
 ```bash
 export MANIAC_API_KEY=your-maniac-api-key
@@ -201,86 +230,49 @@ Then initialize without parameters:
 import os
 from maniac import Maniac
 
-# Vertex AI
-client = Maniac(
-    provider="vertex",
-    project_id=os.getenv("GOOGLE_CLOUD_PROJECT"),
-    region=os.getenv("GOOGLE_CLOUD_REGION")
-)
-
-# OpenAI
-client = Maniac(
-    provider="openai", 
-    api_key=os.getenv("MANIAC_API_KEY")
-)
+client = Maniac(api_key=os.getenv("MANIAC_API_KEY"))
 ```
 
-## Choosing the Right Provider
+## Model Migration
 
-### Use Vertex AI When:
-- You need Claude models (Opus 4, Sonnet 4)
-- You want batch processing capabilities
-- You're already using Google Cloud
-- You need enterprise-grade compliance
-- You want the latest Anthropic model versions
-
-### Use OpenAI When:
-- You need GPT models specifically
-- You prefer the OpenAI model ecosystem
-- You need O1-series models
-
-*Note: OpenAI access is provisioned automatically through your Maniac API key*
-
-## Provider Migration
-
-Migrating between providers requires only changing the initialization:
+Easily switch between models:
 
 ```python
-# Before (OpenAI)
-client = Maniac(provider="openai", api_key="your-maniac-api-key")
-
-# After (Vertex AI)  
-client = Maniac(provider="vertex", project_id="your-project")
-
-# All other code remains the same
+# Before
 response = client.chat.completions.create(
-    model="claude-opus-4",  # Just change the model name
+    model="claude-sonnet-4",
     messages=messages,
-    task_label="same-task-label",
-    judge_prompt="same-judge-prompt"
+    task_label="analysis"
+)
+
+# After (upgrade to more capable model)
+response = client.chat.completions.create(
+    model="claude-opus-4",
+    fallback="claude-sonnet-4",  # Keep old model as fallback
+    messages=messages,
+    task_label="analysis"  # Same task label for optimization continuity
 )
 ```
 
-## Best Practices
+## Error Handling
 
-### 1. Provider Selection
-Choose based on your model and infrastructure requirements, not routing complexity.
-
-### 2. Model Names
-Use the correct model names for each provider:
-- Vertex AI: `claude-opus-4`, `claude-sonnet-4`  
-- OpenAI: `gpt-4o`, `gpt-4-turbo`
-
-### 3. Task Labels
-Keep task labels consistent across providers for better optimization tracking.
-
-### 4. Error Handling
-Handle provider-specific errors appropriately:
+Handle model availability issues gracefully:
 
 ```python
 try:
-    response = client.chat.completions.create(...)
-except ImportError as e:
-    print(f"Missing dependencies for {client.provider_type}: {e}")
-except ValueError as e:
-    print(f"Configuration error: {e}")
+    response = client.chat.completions.create(
+        model="claude-opus-4",
+        fallback="gpt-4o",
+        messages=messages,
+        task_label="critical-task"
+    )
+except Exception as e:
+    print(f"Error with primary and fallback models: {e}")
+    # Implement additional error handling as needed
 ```
-
-### 5. Authentication
-Ensure proper authentication is set up for your chosen provider before initialization.
 
 ## Next Steps
 
-- [Learn about API interfaces](../api/python-sdk.md)
-- [Set up authentication](../getting-started/authentication.md) 
-- [Explore batch processing](../guides/batch-processing.md)
+- [Learn about the Python SDK](../api/python-sdk.md)
+- [Explore task organization](../guides/best-practices.md)
+- [Set up batch processing](../guides/batch-processing.md)
