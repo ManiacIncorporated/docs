@@ -9,38 +9,19 @@ Maniac uses API keys for authentication. This guide covers how to obtain, config
 Visit [maniac.ai](https://maniac.ai) and create an account:
 
 1. Click "Sign Up"
-2. Enter your email and create a password
-3. Verify your email address
-4. Complete your profile
+2. Currently, we support sign ins with GitHub and Google.&#x20;
 
 ### 2. Create an API Key
 
 In the Maniac dashboard:
 
-1. Navigate to **Settings** → **API Keys**
-2. Click **"Create New API Key"**
-3. Give your key a descriptive name (e.g., "Production API", "Development")
-4. Select the appropriate permissions
-5. Click **"Generate Key"**
+1. Create a new organization and project.&#x20;
+2. Navigate to **Project** → **Settings** → **API Keys**
+3. Click **"Create a Key"**
+4. Give your key a descriptive name (e.g., "Production API", "Development")
+5. Click **"Submit,"** and copy your key.&#x20;
 
-⚠️ **Important**: Copy and store your API key immediately. It won't be shown again for security reasons.
-
-## API Key Types
-
-### Development Keys
-- Limited to 1,000 requests per day
-- Access to sandbox environment
-- Perfect for testing and development
-
-### Production Keys
-- Higher rate limits based on your plan
-- Access to production environment
-- Required for live applications
-
-### Service Keys
-- Designed for server-to-server communication
-- No rate limits (within plan bounds)
-- Enhanced security features
+⚠️ **Important**: API keys are scoped per user and project.&#x20;
 
 ## Configuring Authentication
 
@@ -49,22 +30,25 @@ In the Maniac dashboard:
 Set your API key as an environment variable:
 
 **Linux/macOS:**
+
 ```bash
 export MANIAC_API_KEY="mk-1234567890abcdef"
 ```
 
 **Windows:**
+
 ```cmd
 set MANIAC_API_KEY=mk-1234567890abcdef
 ```
 
 **Python Code:**
+
 ```python
 import os
 from maniac import Maniac
 
 # Client automatically uses MANIAC_API_KEY environment variable
-client = Maniac(provider="vertex", project_id="your-project")
+client = Maniac(API_KEY = os.getenv("MANIAC_API_KEY"))
 ```
 
 ### Method 2: Configuration File
@@ -78,11 +62,12 @@ region: us-west-2
 ```
 
 **Python Code:**
+
 ```python
 from maniac import Maniac
 
 # Client automatically loads from config file
-client = Maniac(provider="vertex", project_id="your-project")
+client = Maniac(API_KEY = os.getenv("MANIAC_API_KEY"))
 ```
 
 ### Method 3: Direct in Code
@@ -90,7 +75,7 @@ client = Maniac(provider="vertex", project_id="your-project")
 ```python
 from maniac import Maniac
 
-client = Maniac(provider="vertex", project_id="your-project")
+client = Maniac(API_KEY = "MANIAC_API_KEY")
 ```
 
 ⚠️ **Security Warning**: Never hardcode API keys in production code or commit them to version control.
@@ -145,10 +130,10 @@ permissions:
 
 Monitor your API key usage in the dashboard:
 
-- Track request volumes
-- Monitor error rates
-- Set up usage alerts
-- Review access patterns
+* Track request volumes
+* Monitor error rates
+* Set up usage alerts
+* Review access patterns
 
 ## Managing Multiple Keys
 
@@ -166,25 +151,14 @@ api_key = os.getenv(f"MANIAC_API_KEY_{os.getenv('USER', 'default').upper()}")
 client = Maniac(api_key=api_key)
 ```
 
-### Service Accounts
 
-For production services:
-
-```python
-from maniac import Maniac
-
-# Use service-specific keys
-client = Maniac(
-    api_key=os.getenv("MANIAC_SERVICE_KEY"),
-    user_agent="MyApp/1.0.0"  # Helps with monitoring
-)
-```
 
 ## Troubleshooting Authentication
 
 ### Common Error Messages
 
 **Invalid API Key**
+
 ```json
 {
   "error": "invalid_api_key",
@@ -195,6 +169,7 @@ client = Maniac(
 **Solution**: Check that your API key is correct and hasn't been revoked.
 
 **Permission Denied**
+
 ```json
 {
   "error": "permission_denied",
@@ -205,6 +180,7 @@ client = Maniac(
 **Solution**: Check your key's permissions in the dashboard.
 
 **Rate Limit Exceeded**
+
 ```json
 {
   "error": "rate_limit_exceeded",
@@ -225,7 +201,7 @@ from maniac import Maniac
 # Enable debug logging
 logging.basicConfig(level=logging.DEBUG)
 
-client = Maniac(provider="vertex", project_id="your-project")
+client = Maniac(API_KEY = os.getenv("MANIAC_API_KEY"))
 
 # Test authentication
 try:
@@ -237,16 +213,16 @@ except Exception as e:
 
 ## Environment Variables Reference
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `MANIAC_API_KEY` | Your API key | Yes |
-| `MANIAC_ENVIRONMENT` | Environment (production/sandbox) | No |
-| `MANIAC_REGION` | Preferred region | No |
-| `MANIAC_TIMEOUT` | Request timeout (seconds) | No |
-| `MANIAC_MAX_RETRIES` | Max retry attempts | No |
+| Variable             | Description                      | Required |
+| -------------------- | -------------------------------- | -------- |
+| `MANIAC_API_KEY`     | Your API key                     | Yes      |
+| `MANIAC_ENVIRONMENT` | Environment (production/sandbox) | No       |
+| `MANIAC_REGION`      | Preferred region                 | No       |
+| `MANIAC_TIMEOUT`     | Request timeout (seconds)        | No       |
+| `MANIAC_MAX_RETRIES` | Max retry attempts               | No       |
 
 ## Next Steps
 
-- [Create your first container](quickstart.md)
-- [Explore the Python SDK](../api/python-sdk.md)
-- [Set up monitoring](../guides/performance.md)
+* [Create your first container](quickstart.md)
+* [Explore the Python SDK](../api/python-sdk.md)
+* [Set up monitoring](../guides/performance.md)
