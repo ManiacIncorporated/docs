@@ -11,7 +11,7 @@ Maniac provides a unified interface for deploying AI programs across any LLM pro
 Maniac is a Python library that provides:
 
 - **Model-First Approach**: Specify any model and Maniac routes to the optimal provider
-- **Automatic Fallbacks**: Built-in fallback to alternative models if primary unavailable
+- **Intelligent Routing**: Automatic provider selection and failover handling
 - **Telemetry & Tracking**: Automatic logging of all inferences for optimization
 - **Task Organization**: Group related inferences with task labels
 - **Quality Assessment**: Judge prompts for continuous evaluation
@@ -27,8 +27,7 @@ client = Maniac(api_key="your-maniac-api-key")
 
 # Customer support ticket analysis
 response = client.responses.create(
-    model="claude-opus-4",
-    fallback="gpt-4o",  # Automatic fallback if primary model unavailable
+    fallback="claude-opus-4",
     input="Customer reports: 'Payment failed but was charged anyway. Order #12345'", 
     instructions="You are a customer support analyst. Categorize the issue, determine urgency, and suggest resolution steps.",
     temperature=0.0,
@@ -80,8 +79,7 @@ Maniac uses task labels to group related inferences and judge prompts to define 
 ```python
 # All inferences with the same task_label are grouped together
 client.chat.completions.create(
-    model="claude-opus-4",
-    fallback="gpt-4o",  # Automatic provider fallback
+    fallback="claude-opus-4",
     messages=[{"role": "user", "content": "Analyze this contract"}],
     task_label="legal-document-analysis",
     judge_prompt="""
@@ -124,8 +122,7 @@ Maniac automatically routes to the optimal provider for each model:
 **Chat Completions API** (OpenAI-compatible):
 ```python
 response = client.chat.completions.create(
-    model="claude-opus-4",
-    fallback="gpt-4o",  # Optional fallback model
+    fallback="claude-opus-4",
     messages=[
         {"role": "system", "content": "You are a financial auditor."},
         {"role": "user", "content": "Review this expense report..."}
@@ -158,8 +155,7 @@ Answer: A is better than B (YES/NO)
 **Responses API** (Simplified):
 ```python
 response = client.responses.create(
-    model="claude-opus-4",
-    fallback="gpt-4o",  # Optional fallback model
+    fallback="claude-opus-4",
     input="Expense report data...",
     instructions="You are a financial auditor. Review for compliance and accuracy.",
     task_label="expense-audit",

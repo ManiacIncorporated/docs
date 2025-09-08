@@ -31,8 +31,7 @@ client = Maniac(api_key="your-maniac-api-key")
 ```python
 # Standard chat completions interface
 response = client.chat.completions.create(
-    model="claude-opus-4",
-    fallback="gpt-4o",  # Automatic fallback if primary unavailable
+    fallback="claude-opus-4",
     messages=[
         {"role": "system", "content": "You are a helpful math tutor."},
         {"role": "user", "content": "A train travels 120 miles in 2 hours. What is its average speed?"}
@@ -71,8 +70,7 @@ print(response["choices"][0]["message"]["content"])
 ```python
 # Simplified responses interface
 response = client.responses.create(
-    model="claude-opus-4",
-    fallback="gpt-4o",  # Automatic fallback if primary unavailable
+    fallback="claude-opus-4",
     input="A train travels 120 miles in 2 hours. What is its average speed?",
     instructions="You are a helpful math tutor. Solve the problem step by step.",
     temperature=0.0,
@@ -182,16 +180,16 @@ client = Maniac(api_key="your-maniac-api-key")
 # Create batch requests - Maniac routes automatically
 requests = [
     {
-        "model": "claude-opus-4",
-        "fallback": "gpt-4o",
+        "fallback": "claude-opus-4",
         "messages": [{"role": "user", "content": "Question 1"}],
-        "task_label": "batch-processing"
+        "task_label": "batch-processing",
+        "judge_prompt": "Is this response accurate and helpful?"
     },
     {
-        "model": "claude-opus-4", 
-        "fallback": "gpt-4o",
+        "fallback": "claude-opus-4",
         "messages": [{"role": "user", "content": "Question 2"}],
-        "task_label": "batch-processing"
+        "task_label": "batch-processing",
+        "judge_prompt": "Is this response accurate and helpful?"
     }
 ]
 
@@ -216,8 +214,7 @@ client = Maniac(api_key="your-maniac-api-key")
 
 def handle_customer_query(query: str):
     response = client.responses.create(
-        model="claude-opus-4",
-        fallback="gpt-4o",  # Automatic fallback
+        fallback="claude-opus-4",
         input=query,
         instructions="You are a helpful customer support agent. Be friendly, professional, and provide clear solutions.",
         temperature=0.0,

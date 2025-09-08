@@ -46,8 +46,7 @@ Standard OpenAI-compatible chat completions interface.
 
 ```python
 response = client.chat.completions.create(
-    model="claude-opus-4",
-    fallback="gpt-4o",                           # Optional fallback model
+    fallback="claude-opus-4",
     messages=[
         {"role": "system", "content": "You are a helpful assistant."},
         {"role": "user", "content": "Hello!"}
@@ -82,13 +81,12 @@ Answer: A is better than B (YES/NO)
 ```
 
 **Required Parameters:**
-- `model` (str): Primary model name (e.g., "claude-opus-4", "gpt-4o") 
+- `fallback` (str): Model name (e.g., "claude-opus-4", "gpt-4o") 
 - `messages` (List[Dict]): Chat messages in OpenAI format
 - `task_label` (str): Task identifier for grouping and optimization
 - `judge_prompt` (str): Evaluation criteria for quality assessment
 
 **Optional Parameters:**
-- `fallback` (str): Fallback model if primary unavailable
 - `temperature` (float): Randomness (0.0-2.0)
 - `max_tokens` (int): Maximum response tokens
 - `top_p` (float): Nucleus sampling parameter
@@ -161,8 +159,7 @@ Simplified interface using input/instructions pattern.
 
 ```python
 response = client.responses.create(
-    model="claude-opus-4",
-    fallback="gpt-4o",                       # Optional fallback model
+    fallback="claude-opus-4",
     input="Analyze this customer feedback",
     instructions="You are a customer success manager. Categorize the feedback and suggest actions.",
     additional_instructions="Focus on actionable insights.",  # Optional
@@ -195,13 +192,12 @@ Answer: A is better than B (YES/NO)
 ```
 
 **Required Parameters:**
-- `model` (str): Primary model name (e.g., "claude-opus-4", "gpt-4o")
+- `fallback` (str): Model name (e.g., "claude-opus-4", "gpt-4o")
 - `input` (str): The content to process
 - `task_label` (str): Task identifier 
 - `judge_prompt` (str): Evaluation criteria
 
 **Optional Parameters:**
-- `fallback` (str): Fallback model if primary unavailable
 - `instructions` (str): System instructions/role definition
 - `additional_instructions` (str): Additional context or constraints
 - `temperature` (float): Randomness (0.0-2.0)
@@ -259,8 +255,7 @@ Maniac automatically routes to the optimal provider for each model:
 ```python
 requests = [
     {
-        "model": "claude-opus-4",
-        "fallback": "gpt-4o",
+        "fallback": "claude-opus-4",
         "messages": [{"role": "user", "content": "Question 1"}],
         "task_label": "batch-analysis",
         "judge_prompt": "Is this response accurate and helpful?",
@@ -268,10 +263,9 @@ requests = [
         "temperature": 0.0
     },
     {
-        "model": "claude-opus-4", 
-        "fallback": "gpt-4o",
+        "fallback": "claude-opus-4",
         "messages": [{"role": "user", "content": "Question 2"}],
-        "task_label": "batch-analysis",
+        "task_label": "batch-analysis", 
         "judge_prompt": "Is this response accurate and helpful?",
         "max_tokens": 1024
     }
@@ -307,7 +301,7 @@ if status['state'] == 'completed':
     for result in results:
         print(f"Model used: {result['model_used']}")
         print(f"Response: {result['response']}")
-        print(f"Fallback used: {result['fallback_used']}")
+        print(f"Provider: {result['provider_used']}")
 ```
 
 ## Model Management
@@ -350,9 +344,9 @@ All API calls are automatically logged to Supabase for optimization and tracking
 from maniac import Maniac
 
 try:
-    client = Maniac(provider="vertex", project_id="invalid-project")
+    client = Maniac(api_key="invalid-api-key")
     response = client.chat.completions.create(
-        model="claude-opus-4",
+        fallback="claude-opus-4",
         messages=[{"role": "user", "content": "Hello"}],
         task_label="test",
         judge_prompt="""

@@ -38,8 +38,7 @@ client = Maniac(api_key="your-maniac-api-key")
 
 # Test with any model - Maniac handles provider routing
 response = client.chat.completions.create(
-    model="claude-opus-4",
-    fallback="gpt-4o",
+    fallback="claude-opus-4",
     messages=[{"role": "user", "content": "Hello!"}],
     task_label="installation-test",
     judge_prompt="""
