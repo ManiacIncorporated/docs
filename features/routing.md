@@ -70,7 +70,26 @@ response = client.chat.completions.create(
     temperature=0.7,
     max_tokens=1024,
     task_label="educational-content",
-    judge_prompt="Is the explanation clear and accurate?"
+    judge_prompt="""
+You are comparing two educational explanations of the same topic. Is response A better than response B?
+
+Consider these criteria:
+
+CLARITY:
+- Does response A use language more appropriate for the target audience than B?
+- Does response A explain complex concepts in more understandable terms than B?
+- Does response A have better logical flow and structure than B?
+
+ACCURACY:
+- Is response A's scientific/technical information more correct than B's?
+- Does response A have fewer misleading or false statements than B?
+
+COMPLETENESS:
+- Does response A cover key concepts more adequately than B?
+- Does response A provide more relevant examples or analogies than B?
+
+Answer: A is better than B (YES/NO)
+"""
 )
 ```
 

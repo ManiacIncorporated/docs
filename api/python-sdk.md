@@ -73,7 +73,27 @@ response = client.chat.completions.create(
     top_p=1.0,
     stream=False,
     task_label="conversation",                    # Required
-    judge_prompt="Is this response helpful?"      # Required
+    judge_prompt="""
+You are comparing two conversational responses to the same user query. Is response A better than response B?
+
+Consider these criteria:
+
+HELPFULNESS:
+- Does response A address the user's needs more appropriately than B?
+- Does response A provide more useful information or assistance than B?
+- Does response A encourage further interaction better than B when appropriate?
+
+APPROPRIATENESS:
+- Does response A's tone match the context and user's style better than B's?
+- Is response A's length more suitable for the query than B's?
+- Does response A maintain professional boundaries better than B?
+
+ENGAGEMENT:
+- Is response A more interesting and engaging than B?
+- Does response A show better understanding of user intent than B?
+
+Answer: A is better than B (YES/NO)
+"""      # Required
 )
 ```
 
@@ -123,7 +143,27 @@ client.chat.completions.stream_create(
     system_prompt="You are a helpful assistant.", 
     user_prompt="Hello!",
     output="Hello! How can I help you today?",
-    judge_prompt="Is this response helpful?",
+    judge_prompt="""
+You are comparing two conversational responses to the same user query. Is response A better than response B?
+
+Consider these criteria:
+
+HELPFULNESS:
+- Does response A address the user's needs more appropriately than B?
+- Does response A provide more useful information or assistance than B?
+- Does response A encourage further interaction better than B when appropriate?
+
+APPROPRIATENESS:
+- Does response A's tone match the context and user's style better than B's?
+- Is response A's length more suitable for the query than B's?
+- Does response A maintain professional boundaries better than B?
+
+ENGAGEMENT:
+- Is response A more interesting and engaging than B?
+- Does response A show better understanding of user intent than B?
+
+Answer: A is better than B (YES/NO)
+""",
     model_name="claude-opus-4"
 )
 ```
@@ -143,7 +183,28 @@ response = client.responses.create(
     temperature=0.0,
     max_tokens=2048,
     task_label="feedback-analysis",           # Required  
-    judge_prompt="Is the analysis thorough?"  # Required
+    judge_prompt="""
+You are comparing two feedback analysis responses for the same customer feedback dataset. Is response A better than response B?
+
+Consider these criteria:
+
+ANALYTICAL DEPTH:
+- Does response A identify key themes and patterns better than B?
+- Does response A categorize feedback more appropriately than B?
+- Does response A draw more meaningful insights from the data than B?
+
+ACTIONABILITY:
+- Does response A provide more specific, implementable recommendations than B?
+- Does response A prioritize actions by impact/effort better than B?
+- Does response A include better timeline or next steps than B?
+
+BUSINESS RELEVANCE:
+- Does response A align with business objectives better than B?
+- Does response A consider resource constraints and feasibility better than B?
+- Does response A address customer satisfaction impact better than B?
+
+Answer: A is better than B (YES/NO)
+"""  # Required
 )
 ```
 
@@ -289,7 +350,22 @@ try:
         model="claude-opus-4",
         messages=[{"role": "user", "content": "Hello"}],
         task_label="test",
-        judge_prompt="Is this good?"
+        judge_prompt="""
+You are comparing two responses to the same input. Is response A better than response B?
+
+Consider these criteria:
+
+APPROPRIATENESS:
+- Does response A address the input more appropriately than B?
+- Is response A's tone more suitable for the context than B's?
+- Is response A's length more appropriate than B's?
+
+QUALITY:
+- Is response A's information more accurate and helpful than B's?
+- Is response A's language clearer and more understandable than B's?
+
+Answer: A is better than B (YES/NO)
+"""
     )
 except ValueError as e:
     print(f"Configuration error: {e}")
@@ -320,7 +396,28 @@ Write specific evaluation criteria:
 
 ```python
 # Good
-judge_prompt="Is the code review thorough, identifying potential bugs and suggesting improvements?"
+judge_prompt="""
+You are comparing two code reviews for the same piece of code. Is response A better than response B?
+
+Consider these criteria:
+
+THOROUGHNESS:
+- Does response A identify more potential bugs and issues than B?
+- Does response A review code structure and organization better than B?
+- Does response A check for security vulnerabilities more thoroughly than B?
+- Does response A validate error handling better than B?
+
+IMPROVEMENT SUGGESTIONS:
+- Does response A provide more specific, actionable recommendations than B?
+- Does response A suggest better performance optimizations than B?
+- Does response A recommend more appropriate best practices than B?
+
+CLARITY & PROFESSIONALISM:
+- Are response A's explanations clearer and more constructive than B's?
+- Does response A maintain a more respectful tone than B?
+
+Answer: A is better than B (YES/NO)
+"""
 
 # Bad
 judge_prompt="Is this good?"

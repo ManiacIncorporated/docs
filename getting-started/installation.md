@@ -140,15 +140,15 @@ region: us-west-2
 
 **In Code**
 ```python
-client = ManiacClient(api_key="your-api-key-here")
+client = Maniac(provider="vertex", project_id="your-project")
 ```
 
 ### Configuration Options
 
 ```python
-from maniac import ManiacClient
+from maniac import Maniac
 
-client = ManiacClient(
+client = Maniac(
     api_key="your-api-key",
     environment="production",  # or "sandbox"
     region="us-west-2",       # optional: for latency optimization

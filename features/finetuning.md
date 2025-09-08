@@ -39,9 +39,9 @@ Format your data as JSON with input/output pairs:
 ### 2. Start Fine-tuning
 
 ```python
-from maniac import ManiacClient
+from maniac import Maniac
 
-client = ManiacClient(api_key="your-key")
+client = Maniac(provider="vertex", project_id="your-project")
 
 # Start fine-tuning job
 job = client.create_finetuning_job(

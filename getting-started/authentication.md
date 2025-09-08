@@ -61,10 +61,10 @@ set MANIAC_API_KEY=mk-1234567890abcdef
 **Python Code:**
 ```python
 import os
-from maniac import ManiacClient
+from maniac import Maniac
 
 # Client automatically uses MANIAC_API_KEY environment variable
-client = ManiacClient()
+client = Maniac(provider="vertex", project_id="your-project")
 ```
 
 ### Method 2: Configuration File
@@ -79,18 +79,18 @@ region: us-west-2
 
 **Python Code:**
 ```python
-from maniac import ManiacClient
+from maniac import Maniac
 
 # Client automatically loads from config file
-client = ManiacClient()
+client = Maniac(provider="vertex", project_id="your-project")
 ```
 
 ### Method 3: Direct in Code
 
 ```python
-from maniac import ManiacClient
+from maniac import Maniac
 
-client = ManiacClient(api_key="mk-1234567890abcdef")
+client = Maniac(provider="vertex", project_id="your-project")
 ```
 
 ⚠️ **Security Warning**: Never hardcode API keys in production code or commit them to version control.
@@ -103,13 +103,13 @@ Use different API keys for different environments:
 
 ```python
 import os
-from maniac import ManiacClient
+from maniac import Maniac
 
 # Automatically switch based on environment
 api_key = os.getenv("MANIAC_API_KEY")
 environment = os.getenv("ENVIRONMENT", "development")
 
-client = ManiacClient(
+client = Maniac(
     api_key=api_key,
     environment=environment
 )
@@ -158,12 +158,12 @@ For team development, consider:
 
 ```python
 import os
-from maniac import ManiacClient
+from maniac import Maniac
 
 # Each team member has their own key
 api_key = os.getenv(f"MANIAC_API_KEY_{os.getenv('USER', 'default').upper()}")
 
-client = ManiacClient(api_key=api_key)
+client = Maniac(api_key=api_key)
 ```
 
 ### Service Accounts
@@ -171,10 +171,10 @@ client = ManiacClient(api_key=api_key)
 For production services:
 
 ```python
-from maniac import ManiacClient
+from maniac import Maniac
 
 # Use service-specific keys
-client = ManiacClient(
+client = Maniac(
     api_key=os.getenv("MANIAC_SERVICE_KEY"),
     user_agent="MyApp/1.0.0"  # Helps with monitoring
 )
@@ -220,12 +220,12 @@ Enable debug logging:
 
 ```python
 import logging
-from maniac import ManiacClient
+from maniac import Maniac
 
 # Enable debug logging
 logging.basicConfig(level=logging.DEBUG)
 
-client = ManiacClient(api_key="your-key")
+client = Maniac(provider="vertex", project_id="your-project")
 
 # Test authentication
 try:

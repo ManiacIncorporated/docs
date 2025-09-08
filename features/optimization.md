@@ -19,9 +19,9 @@ Model optimization in Maniac involves several automated techniques:
 Enable optimization for any request:
 
 ```python
-from maniac import ManiacClient
+from maniac import Maniac
 
-client = ManiacClient(api_key="your-key")
+client = Maniac(provider="vertex", project_id="your-project")
 
 # Basic optimization enabled
 response = client.complete(
