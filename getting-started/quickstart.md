@@ -6,7 +6,7 @@ Get up and running with Maniac in under 5 minutes.
 
 - Python 3.9 or higher
 - For Vertex AI: Google Cloud project with Anthropic models enabled
-- For OpenAI: OpenAI API key
+- For OpenAI: Access provisioned automatically via Maniac API key
 
 ## Installation
 
@@ -33,7 +33,7 @@ client = Maniac(
 # For OpenAI
 client = Maniac(
     provider="openai",
-    api_key="your-openai-api-key"
+    api_key="your-maniac-api-key"
 )
 ```
 

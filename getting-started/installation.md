@@ -6,7 +6,7 @@ This guide will help you install and configure the Maniac Python library.
 
 - **Python 3.9 or higher**
 - For Vertex AI: Google Cloud project with access to Anthropic models
-- For OpenAI: OpenAI API account and key
+- For OpenAI: Access is provisioned automatically via Maniac API key
 
 ## Installation
 
@@ -67,10 +67,10 @@ print(response["choices"][0]["message"]["content"])
 
 #### 1. API Key Setup
 
-Get your API key from [OpenAI Platform](https://platform.openai.com/api-keys) and set it:
+OpenAI access is automatically provisioned through your Maniac API key. Set your Maniac API key:
 
 ```bash
-export OPENAI_API_KEY=your-openai-api-key
+export MANIAC_API_KEY=your-maniac-api-key
 ```
 
 #### 2. Test OpenAI Installation
@@ -78,7 +78,7 @@ export OPENAI_API_KEY=your-openai-api-key
 ```python
 from maniac import create_openai_client
 
-client = create_openai_client(api_key="your-openai-api-key")
+client = create_openai_client(api_key="your-maniac-api-key")
 
 # Test with a simple request
 response = client.chat.completions.create(

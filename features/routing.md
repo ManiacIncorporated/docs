@@ -38,7 +38,7 @@ from maniac import Maniac
 
 client = Maniac(
     provider="openai",
-    api_key="your-openai-api-key",
+    api_key="your-maniac-api-key",
     base_url="https://api.openai.com/v1"  # Optional
 )
 ```
@@ -114,7 +114,7 @@ client = create_vertex_client(
 from maniac import create_openai_client
 
 client = create_openai_client(
-    api_key="your-key",
+    api_key="your-maniac-api-key",
     base_url="https://api.openai.com/v1"  # Optional
 )
 ```
@@ -133,7 +133,7 @@ vertex_client = create_client(
 # OpenAI  
 openai_client = create_client(
     provider="openai",
-    api_key="your-key"
+    api_key="your-maniac-api-key"
 )
 ```
 
@@ -192,8 +192,7 @@ export GOOGLE_CLOUD_REGION=us-east5
 ### OpenAI
 
 ```bash
-export OPENAI_API_KEY=your-api-key
-export OPENAI_BASE_URL=https://api.openai.com/v1
+export MANIAC_API_KEY=your-maniac-api-key
 ```
 
 Then initialize without parameters:
@@ -212,8 +211,7 @@ client = Maniac(
 # OpenAI
 client = Maniac(
     provider="openai", 
-    api_key=os.getenv("OPENAI_API_KEY"),
-    base_url=os.getenv("OPENAI_BASE_URL")
+    api_key=os.getenv("MANIAC_API_KEY")
 )
 ```
 
@@ -228,9 +226,10 @@ client = Maniac(
 
 ### Use OpenAI When:
 - You need GPT models specifically
-- You have existing OpenAI infrastructure
-- You want direct OpenAI API access
+- You prefer the OpenAI model ecosystem
 - You need O1-series models
+
+*Note: OpenAI access is provisioned automatically through your Maniac API key*
 
 ## Provider Migration
 
@@ -238,7 +237,7 @@ Migrating between providers requires only changing the initialization:
 
 ```python
 # Before (OpenAI)
-client = Maniac(provider="openai", api_key="your-key")
+client = Maniac(provider="openai", api_key="your-maniac-api-key")
 
 # After (Vertex AI)  
 client = Maniac(provider="vertex", project_id="your-project")

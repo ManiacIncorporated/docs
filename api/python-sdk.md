@@ -19,7 +19,7 @@ client = Maniac(
     provider="vertex",           # "vertex" or "openai" 
     project_id="your-project",   # Required for Vertex AI
     region="us-east5",          # Optional, default "us-east5"
-    api_key="your-key",         # Required for OpenAI
+    api_key="your-maniac-api-key",         # Provisioned via Maniac
     base_url=None              # Optional OpenAI base URL
 )
 ```
@@ -44,7 +44,7 @@ client = create_vertex_client(
 
 # OpenAI client  
 client = create_openai_client(
-    api_key="your-key",
+    api_key="your-maniac-api-key",
     base_url="https://api.openai.com/v1"  # optional
 )
 
@@ -440,9 +440,8 @@ Set these environment variables for easier configuration:
 export GOOGLE_CLOUD_PROJECT=your-project-id
 export GOOGLE_CLOUD_REGION=us-east5
 
-# For OpenAI  
-export OPENAI_API_KEY=your-api-key
-export OPENAI_BASE_URL=https://api.openai.com/v1
+# For OpenAI (handled via Maniac API key)  
+export MANIAC_API_KEY=your-maniac-api-key
 ```
 
 Then initialize without parameters:

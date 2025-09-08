@@ -25,7 +25,7 @@ from maniac import Maniac
 # Initialize with your preferred provider
 client = Maniac(provider="vertex", project_id="your-project")
 # or
-client = Maniac(provider="openai", api_key="your-key")
+client = Maniac(provider="openai", api_key="your-maniac-api-key")
 
 # Customer support ticket analysis
 response = client.responses.create(
@@ -210,7 +210,7 @@ pip install maniac
 ```
 
 **For Vertex AI:** Requires Google Cloud project with Anthropic models enabled
-**For OpenAI:** Requires OpenAI API key
+**For OpenAI:** Access provisioned automatically via Maniac API key
 
 ## Enterprise Benefits
 
