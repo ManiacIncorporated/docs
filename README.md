@@ -15,9 +15,9 @@ layout:
     visible: true
 ---
 
-# Maniac: LLM-Agnostic AI Program Orchestration
+# Maniac: Model-Agnostic Agents
 
-Maniac provides a unified interface for deploying AI programs across any LLM provider or model. Each inference creates an **AI Program Container** that continuously optimizes both prompts and LoRA fine-tuning parameters across all models, ensuring optimal performance regardless of which model the Control Plane allocates.
+Maniac provides a unified interface for deploying model-agnostic agents across any LLM provider or model. Each inference creates an **Agent Container** that continuously optimizes both prompts and LoRA fine-tuning parameters across all models, ensuring optimal performance regardless of which model the Control Plane allocates.
 
 ### What Maniac Does
 
@@ -54,9 +54,9 @@ print(response["output_text"])
 
 ### Core Concepts
 
-#### AI Program Containers
+#### Agent Containers
 
-Every inference line creates an AI Program Container that:
+Every inference line creates an Agent Container that:
 
 * **Continuously optimizes prompts and LoRA adaptations** across all models simultaneously
 * **Maintains unified optimization state** combining prompt engineering and fine-tuning metrics

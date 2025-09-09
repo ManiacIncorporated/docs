@@ -1,6 +1,6 @@
 # Table of contents
 
-* [Maniac: LLM-Agnostic AI Program Orchestration](README.md)
+* [Maniac: Model-Agnostic Agents](README.md)
 
 ## Getting Started
 
