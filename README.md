@@ -118,24 +118,31 @@ response = client.responses.create(
 
 #### Batch Processing
 
-Process multiple requests efficiently (Vertex AI only):
+Process multiple requests efficiently:
 
 ```python
 requests = [
-    {"messages": [{"role": "user", "content": "Question 1"}], "custom_id": "req_1"},
-    {"messages": [{"role": "user", "content": "Question 2"}], "custom_id": "req_2"}
+    {
+        "fallback": "claude-opus-4",
+        "messages": [{"role": "user", "content": "Question 1"}],
+        "task_label": "batch-analysis",
+        "judge_prompt": "Compare two responses. Is A better than B?"
+    },
+    {
+        "fallback": "claude-opus-4",
+        "messages": [{"role": "user", "content": "Question 2"}],
+        "task_label": "batch-analysis",
+        "judge_prompt": "Compare two responses. Is A better than B?"
+    }
 ]
 
-job_name = client.provider.submit_batch_job(
-    requests=requests,
-    model="claude-opus-4",
-    bucket_name="your-gcs-bucket"
-)
+# Submit batch job
+batch_id = client.submit_batch(requests=requests)
 
 # Check status and get results
-status = client.provider.get_batch_job_status(job_name)
-if status['state'] == 'JOB_STATE_SUCCEEDED':
-    results = client.provider.get_batch_results(job_name)
+status = client.get_batch_status(batch_id)
+if status['state'] == 'completed':
+    results = client.get_batch_results(batch_id)
 ```
 
 ### Installation
@@ -167,4 +174,4 @@ For issues and questions:
 
 * GitHub Issues: [github.com/maniaclabs/maniac](https://github.com/maniaclabs/maniac)
 * Documentation: [docs.maniac.ai](https://docs.maniac.ai)
-* Email: support@maniac.ai
+* Email: dhruv@maniaclabs.xyz or support@maniac.ai

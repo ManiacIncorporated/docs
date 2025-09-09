@@ -10,7 +10,7 @@
 
 ## Core Features
 
-* [Provider Selection](features/routing.md)
+* [Model Routing](features/routing.md)
 * [Telemetry & Optimization](features/optimization.md)
 * [Batch Processing](features/finetuning.md)
 

@@ -338,23 +338,15 @@ judge_prompt="Is this good?"
 Set these environment variables for easier configuration:
 
 ```bash
-# For Vertex AI
-export GOOGLE_CLOUD_PROJECT=your-project-id
-export GOOGLE_CLOUD_REGION=us-east5
-
-# For OpenAI (handled via Maniac API key)  
+# Set your Maniac API key
 export MANIAC_API_KEY=your-maniac-api-key
 ```
 
-Then initialize without parameters:
+Then initialize:
 
 ```python
 import os
 from maniac import Maniac
 
-client = Maniac(
-    provider="vertex",
-    project_id=os.getenv("GOOGLE_CLOUD_PROJECT"),
-    region=os.getenv("GOOGLE_CLOUD_REGION")
-)
+client = Maniac(api_key=os.getenv("MANIAC_API_KEY"))
 ```

@@ -96,22 +96,16 @@ region: us-west-2
 
 **In Code**
 ```python
-client = Maniac(provider="vertex", project_id="your-project")
+client = Maniac(api_key="your-maniac-api-key")
 ```
 
-### Configuration Options
+### Simple Configuration
 
 ```python
 from maniac import Maniac
 
-client = Maniac(
-    api_key="your-api-key",
-    environment="production",  # or "sandbox"
-    region="us-west-2",       # optional: for latency optimization
-    timeout=30,               # request timeout in seconds
-    max_retries=3,           # automatic retry on failure
-    cache_enabled=True       # enable response caching
-)
+# Simple initialization - all optimization handled automatically
+client = Maniac(api_key="your-maniac-api-key")
 ```
 
 ## Upgrading

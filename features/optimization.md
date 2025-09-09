@@ -21,7 +21,7 @@ Enable optimization for any request:
 ```python
 from maniac import Maniac
 
-client = Maniac(provider="vertex", project_id="your-project")
+client = Maniac(api_key="your-maniac-api-key")
 
 # Basic optimization enabled
 response = client.complete(

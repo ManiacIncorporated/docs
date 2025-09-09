@@ -216,6 +216,6 @@ Solution: The system will automatically fallback to the next best model
 
 Need help? We're here for you:
 
-- 📧 Email: support@maniac.ai
+- 📧 Email: dhruv@maniaclabs.xyz or support@maniac.ai
 - 💬 Discord: [Join our community](https://discord.gg/maniac)
 - 📚 Full docs: [documentation.maniac.ai](https://docs.maniac.ai)
