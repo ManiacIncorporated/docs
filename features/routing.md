@@ -17,21 +17,7 @@ response = client.chat.completions.create(
     fallback="claude-opus-4",
     messages=[{"role": "user", "content": "Hello"}],
     task_label="conversation",
-    judge_prompt="""
-You are comparing two conversational responses to the same user query. Is response A better than response B?
-
-Consider these criteria:
-
-HELPFULNESS:
-- Does response A address the user's needs more appropriately than B?
-- Does response A provide more useful information than B?
-
-APPROPRIATENESS:
-- Does response A use more suitable tone and language than B?
-- Does response A maintain better professional boundaries than B?
-
-Answer: A is better than B (YES/NO)
-"""
+    judge_prompt="Compare two conversational responses. Is A better than B? Consider: helpfulness, appropriate tone."
 )
 ```
 
@@ -69,16 +55,7 @@ response = client.responses.create(
     input="Complex legal analysis requiring deep understanding...",
     instructions="You are a senior legal counsel analyzing contract risks.",
     task_label="legal-analysis",
-    judge_prompt="""
-You are comparing two legal analyses. Is response A better than response B?
-
-Consider these criteria:
-- Is response A's legal reasoning more sound than B's?
-- Does response A identify more potential risks than B?
-- Are response A's recommendations more actionable than B's?
-
-Answer: A is better than B (YES/NO)
-"""
+    judge_prompt="Compare two legal analyses. Is A better than B? Consider: legal reasoning, risk identification, actionable recommendations."
 )
 ```
 
@@ -91,15 +68,7 @@ response = client.responses.create(
     input="Simple document summary...",
     instructions="Provide a concise summary of the key points.",
     task_label="document-processing",
-    judge_prompt="""
-You are comparing two document summaries. Is response A better than response B?
-
-Consider these criteria:
-- Does response A capture the key points better than B?
-- Is response A more concise while maintaining completeness than B?
-
-Answer: A is better than B (YES/NO)
-"""
+    judge_prompt="Compare two document summaries. Is A better than B? Consider: key points captured, conciseness vs completeness."
 )
 ```
 
@@ -112,15 +81,7 @@ response = client.responses.create(
     input="Quick customer inquiry...",
     instructions="Provide a helpful, immediate response to this customer question.",
     task_label="customer-support",
-    judge_prompt="""
-You are comparing two customer support responses. Is response A better than response B?
-
-Consider these criteria:
-- Does response A address the question more directly than B?
-- Is response A more helpful while being concise than B?
-
-Answer: A is better than B (YES/NO)
-"""
+    judge_prompt="Compare two customer support responses. Is A better than B? Consider: directness, helpfulness, conciseness."
 )
 ```
 

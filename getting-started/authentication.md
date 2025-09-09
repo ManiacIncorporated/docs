@@ -48,7 +48,7 @@ import os
 from maniac import Maniac
 
 # Client automatically uses MANIAC_API_KEY environment variable
-client = Maniac(API_KEY = os.getenv("MANIAC_API_KEY"))
+client = Maniac(api_key=os.getenv("MANIAC_API_KEY"))
 ```
 
 ### Method 2: Configuration File
@@ -67,7 +67,7 @@ region: us-west-2
 from maniac import Maniac
 
 # Client automatically loads from config file
-client = Maniac(API_KEY = os.getenv("MANIAC_API_KEY"))
+client = Maniac(api_key=os.getenv("MANIAC_API_KEY"))
 ```
 
 ### Method 3: Direct in Code
@@ -75,7 +75,7 @@ client = Maniac(API_KEY = os.getenv("MANIAC_API_KEY"))
 ```python
 from maniac import Maniac
 
-client = Maniac(API_KEY = "MANIAC_API_KEY")
+client = Maniac(api_key="MANIAC_API_KEY")
 ```
 
 ⚠️ **Security Warning**: Never hardcode API keys in production code or commit them to version control.
@@ -201,7 +201,7 @@ from maniac import Maniac
 # Enable debug logging
 logging.basicConfig(level=logging.DEBUG)
 
-client = Maniac(API_KEY = os.getenv("MANIAC_API_KEY"))
+client = Maniac(api_key=os.getenv("MANIAC_API_KEY"))
 
 # Test authentication
 try:

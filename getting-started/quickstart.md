@@ -38,27 +38,7 @@ response = client.chat.completions.create(
     ],
     temperature=0.0,
     task_label="math-problems",
-    judge_prompt="""
-You are comparing two math tutoring responses for the same problem. Is response A better than response B?
-
-Consider these criteria:
-
-ACCURACY:
-- Is response A's calculation more mathematically correct than B's?
-- Does response A handle units better than response B?
-- Is response A's formula application more accurate than B's?
-
-EXPLANATION CLARITY:
-- Does response A show a clearer step-by-step process than B?
-- Does response A explain reasoning better than response B?
-- Does response A use more appropriate mathematical terminology than B?
-
-EDUCATIONAL VALUE:
-- Does response A help the student understand better than B?
-- Does response A provide better context or real-world connections than B?
-
-Answer: A is better than B (YES/NO)
-"""
+    judge_prompt="Compare two math solutions. Is A better than B? Consider: calculation accuracy, clear explanations, educational value."
 )
 
 print(response["choices"][0]["message"]["content"])
@@ -76,27 +56,7 @@ response = client.responses.create(
     temperature=0.0,
     max_tokens=1024,
     task_label="math-problems",
-    judge_prompt="""
-You are comparing two math tutoring responses for the same problem. Is response A better than response B?
-
-Consider these criteria:
-
-ACCURACY:
-- Is response A's calculation more mathematically correct than B's?
-- Does response A handle units better than response B?
-- Is response A's formula application more accurate than B's?
-
-EXPLANATION CLARITY:
-- Does response A show a clearer step-by-step process than B?
-- Does response A explain reasoning better than response B?
-- Does response A use more appropriate mathematical terminology than B?
-
-EDUCATIONAL VALUE:
-- Does response A help the student understand better than B?
-- Does response A provide better context or real-world connections than B?
-
-Answer: A is better than B (YES/NO)
-"""
+    judge_prompt="Compare two math solutions. Is A better than B? Consider: calculation accuracy, clear explanations, educational value."
 )
 
 print(response["output_text"])
@@ -220,27 +180,7 @@ def handle_customer_query(query: str):
         temperature=0.0,
         max_tokens=1024,
         task_label="customer-support",
-        judge_prompt="""
-You are comparing two customer support responses to the same customer inquiry. Is response A better than response B?
-
-Consider these criteria:
-
-HELPFULNESS:
-- Does response A address the customer's question more directly than B?
-- Does response A provide more actionable next steps or solutions than B?
-- Does response A anticipate follow-up questions better than B?
-
-PROFESSIONALISM:
-- Does response A use more appropriate tone and language than B?
-- Does response A show more empathy and understanding than B?
-- Does response A maintain company brand voice better than B?
-
-ACCURACY:
-- Is response A's information more factually correct than B's?
-- Are response A's policy/procedure references more accurate than B's?
-
-Answer: A is better than B (YES/NO)
-"""
+        judge_prompt="Compare two customer support responses. Is A better than B? Consider: helpfulness, professionalism, accuracy."
     )
     
     return response["output_text"]

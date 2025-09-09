@@ -41,15 +41,7 @@ response = client.chat.completions.create(
     fallback="claude-opus-4",
     messages=[{"role": "user", "content": "Hello!"}],
     task_label="installation-test",
-    judge_prompt="""
-You are comparing two greeting responses. Is response A better than response B?
-
-Consider these criteria:
-- Is response A more friendly and welcoming than B?
-- Is response A more appropriate for the context than B?
-
-Answer: A is better than B (YES/NO)
-"""
+    judge_prompt="Compare two greeting responses. Is A better than B? Consider: friendliness, appropriateness."
 )
 
 print(response["choices"][0]["message"]["content"])
