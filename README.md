@@ -1,3 +1,20 @@
+---
+layout:
+  width: default
+  title:
+    visible: true
+  description:
+    visible: false
+  tableOfContents:
+    visible: true
+  outline:
+    visible: true
+  pagination:
+    visible: true
+  metadata:
+    visible: true
+---
+
 # Maniac: LLM-Agnostic AI Program Orchestration
 
 Maniac provides a unified interface for deploying AI programs across any LLM provider or model. Each inference creates an **AI Program Container** that continuously optimizes both prompts and LoRA fine-tuning parameters across all models, ensuring optimal performance regardless of which model the Control Plane allocates.
@@ -6,11 +23,11 @@ Maniac provides a unified interface for deploying AI programs across any LLM pro
 
 Maniac is a Python library that provides:
 
-* **Model-First Approach**: Specify any model and Maniac routes to the optimal provider
-* **Intelligent Routing**: Automatic provider selection and failover handling
+* **Model-Agnostic Approach**: Deploy on task-specific weights and prompts for any model
+* **Intelligent Routing**: Automatic model selection and failover handling
 * **Telemetry & Tracking**: Automatic logging of all inferences for optimization
 * **Task Organization**: Group related inferences with task labels
-* **Quality Assessment**: Judge prompts for continuous evaluation
+* **Quality Assessment**: Judge prompts for continuous, automated evaluation and tuning
 * **Provider Agnostic**: Access any model without worrying about underlying provider
 
 ### Quick Start
