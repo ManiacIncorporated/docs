@@ -1,23 +1,27 @@
-<p align="center">
-  <img src="logo.png" alt="Maniac Logo" width="400"/>
-</p>
+---
+icon: hand-wave
+---
 
-# Maniac: LLM-Agnostic AI Program Orchestration
+# Welcome
+
+##
+
+## Maniac: LLM-Agnostic AI Program Orchestration
 
 Maniac provides a unified interface for deploying AI programs across any LLM provider or model. Each inference creates an **AI Program Container** that continuously optimizes both prompts and LoRA fine-tuning parameters across all models, ensuring optimal performance regardless of which model the Control Plane allocates.
 
-## What Maniac Does
+### What Maniac Does
 
 Maniac is a Python library that provides:
 
-- **Model-First Approach**: Specify any model and Maniac routes to the optimal provider
-- **Intelligent Routing**: Automatic provider selection and failover handling
-- **Telemetry & Tracking**: Automatic logging of all inferences for optimization
-- **Task Organization**: Group related inferences with task labels
-- **Quality Assessment**: Judge prompts for continuous evaluation
-- **Provider Agnostic**: Access any model without worrying about underlying provider
+* **Model-First Approach**: Specify any model and Maniac routes to the optimal provider
+* **Intelligent Routing**: Automatic provider selection and failover handling
+* **Telemetry & Tracking**: Automatic logging of all inferences for optimization
+* **Task Organization**: Group related inferences with task labels
+* **Quality Assessment**: Judge prompts for continuous evaluation
+* **Provider Agnostic**: Access any model without worrying about underlying provider
 
-## Quick Start
+### Quick Start
 
 ```python
 from maniac import Maniac
@@ -61,18 +65,18 @@ Answer: A is better than B (YES/NO)
 print(response["output_text"])
 ```
 
-## Core Concepts
+### Core Concepts
 
-### AI Program Containers
+#### AI Program Containers
 
 Every inference line creates an AI Program Container that:
 
-- **Continuously optimizes prompts and LoRA adaptations** across all models simultaneously
-- **Maintains unified optimization state** combining prompt engineering and fine-tuning metrics
-- **Handles seamless model switching** with pre-optimized prompts and LoRA weights
-- **Automatically balances prompt vs LoRA optimization** based on model capabilities
+* **Continuously optimizes prompts and LoRA adaptations** across all models simultaneously
+* **Maintains unified optimization state** combining prompt engineering and fine-tuning metrics
+* **Handles seamless model switching** with pre-optimized prompts and LoRA weights
+* **Automatically balances prompt vs LoRA optimization** based on model capabilities
 
-### Task Labels & Judge Prompts
+#### Task Labels & Judge Prompts
 
 Maniac uses task labels to group related inferences and judge prompts to define quality criteria:
 
@@ -106,20 +110,21 @@ Answer: A is better than B (YES/NO)
 )
 ```
 
-### Supported Models
+#### Supported Models
 
 Maniac automatically routes to the optimal provider for each model:
 
-- **Claude Models**: claude-opus-4, claude-sonnet-4, claude-haiku-3
-- **GPT Models**: gpt-4o, gpt-4-turbo, gpt-4, gpt-3.5-turbo, o1-mini
-- **Gemini Models**: gemini-pro, gemini-1.5-pro
-- **Open Source**: llama-3.1-70b, mixtral-8x7b, codestral
+* **Claude Models**: claude-opus-4, claude-sonnet-4, claude-haiku-3
+* **GPT Models**: gpt-4o, gpt-4-turbo, gpt-4, gpt-3.5-turbo, o1-mini
+* **Gemini Models**: gemini-pro, gemini-1.5-pro
+* **Open Source**: llama-3.1-70b, mixtral-8x7b, codestral
 
-## Key Features
+### Key Features
 
-### Two API Interfaces
+#### Two API Interfaces
 
 **Chat Completions API** (OpenAI-compatible):
+
 ```python
 response = client.chat.completions.create(
     fallback="claude-opus-4",
@@ -153,6 +158,7 @@ Answer: A is better than B (YES/NO)
 ```
 
 **Responses API** (Simplified):
+
 ```python
 response = client.responses.create(
     fallback="claude-opus-4",
@@ -183,7 +189,7 @@ Answer: A is better than B (YES/NO)
 )
 ```
 
-### Batch Processing
+#### Batch Processing
 
 Process multiple requests efficiently (Vertex AI only):
 
@@ -205,7 +211,7 @@ if status['state'] == 'JOB_STATE_SUCCEEDED':
     results = client.provider.get_batch_results(job_name)
 ```
 
-## Installation
+### Installation
 
 ```bash
 pip install maniac
@@ -213,24 +219,25 @@ pip install maniac
 
 **Prerequisites:** Just your Maniac API key - all model providers are handled automatically
 
-## Enterprise Benefits
+### Enterprise Benefits
 
-- **Vendor Independence**: Single API maintains operations across model providers
-- **Automatic Optimization**: Continuous prompt and LoRA improvements using production data  
-- **Quality Assurance**: Judge prompts ensure consistent output quality
-- **Cost Management**: Efficient batch processing and provider flexibility
-- **Complete Audit Trail**: All inferences logged for compliance and optimization
+* **Vendor Independence**: Single API maintains operations across model providers
+* **Automatic Optimization**: Continuous prompt and LoRA improvements using production data
+* **Quality Assurance**: Judge prompts ensure consistent output quality
+* **Cost Management**: Efficient batch processing and provider flexibility
+* **Complete Audit Trail**: All inferences logged for compliance and optimization
 
-## Documentation
+### Documentation
 
-- [Quick Start Guide](getting-started/quickstart.md)
-- [Python SDK Reference](api/python-sdk.md)
-- [Installation & Authentication](getting-started/installation.md)
-- [Best Practices](guides/best-practices.md)
+* [Quick Start Guide](getting-started/quickstart.md)
+* [Python SDK Reference](api/python-sdk.md)
+* [Installation & Authentication](getting-started/installation.md)
+* [Best Practices](guides/best-practices.md)
 
-## Support
+### Support
 
 For issues and questions:
-- GitHub Issues: [github.com/maniaclabs/maniac](https://github.com/maniaclabs/maniac)
-- Documentation: [docs.maniac.ai](https://docs.maniac.ai)
-- Email: support@maniac.ai
+
+* GitHub Issues: [github.com/maniaclabs/maniac](https://github.com/maniaclabs/maniac)
+* Documentation: [docs.maniac.ai](https://docs.maniac.ai)
+* Email: support@maniac.ai
