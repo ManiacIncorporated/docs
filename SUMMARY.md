@@ -1,6 +1,6 @@
 # Table of contents
 
-* [Welcome](README.md)
+* [Maniac: LLM-Agnostic AI Program Orchestration](README.md)
 
 ## Getting Started
 
@@ -11,7 +11,7 @@
 ## Core Features
 
 * [Provider Selection](features/routing.md)
-* [Telemetry & Optimization](features/optimization.md) 
+* [Telemetry & Optimization](features/optimization.md)
 * [Batch Processing](features/finetuning.md)
 
 ## API Reference

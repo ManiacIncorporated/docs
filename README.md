@@ -1,12 +1,4 @@
----
-icon: hand-wave
----
-
-# Welcome
-
-##
-
-## Maniac: LLM-Agnostic AI Program Orchestration
+# Maniac: LLM-Agnostic AI Program Orchestration
 
 Maniac provides a unified interface for deploying AI programs across any LLM provider or model. Each inference creates an **AI Program Container** that continuously optimizes both prompts and LoRA fine-tuning parameters across all models, ensuring optimal performance regardless of which model the Control Plane allocates.
 
