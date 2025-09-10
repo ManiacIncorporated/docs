@@ -21,7 +21,7 @@ Maniac provides a unified interface for deploying model-agnostic agents across a
 
 ### What Maniac Does
 
-Maniac is a Python library that provides:
+Maniac is a Python (TypeScript coming soon) library that provides:
 
 * **Model-Agnostic Approach**: Deploy on task-specific weights and prompts for any model
 * **Intelligent Routing**: Automatic model selection and failover handling
