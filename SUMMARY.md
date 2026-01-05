@@ -1,6 +1,6 @@
 # Table of contents
 
-* [Maniac: Model-Agnostic Agents](README.md)
+* [Maniac](README.md)
 
 ## Getting Started
 
