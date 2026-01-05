@@ -1,4 +1,4 @@
-# Fine-tuning
+# Batch Processing
 
 Maniac's automated fine-tuning system creates task-specific model adapters (LoRAs) that dramatically improve performance while keeping costs low.
 
@@ -7,11 +7,12 @@ Maniac's automated fine-tuning system creates task-specific model adapters (LoRA
 Maniac uses Parameter-Efficient Fine-Tuning (PEFT) techniques, specifically LoRA (Low-Rank Adaptation), to create specialized versions of base models for your specific tasks without the cost and complexity of full model training.
 
 ### Benefits of Maniac's Fine-tuning:
-- **Cost-Effective**: Train adapters instead of full models
-- **Fast Training**: Complete training in minutes, not hours
-- **Task-Specific**: Optimized for your exact use case
-- **Multi-Model**: Train adapters for multiple base models simultaneously
-- **Automatic**: Minimal configuration required
+
+* **Cost-Effective**: Train adapters instead of full models
+* **Fast Training**: Complete training in minutes, not hours
+* **Task-Specific**: Optimized for your exact use case
+* **Multi-Model**: Train adapters for multiple base models simultaneously
+* **Automatic**: Minimal configuration required
 
 ## Getting Started
 
@@ -401,26 +402,33 @@ job = client.create_finetuning_job(
 ## Best Practices
 
 ### 1. Data Quality First
+
 Invest in high-quality, diverse training data rather than just quantity.
 
 ### 2. Start Small
+
 Begin with a smaller dataset and base model, then scale up.
 
 ### 3. Monitor Training Progress
+
 Use early stopping and validation metrics to prevent overfitting.
 
 ### 4. Gradual Deployment
+
 Deploy with gradual traffic increase to catch issues early.
 
 ### 5. Continuous Evaluation
+
 Regularly evaluate model performance and retrain when needed.
 
 ### 6. Version Control
+
 Keep track of data versions, model versions, and training configurations.
 
 ## Common Fine-tuning Patterns
 
 ### Customer Support Agent
+
 ```python
 job = client.create_finetuning_job(
     name="support-agent",
@@ -437,6 +445,7 @@ job = client.create_finetuning_job(
 ```
 
 ### Code Generation Assistant
+
 ```python
 job = client.create_finetuning_job(
     name="code-assistant",
@@ -453,6 +462,7 @@ job = client.create_finetuning_job(
 ```
 
 ### Domain-Specific QA
+
 ```python
 job = client.create_finetuning_job(
     name="medical-qa",
@@ -473,30 +483,34 @@ job = client.create_finetuning_job(
 ### Common Issues
 
 **Training Loss Not Decreasing**
-- Check learning rate (try lower values like 1e-5)
-- Verify data quality and format
-- Increase batch size or number of epochs
+
+* Check learning rate (try lower values like 1e-5)
+* Verify data quality and format
+* Increase batch size or number of epochs
 
 **Overfitting**
-- Add dropout to LoRA configuration
-- Use early stopping
-- Reduce number of training epochs
-- Increase validation data size
+
+* Add dropout to LoRA configuration
+* Use early stopping
+* Reduce number of training epochs
+* Increase validation data size
 
 **Out of Memory Errors**
-- Reduce batch size
-- Enable gradient checkpointing
-- Use smaller LoRA rank
-- Try mixed precision training
+
+* Reduce batch size
+* Enable gradient checkpointing
+* Use smaller LoRA rank
+* Try mixed precision training
 
 **Poor Performance**
-- Increase training data size
-- Check data distribution and balance
-- Try different base models
-- Adjust LoRA parameters (rank, alpha)
+
+* Increase training data size
+* Check data distribution and balance
+* Try different base models
+* Adjust LoRA parameters (rank, alpha)
 
 ## Next Steps
 
-- [Deploy your fine-tuned models](../guides/deployment.md)
-- [Monitor performance in production](../guides/performance.md)
-- [Explore the API reference](../api/python-sdk.md)
+* [Deploy your fine-tuned models](../guides/deployment.md)
+* [Monitor performance in production](../guides/performance.md)
+* [Explore the API reference](../api-reference/overview.md)

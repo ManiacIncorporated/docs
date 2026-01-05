@@ -1,11 +1,11 @@
-# Installation Guide
+# Installation
 
 This guide will help you install and configure the Maniac Python library.
 
 ## Prerequisites
 
-- **Python 3.9 or higher**
-- **Maniac API key** (provides access to all model providers automatically)
+* **Python 3.9 or higher**
+* **Maniac API key** (provides access to all model providers automatically)
 
 ## Installation
 
@@ -82,12 +82,13 @@ pip install maniac-ai[all]
 You can set your API key in several ways:
 
 **Environment Variable (Recommended)**
+
 ```bash
 export MANIAC_API_KEY="your-api-key-here"
 ```
 
-**Configuration File**
-Create `~/.maniac/config.yaml`:
+**Configuration File** Create `~/.maniac/config.yaml`:
+
 ```yaml
 api_key: your-api-key-here
 environment: production
@@ -95,6 +96,7 @@ region: us-west-2
 ```
 
 **In Code**
+
 ```python
 client = Maniac(api_key="your-maniac-api-key")
 ```
@@ -127,45 +129,51 @@ if check_for_updates():
 
 ### Migration Guides
 
-- [Migrating from v0.x to v1.0](../guides/migration-v1.md)
-- [Breaking changes](../resources/changelog.md)
+* [Migrating from v0.x to v1.0](../guides/migration-v1.md)
+* [Breaking changes](../resources/changelog.md)
 
 ## Platform Support
 
 ### Supported Python Versions
-- Python 3.8
-- Python 3.9
-- Python 3.10
-- Python 3.11
-- Python 3.12
+
+* Python 3.8
+* Python 3.9
+* Python 3.10
+* Python 3.11
+* Python 3.12
 
 ### Operating Systems
-- Linux (Ubuntu 20.04+, CentOS 8+, Debian 10+)
-- macOS (10.15+)
-- Windows (10, 11, Server 2019+)
+
+* Linux (Ubuntu 20.04+, CentOS 8+, Debian 10+)
+* macOS (10.15+)
+* Windows (10, 11, Server 2019+)
 
 ### Cloud Platforms
-- AWS Lambda
-- Google Cloud Functions
-- Azure Functions
-- Vercel
-- Heroku
+
+* AWS Lambda
+* Google Cloud Functions
+* Azure Functions
+* Vercel
+* Heroku
 
 ## Troubleshooting Installation
 
 ### Common Issues
 
 **SSL Certificate Error**
+
 ```bash
 pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org maniac-ai
 ```
 
 **Permission Denied**
+
 ```bash
 pip install --user maniac-ai
 ```
 
 **Dependency Conflicts**
+
 ```bash
 # Create a virtual environment
 python -m venv maniac-env
@@ -174,6 +182,7 @@ pip install maniac-ai
 ```
 
 **Behind Corporate Proxy**
+
 ```bash
 pip install --proxy http://user:password@proxy.server:port maniac-ai
 ```
@@ -195,6 +204,6 @@ rm -rf ~/.cache/maniac
 
 ## Next Steps
 
-- [Configure authentication](authentication.md)
-- [Create your first container](quickstart.md)
-- [Explore the API](../api/python-sdk.md)
+* [Configure authentication](authentication.md)
+* [Create your first container](quickstart.md)
+* [Explore the API](../api-reference/overview.md)

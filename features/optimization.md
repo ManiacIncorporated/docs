@@ -1,4 +1,4 @@
-# Model Optimization
+# Telemetry & Optimization
 
 Maniac's optimization engine automatically improves model performance for your specific tasks through prompt optimization, parameter tuning, and intelligent caching strategies.
 
@@ -6,11 +6,11 @@ Maniac's optimization engine automatically improves model performance for your s
 
 Model optimization in Maniac involves several automated techniques:
 
-- **Prompt Engineering**: Automatically optimize prompts for better results
-- **Few-Shot Learning**: Dynamically select the best examples for in-context learning
-- **Parameter Tuning**: Optimize sampling parameters (temperature, top-p, etc.)
-- **Response Formatting**: Ensure consistent, structured outputs
-- **Context Management**: Optimize context length and content
+* **Prompt Engineering**: Automatically optimize prompts for better results
+* **Few-Shot Learning**: Dynamically select the best examples for in-context learning
+* **Parameter Tuning**: Optimize sampling parameters (temperature, top-p, etc.)
+* **Response Formatting**: Ensure consistent, structured outputs
+* **Context Management**: Optimize context length and content
 
 ## Getting Started with Optimization
 
@@ -401,23 +401,29 @@ client.submit_feedback(
 ## Best Practices
 
 ### 1. Start with Basic Optimization
+
 Enable basic optimization first, then add specific optimizations as needed.
 
 ### 2. Monitor Performance Impact
+
 Track how optimization affects quality, latency, and costs.
 
 ### 3. Use Task-Specific Optimization
+
 Different task types benefit from different optimization strategies.
 
 ### 4. Provide Quality Examples
+
 High-quality examples lead to better few-shot optimization.
 
 ### 5. Regular Optimization Review
+
 Periodically review and update your optimization strategies.
 
 ## Common Optimization Patterns
 
 ### Content Generation
+
 ```python
 response = client.complete(
     container_id="content-generator",
@@ -429,6 +435,7 @@ response = client.complete(
 ```
 
 ### Data Analysis
+
 ```python
 response = client.complete(
     container_id="data-analyst",
@@ -440,6 +447,7 @@ response = client.complete(
 ```
 
 ### Customer Support
+
 ```python
 response = client.complete(
     container_id="support-agent",
@@ -452,6 +460,6 @@ response = client.complete(
 
 ## Next Steps
 
-- [Learn about fine-tuning](finetuning.md)
-- [Set up performance monitoring](../guides/performance.md)
-- [Explore the API reference](../api/python-sdk.md)
+* [Learn about fine-tuning](finetuning.md)
+* [Set up performance monitoring](../guides/performance.md)
+* [Explore the API reference](../api-reference/overview.md)

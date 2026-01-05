@@ -16,7 +16,8 @@
 
 ## API Reference
 
-* [Python SDK](api/python-sdk.md)
+* [Overview](api-reference/overview.md)
+* [REST API](api-reference/rest-api.md)
 
 ## Guides
 

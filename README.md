@@ -164,7 +164,7 @@ pip install maniac
 ### Documentation
 
 * [Quick Start Guide](getting-started/quickstart.md)
-* [Python SDK Reference](api/python-sdk.md)
+* [Python SDK Reference](api-reference/overview.md)
 * [Installation & Authentication](getting-started/installation.md)
 * [Best Practices](guides/best-practices.md)
 

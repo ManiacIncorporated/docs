@@ -1,4 +1,4 @@
-# Model Selection
+# Model Routing
 
 Maniac provides intelligent model selection with automatic provider routing. Simply specify your desired model - Maniac handles all provider complexity and failover automatically.
 
@@ -24,29 +24,34 @@ response = client.chat.completions.create(
 ## Available Models
 
 ### Claude Models (Anthropic via Vertex AI)
-- `claude-opus-4` - Most capable model for complex reasoning
-- `claude-sonnet-4` - Balanced performance and speed
-- `claude-haiku-3` - Fast model for simple tasks
+
+* `claude-opus-4` - Most capable model for complex reasoning
+* `claude-sonnet-4` - Balanced performance and speed
+* `claude-haiku-3` - Fast model for simple tasks
 
 ### GPT Models (OpenAI)
-- `gpt-4o` - Latest multimodal model
-- `gpt-4-turbo` - High performance model  
-- `gpt-4` - Classic high-quality model
-- `gpt-3.5-turbo` - Fast and cost-effective
-- `o1-mini` - Reasoning-optimized model
+
+* `gpt-4o` - Latest multimodal model
+* `gpt-4-turbo` - High performance model
+* `gpt-4` - Classic high-quality model
+* `gpt-3.5-turbo` - Fast and cost-effective
+* `o1-mini` - Reasoning-optimized model
 
 ### Gemini Models (Google)
-- `gemini-pro` - Google's advanced model
-- `gemini-1.5-pro` - Latest version with long context
 
-### Open Source Models  
-- `llama-3.1-70b` - Meta's large language model
-- `mixtral-8x7b` - Mistral's mixture-of-experts model
-- `codestral` - Specialized for code generation
+* `gemini-pro` - Google's advanced model
+* `gemini-1.5-pro` - Latest version with long context
+
+### Open Source Models
+
+* `llama-3.1-70b` - Meta's large language model
+* `mixtral-8x7b` - Mistral's mixture-of-experts model
+* `codestral` - Specialized for code generation
 
 ## Model Selection Strategies
 
 ### Performance-First
+
 Use the most capable models for complex tasks:
 
 ```python
@@ -60,6 +65,7 @@ response = client.responses.create(
 ```
 
 ### Cost-Optimized
+
 Start with efficient models for simpler tasks:
 
 ```python
@@ -73,6 +79,7 @@ response = client.responses.create(
 ```
 
 ### Speed-Optimized
+
 Prioritize low latency for real-time applications:
 
 ```python
@@ -111,12 +118,14 @@ else:
 ## Best Practices
 
 ### 1. Choose Models by Use Case
-- **Complex reasoning**: `claude-opus-4`, `gpt-4o`
-- **Balanced tasks**: `claude-sonnet-4`, `gpt-4-turbo`  
-- **Simple/fast tasks**: `claude-haiku-3`, `gpt-3.5-turbo`
-- **Code generation**: `codestral`, `gpt-4o`
+
+* **Complex reasoning**: `claude-opus-4`, `gpt-4o`
+* **Balanced tasks**: `claude-sonnet-4`, `gpt-4-turbo`
+* **Simple/fast tasks**: `claude-haiku-3`, `gpt-3.5-turbo`
+* **Code generation**: `codestral`, `gpt-4o`
 
 ### 2. Use Task Labels Consistently
+
 Keep task labels consistent across different model choices:
 
 ```python
@@ -135,6 +144,7 @@ response2 = client.chat.completions.create(
 ```
 
 ### 3. Monitor Model Usage
+
 Track which models and providers are being used:
 
 ```python
@@ -150,6 +160,7 @@ print(f"Provider: {response.get('provider_used', 'unknown')}")
 ```
 
 ### 4. Handle Model Availability
+
 Maniac automatically handles model unavailability, but you can check status:
 
 ```python
@@ -247,6 +258,6 @@ summary = client.responses.create(
 
 ## Next Steps
 
-- [Learn about the Python SDK](../api/python-sdk.md)
-- [Explore task organization](../guides/best-practices.md)
-- [Set up batch processing](../guides/batch-processing.md)
+* [Learn about the Python SDK](../api-reference/overview.md)
+* [Explore task organization](../guides/best-practices.md)
+* [Set up batch processing](../guides/batch-processing.md)

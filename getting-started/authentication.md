@@ -9,19 +9,19 @@ Maniac uses API keys for authentication. This guide covers how to obtain, config
 Visit [maniac.ai](https://maniac.ai) and create an account:
 
 1. Click "Sign Up"
-2. Currently, we support sign ins with GitHub and Google.&#x20;
+2. Currently, we support sign ins with GitHub and Google.
 
 ### 2. Create an API Key
 
 In the Maniac dashboard:
 
-1. Create a new organization and project.&#x20;
+1. Create a new organization and project.
 2. Navigate to **Project** → **Settings** → **API Keys**
 3. Click **"Create a Key"**
 4. Give your key a descriptive name (e.g., "Production API", "Development")
-5. Click **"Submit,"** and copy your key.&#x20;
+5. Click **"Submit,"** and copy your key.
 
-⚠️ **Important**: API keys are scoped per user and project.&#x20;
+⚠️ **Important**: API keys are scoped per user and project.
 
 ## Configuring Authentication
 
@@ -151,8 +151,6 @@ api_key = os.getenv(f"MANIAC_API_KEY_{os.getenv('USER', 'default').upper()}")
 client = Maniac(api_key=api_key)
 ```
 
-
-
 ## Troubleshooting Authentication
 
 ### Common Error Messages
@@ -224,5 +222,5 @@ except Exception as e:
 ## Next Steps
 
 * [Create your first container](quickstart.md)
-* [Explore the Python SDK](../api/python-sdk.md)
+* [Explore the Python SDK](../api-reference/overview.md)
 * [Set up monitoring](../guides/performance.md)
