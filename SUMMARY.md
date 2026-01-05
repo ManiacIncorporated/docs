@@ -8,22 +8,6 @@
 * [Installation](getting-started/installation.md)
 * [Authentication](getting-started/authentication.md)
 
-## Core Features
-
-* [Model Routing](features/routing.md)
-* [Telemetry & Optimization](features/optimization.md)
-* [Batch Processing](features/finetuning.md)
-
 ## API Reference
 
 * [REST API](api-reference/rest-api.md)
-
-## Guides
-
-* [Best Practices](guides/best-practices.md)
-
-## Resources
-
-* [Examples](resources/examples.md)
-* [FAQ](resources/faq.md)
-* [Support](resources/support.md)
