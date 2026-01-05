@@ -513,4 +513,4 @@ job = client.create_finetuning_job(
 
 * [Deploy your fine-tuned models](../guides/deployment.md)
 * [Monitor performance in production](../guides/performance.md)
-* [Explore the API reference](../api-reference/overview.md)
+* [Explore the API reference](/broken/pages/ptbbkbjtANQZOc4zN2ld)

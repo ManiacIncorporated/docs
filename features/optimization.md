@@ -462,4 +462,4 @@ response = client.complete(
 
 * [Learn about fine-tuning](finetuning.md)
 * [Set up performance monitoring](../guides/performance.md)
-* [Explore the API reference](../api-reference/overview.md)
+* [Explore the API reference](/broken/pages/ptbbkbjtANQZOc4zN2ld)

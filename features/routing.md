@@ -258,6 +258,6 @@ summary = client.responses.create(
 
 ## Next Steps
 
-* [Learn about the Python SDK](../api-reference/overview.md)
+* [Learn about the Python SDK](/broken/pages/ptbbkbjtANQZOc4zN2ld)
 * [Explore task organization](../guides/best-practices.md)
 * [Set up batch processing](../guides/batch-processing.md)

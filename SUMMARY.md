@@ -16,7 +16,6 @@
 
 ## API Reference
 
-* [Overview](api-reference/overview.md)
 * [REST API](api-reference/rest-api.md)
 
 ## Guides

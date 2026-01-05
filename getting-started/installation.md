@@ -206,4 +206,4 @@ rm -rf ~/.cache/maniac
 
 * [Configure authentication](authentication.md)
 * [Create your first container](quickstart.md)
-* [Explore the API](../api-reference/overview.md)
+* [Explore the API](/broken/pages/ptbbkbjtANQZOc4zN2ld)
