@@ -1,11 +1,11 @@
-# Quick Start Guide
+# Quick Start
 
 Get up and running with Maniac in under 5 minutes.
 
 ## Prerequisites
 
-- Python 3.9 or higher
-- Maniac API key (all model providers handled automatically)
+* Python 3.9 or higher
+* Maniac API key (all model providers handled automatically)
 
 ## Installation
 
@@ -66,6 +66,7 @@ print(response["output_text"])
 ## Key Features
 
 ### Task Labeling
+
 Group related inferences for optimization and tracking:
 
 ```python
@@ -126,12 +127,14 @@ Answer: A is better than B (YES/NO)
 ```
 
 ### Available Models (Provider routing automatic)
-- **Claude Models**: `claude-opus-4`, `claude-sonnet-4`, `claude-haiku-3`
-- **GPT Models**: `gpt-4o`, `gpt-4-turbo`, `gpt-4`, `gpt-3.5-turbo`, `o1-mini`
-- **Gemini Models**: `gemini-pro`, `gemini-1.5-pro`
-- **Open Source**: `llama-3.1-70b`, `mixtral-8x7b`, `codestral`
+
+* **Claude Models**: `claude-opus-4`, `claude-sonnet-4`, `claude-haiku-3`
+* **GPT Models**: `gpt-4o`, `gpt-4-turbo`, `gpt-4`, `gpt-3.5-turbo`, `o1-mini`
+* **Gemini Models**: `gemini-pro`, `gemini-1.5-pro`
+* **Open Source**: `llama-3.1-70b`, `mixtral-8x7b`, `codestral`
 
 ### Batch Processing
+
 ```python
 from maniac import Maniac
 
@@ -195,27 +198,32 @@ print(answer)
 ### Common Issues
 
 **API Key Invalid**
+
 ```
 ManiacAuthError: Invalid API key
 ```
+
 Solution: Verify your API key in the [dashboard](https://dashboard.maniac.ai)
 
 **Rate Limiting**
+
 ```
 ManiacRateLimitError: Rate limit exceeded
 ```
+
 Solution: Implement exponential backoff or upgrade your plan
 
 **Model Not Available**
+
 ```
 ManiacModelError: Requested model not available
 ```
+
 Solution: The system will automatically fallback to the next best model
 
 ## Support
 
 Need help? We're here for you:
 
-- 📧 Email: dhruv@maniaclabs.xyz or support@maniac.ai
-- 💬 Discord: [Join our community](https://discord.gg/maniac)
-- 📚 Full docs: [documentation.maniac.ai](https://docs.maniac.ai)
+* 📧 Email: support@maniac.ai
+* 💬 Discord: [Join our community](https://discord.gg/maniac)

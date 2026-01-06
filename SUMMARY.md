@@ -1,6 +1,6 @@
 # Table of contents
 
-* [Maniac](README.md)
+* [Maniac: Your best model in one click.](README.md)
 
 ## Getting Started
 
@@ -11,3 +11,7 @@
 ## API Reference
 
 * [REST API](api-reference/rest-api.md)
+
+***
+
+* [Upload Existing Datasets](upload-existing-datasets.md)

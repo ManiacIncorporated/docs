@@ -15,163 +15,152 @@ layout:
     visible: true
 ---
 
-# Maniac: Model-Agnostic Agents
+# Maniac: Your best model in one click.
 
-Maniac provides a unified interface for deploying model-agnostic agents across any LLM provider or model. Each inference creates an **Agent Container** that continuously optimizes both prompts and LoRA fine-tuning parameters across all models, ensuring optimal performance regardless of which model the Control Plane allocates.
+Maniac is an enterprise AI platform that offers a drop-in replacement for your existing API calls. It lets teams:
 
-### What Maniac Does
+* Capture and structure production **LLM traffic.**
+* Automatically **fine-tune** and **evaluate** Small Language Models (SLMs) on task-specific data.
+* **Replace over-generalized LLM calls** with higher performance, lower latency models built for just what you need.
+* **Focus engineering time where it matters most:** building and refining high-quality model evaluations—not managing infrastructure, hyperparameters, or bespoke fine-tuning pipelines.
 
-Maniac is a Python (TypeScript coming soon) library that provides:
+...with virtually no changes to your codebase.&#x20;
 
-* **Model-Agnostic Approach**: Deploy on task-specific weights and prompts for any model
-* **Intelligent Routing**: Automatic model selection and failover handling
-* **Telemetry & Tracking**: Automatic logging of all inferences for optimization
-* **Task Organization**: Group related inferences with task labels
-* **Quality Assessment**: Judge prompts for continuous, automated evaluation and tuning
-* **Provider Agnostic**: Access any model without worrying about underlying provider
+## Getting started
 
-### Quick Start
+{% stepper %}
+{% step %}
+#### Sign up for Maniac
+
+Head over to [**https://app.maniac.ai/auth/register**](https://app.maniac.ai/auth/register)
+{% endstep %}
+
+{% step %}
+#### **Create a new Organization**
+
+Organizations house multiple projects.&#x20;
+{% endstep %}
+
+{% step %}
+#### Add a Project
+
+All your work — containers, evals, and deployments — live here.
+{% endstep %}
+
+{% step %}
+#### **Generate an API key**
+
+From your project settings
+{% endstep %}
+{% endstepper %}
+
+{% embed url="https://youtu.be/gTcfZSXy4hM" %}
+
+***
+
+## Dropping Maniac into your Codebase
+
+#### Install the library
 
 ```python
 from maniac import Maniac
-
-# Initialize with your API key - Maniac handles all providers automatically
-client = Maniac(api_key="your-maniac-api-key")
-
-# Customer support ticket analysis
-response = client.responses.create(
-    fallback="claude-opus-4",
-    input="Customer reports: 'Payment failed but was charged anyway. Order #12345'", 
-    instructions="You are a customer support analyst. Categorize the issue, determine urgency, and suggest resolution steps.",
-    temperature=0.0,
-    max_tokens=1024,
-    task_label="support-ticket-analysis",
-    judge_prompt="Compare two customer support analyses. Is A better than B? Consider: issue identification, urgency assessment, actionable solutions."
-)
-
-print(response["output_text"])
 ```
 
-### Core Concepts
+#### Initialize client
 
-#### Agent Containers
+<pre class="language-python"><code class="lang-python"><a data-footnote-ref href="#user-content-fn-1">from maniac import Maniac</a>
 
-Every inference line creates an Agent Container that:
+# Simple initialization - Maniac handles all providers automatically
+client = Maniac(api_key="your-maniac-api-key")
+</code></pre>
 
-* **Continuously optimizes prompts and LoRA adaptations** across all models simultaneously
-* **Maintains unified optimization state** combining prompt engineering and fine-tuning metrics
-* **Handles seamless model switching** with pre-optimized prompts and LoRA weights
-* **Automatically balances prompt vs LoRA optimization** based on model capabilities
+#### Creating a container
 
-#### Task Labels & Judge Prompts
-
-Maniac uses task labels to group related inferences and judge prompts to define quality criteria:
+Containers log inference and automatically build datasets for fine-tuning and evaluation. <mark style="color:$info;">`initial_model`</mark> sets the model used in that container until a Maniac model is deployed.
 
 ```python
-# All inferences with the same task_label are grouped together
-client.chat.completions.create(
-    fallback="claude-opus-4",
-    messages=[{"role": "user", "content": "Analyze this contract"}],
-    task_label="legal-document-analysis",
-    judge_prompt="Compare two legal contract analyses. Is A better than B? Consider: completeness, risk identification, actionable recommendations."
+container = maniac.containers.create(
+  label = "my-container"
+  initial_model = "openai/gpt-5",
 )
 ```
 
-#### Supported Models
+#### Running inference in a container
 
-Maniac automatically routes to the optimal provider for each model:
+Running inference will auto-generate inference logs. Data can also be manually uploaded.
 
-* **Claude Models**: claude-opus-4, claude-sonnet-4, claude-haiku-3
-* **GPT Models**: gpt-4o, gpt-4-turbo, gpt-4, gpt-3.5-turbo, o1-mini
-* **Gemini Models**: gemini-pro, gemini-1.5-pro
-* **Open Source**: llama-3.1-70b, mixtral-8x7b, codestral
-
-### Key Features
-
-#### Two API Interfaces
-
-**Chat Completions API** (OpenAI-compatible):
-
+{% tabs %}
+{% tab title="Chat Completions API" %}
+{% code overflow="wrap" %}
 ```python
 response = client.chat.completions.create(
-    fallback="claude-opus-4",
+    container = "my-container",
     messages=[
-        {"role": "system", "content": "You are a financial auditor."},
-        {"role": "user", "content": "Review this expense report..."}
+        {"role": "system", "content": "You are a helpful math tutor."},
+        {"role": "user", "content": "A train travels 120 miles in 2 hours. What is its average speed?"}
     ],
-    task_label="expense-audit",
-    judge_prompt="Compare two financial audit reviews. Is A better than B? Consider: policy compliance, calculation accuracy, fraud detection."
+    judge_prompt="Compare two math solutions. Is A better than B? Consider: calculation accuracy, clear explanations, educational value."
 )
+
+print(response["choices"][0]["message"]["content"])
+# Output: "The average speed is 60 miles per hour. This is calculated by dividing distance (120 miles) by time (2 hours): 120 ÷ 2 = 60 mph."
 ```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
 
-**Responses API** (Simplified):
+{% embed url="https://youtu.be/5ygzMi4okJ8" %}
 
-```python
-response = client.responses.create(
-    fallback="claude-opus-4",
-    input="Expense report data...",
-    instructions="You are a financial auditor. Review for compliance and accuracy.",
-    task_label="expense-audit",
-    judge_prompt="Compare two financial audit reviews. Is A better than B? Consider: policy compliance, calculation accuracy, fraud detection."
-)
-```
+***
 
-#### Batch Processing
+## Optimizing your model
 
-Process multiple requests efficiently:
+The inference logs in your container now serve as training data for a new SLM—fully yours, lower latency, cheaper, and optimized specifically for your task.
 
-```python
-requests = [
-    {
-        "fallback": "claude-opus-4",
-        "messages": [{"role": "user", "content": "Question 1"}],
-        "task_label": "batch-analysis",
-        "judge_prompt": "Compare two responses. Is A better than B?"
-    },
-    {
-        "fallback": "claude-opus-4",
-        "messages": [{"role": "user", "content": "Question 2"}],
-        "task_label": "batch-analysis",
-        "judge_prompt": "Compare two responses. Is A better than B?"
-    }
-]
 
-# Submit batch job
-batch_id = client.submit_batch(requests=requests)
 
-# Check status and get results
-status = client.get_batch_status(batch_id)
-if status['state'] == 'completed':
-    results = client.get_batch_results(batch_id)
-```
+{% stepper %}
+{% step %}
+### Create an <mark style="color:green;">Eval</mark>
 
-### Installation
+Evaluations define the optimization target. They can be implemented as arbitrary code or defined using judge prompts.
 
-```bash
-pip install maniac
-```
+Inside a container, use **Evals > Add Eval**
 
-**Prerequisites:** Just your Maniac API key - all model providers are handled automatically
+{% tabs %}
+{% tab title="Judge" %}
+<figure><img src=".gitbook/assets/Screenshot 2026-01-06 at 12.43.14 PM.png" alt=""><figcaption></figcaption></figure>
+{% endtab %}
 
-### Enterprise Benefits
+{% tab title="Code" %}
+<figure><img src=".gitbook/assets/Screenshot 2026-01-06 at 1.15.10 PM.png" alt=""><figcaption></figcaption></figure>
 
-* **Vendor Independence**: Single API maintains operations across model providers
-* **Automatic Optimization**: Continuous prompt and LoRA improvements using production data
-* **Quality Assurance**: Judge prompts ensure consistent output quality
-* **Cost Management**: Efficient batch processing and provider flexibility
-* **Complete Audit Trail**: All inferences logged for compliance and optimization
 
-### Documentation
+{% endtab %}
+{% endtabs %}
+{% endstep %}
 
-* [Quick Start Guide](getting-started/quickstart.md)
-* [Python SDK Reference](/broken/pages/ptbbkbjtANQZOc4zN2ld)
-* [Installation & Authentication](getting-started/installation.md)
-* [Best Practices](/broken/pages/HcgntS6ul9xCfWH2sT95)
+{% step %}
+### Launch <mark style="color:green;">Optimization</mark>
+
+Once you've defined an eval, the **Optimization** dashboard lets you configure and run post-training pipelines using techniques such as SFT, GRPO, and GEPA.&#x20;
+
+Each stage of the pipeline is modular, allowing you to select base models, the evaluation to optimize against, adjust hyperparameters, swap classifier heads, and experiment with different training strategies.
+
+{% embed url="https://youtu.be/O07rVLiWMR4" %}
+{% endstep %}
+{% endstepper %}
+
+***
+
+## Deploy.
+
+Optimized models can be be deployed into a container from the **Models** tab. Once deployed, you can chat with your generated models, and inference requests are now routed through the Maniac model instead of the <mark style="color:$info;">`initial_model`</mark>.
+
+<figure><img src=".gitbook/assets/Screenshot 2026-01-06 at 2.05.29 PM.png" alt=""><figcaption></figcaption></figure>
 
 ### Support
 
-For issues and questions:
+Email us at support@maniac.ai
 
-* GitHub Issues: [github.com/maniaclabs/maniac](https://github.com/maniaclabs/maniac)
-* Documentation: [docs.maniac.ai](https://docs.maniac.ai)
-* Email: dhruv@maniaclabs.xyz or support@maniac.ai
+[^1]: 
