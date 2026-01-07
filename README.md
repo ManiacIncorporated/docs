@@ -17,14 +17,14 @@ layout:
 
 # Maniac: Your best model in one click.
 
-Maniac is an enterprise AI platform that offers a drop-in replacement for your existing API calls. It lets teams:
+Maniac is an enterprise AI platform that makes it easy to replace existing LLM API calls with fine-tuned, task-specific models. Drop Maniac in with one line of code to:
 
-* Capture and structure production **LLM traffic.**
-* Automatically **fine-tune** and **evaluate** Small Language Models (SLMs) on task-specific data.
-* **Replace over-generalized LLM calls** with higher performance, lower latency models built for just what you need.
-* **Focus engineering time where it matters most:** building and refining high-quality model evaluations—not managing infrastructure, hyperparameters, or bespoke fine-tuning pipelines.
+* Capture and structure production **LLM traffic**
+* Automatically **fine-tune** and **evaluate** Small Language Models (SLMs) on your tasks
+* **Replace over-generalized LLM calls** with higher performance, lower latency models built for just what you need
+* **Focus engineering time where it matters most:** building and refining high-quality model evaluations—not managing infrastructure, hyperparameters, or bespoke fine-tuning pipelines
 
-...with virtually no changes to your codebase.&#x20;
+All with virtually no changes to your existing codebase.
 
 ## Getting started
 
@@ -117,8 +117,6 @@ print(response["choices"][0]["message"]["content"])
 
 The inference logs in your container now serve as training data for a new SLM—fully yours, lower latency, cheaper, and optimized specifically for your task.
 
-
-
 {% stepper %}
 {% step %}
 ### Create an <mark style="color:green;">Eval</mark>
@@ -159,8 +157,10 @@ Optimized models can be be deployed into a container from the **Models** tab. On
 
 <figure><img src=".gitbook/assets/Screenshot 2026-01-06 at 2.05.29 PM.png" alt=""><figcaption></figcaption></figure>
 
-### Support
+### Need help?
 
-Email us at support@maniac.ai
+:e-mail: Email us at support@maniac.ai
+
+We'll get back to you within a day.
 
 [^1]: 
