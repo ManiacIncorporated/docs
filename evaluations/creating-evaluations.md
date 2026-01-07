@@ -62,7 +62,7 @@ Code evaluations can depend on any external Python packages you need. Just list 
 ### Example: Exact Match
 
 ```python
-def evaluate(item) -> dict:
+def run_evaluation(item) -> dict:
     pred = item["sample"]["output"]["choices"][0]["message"]["content"].strip()
     gt = item["ground_truth"]["output"]["choices"][0]["message"]["content"].strip()
     return {"score": 1.0 if pred == gt else 0.0}
@@ -71,7 +71,7 @@ def evaluate(item) -> dict:
 ### Example: Multi-Label IuO (Jaccard Similarity)
 
 ```python
-def evaluate(item) -> dict:
+def run_evaluation(item) -> dict:
     def extract(text):
         return {t.strip().lower() for t in text.split(",") if t.strip()}
 
@@ -91,7 +91,7 @@ def evaluate(item) -> dict:
 ```python
 import json
 
-def evaluate(item) -> dict:
+def run_evaluation(item) -> dict:
     text = item["sample"]["output"]["choices"][0]["message"]["content"]
 
     try:
@@ -112,7 +112,7 @@ import numpy as np
 
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
-def evaluate(item) -> dict:
+def run_evaluation(item) -> dict:
     try:
         pred = item["sample"]["output"]["choices"][0]["message"]["content"]
         gt = item["ground_truth"]["output"]["choices"][0]["message"]["content"]
