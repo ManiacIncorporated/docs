@@ -74,7 +74,7 @@ pip install maniac
 client = Maniac(api_key="your-maniac-api-key")
 </code></pre>
 
-#### Creating a container
+#### Create a container
 
 Containers log inference and automatically build datasets for fine-tuning and evaluation. <mark style="color:$info;">`initial_model`</mark> sets the model used in that container until a Maniac model is deployed.
 
@@ -85,7 +85,7 @@ container = maniac.containers.create(
 )
 ```
 
-#### Running inference in a container
+#### Run inference in a container
 
 Running inference will auto-generate inference logs. Data can also be manually uploaded.
 
@@ -123,14 +123,14 @@ The inference logs in your container now serve as training data for a new SLM—
 
 Evaluations define the optimization target. They can be implemented as arbitrary code or defined using judge prompts.
 
-Inside a container, use **Evals > Add Eval**
+From the **Evals** tab inside a container, **Add Eval**.
 
 {% tabs %}
-{% tab title="Judge" %}
+{% tab title="Judge Eval" %}
 <figure><img src=".gitbook/assets/Screenshot 2026-01-06 at 12.43.14 PM.png" alt=""><figcaption></figcaption></figure>
 {% endtab %}
 
-{% tab title="Code" %}
+{% tab title="Code Eval" %}
 <figure><img src=".gitbook/assets/Screenshot 2026-01-06 at 1.15.10 PM.png" alt=""><figcaption></figcaption></figure>
 
 

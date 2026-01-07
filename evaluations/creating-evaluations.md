@@ -4,14 +4,12 @@ description: Code and judge evals for your Maniac models.
 
 # Creating Evaluations
 
-/Evaluations (“evals”) define what Maniac uses to guide optimization.
+Evaluations (“evals”) define what Maniac uses to guide optimization.
 
 Maniac supports two types of evaluations:
 
-1. **Judge prompt evaluations** (tournament-style A vs. B)
-2. **Code evaluations** (custom Python logic)
-
-
+1. **Judge prompt evaluations**
+2. **Code evaluations**
 
 ## Judge Prompt Evals
 
@@ -26,8 +24,7 @@ The judge will returns <mark style="color:green;background-color:green;">`TRUE`<
 
 For example:
 
-`Is response A at least as good as response B in generating a headline for the provided news snippet?`\
-`Return either True or False.`
+`Is response A at least as good as response B in generating a headline for the provided news snippet? Return either True or False.`
 
 ***
 
@@ -113,7 +110,6 @@ from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 
-# Load once at module import time
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
 def evaluate(item) -> dict:

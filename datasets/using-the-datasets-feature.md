@@ -1,5 +1,5 @@
 ---
-description: Defining datasets from your inference logs
+description: Deriving datasets from your inference logs.
 ---
 
 # Using the Datasets Feature

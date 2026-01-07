@@ -1,10 +1,10 @@
 ---
-description: Adding pre-existing data to a container
+description: Adding pre-existing data to a container.
 ---
 
 # Upload Existing Data
 
-Maniac lets you upload existing datasets directly into a container . These might be inference logs from a different inference provider, or a labeled dataset. Once uploaded, the data appears alongside inference logs and can be used for optimization and evaluation.
+Maniac lets you upload existing datasets directly into a container. These might be inference logs from a different inference provider, or a labeled dataset. Once uploaded, the data appears alongside inference logs and can be used for optimization and evaluation.
 
 ## Boilerplate
 
@@ -48,6 +48,8 @@ Each dataset entry consists of:
 
 ## Example: Uploading a HuggingFace Dataset
 
+Let's walk through an example using the [LEDGAR](https://aclanthology.org/2020.lrec-1.155.pdf) (Tuggener et al. 2020) dataset, used for legal clause classification.&#x20;
+
 #### Prerequisites
 
 ```python
@@ -62,12 +64,14 @@ from datasets import load_dataset
 
 DATASET = "coastalchp/ledgar"
 
-ds = load_dataset(DATASET)
-train = ds["train"]
+# Load dataset
+dataset = load_dataset(DATASET)
+train_split = dataset["train"]
 
-clauses = train["text"]
-labels = train.features["label"].names
-y = train["label"]
+# Extract inputs and labels
+clauses = train_split["text"]                  
+label_ids = train_split["label"]              
+label_names = train_split.features["label"].names
 ```
 
 #### Define the System Prompt
@@ -76,9 +80,8 @@ y = train["label"]
 system_prompt = (
     "You are a legal clause classifier.\n"
     "Given a clause, return exactly one label from this list:\n"
-    + "\n".join(f"- {l}" for l in labels)
-    + "\nRespond with only the label name."
-)
+    + "\n".join(f"- {label}" for label in label_names)
+    + "\nRespond with only the label name.")
 ```
 
 #### Create a container
@@ -110,8 +113,8 @@ end = min(len(clauses), START + MAX_SAMPLES)
 
 for batch_start in range(START, end, BATCH_SIZE):
     batch_end = min(batch_start + BATCH_SIZE, end)
-
     dataset = []
+
     for i in range(batch_start, batch_end):
         messages = [
             {"role": "system", "content": system_prompt},
@@ -125,7 +128,7 @@ for batch_start in range(START, end, BATCH_SIZE):
                     {
                         "message": {
                             "role": "assistant",
-                            "content": labels[y[i]],
+                            "content": label_names[label_ids[i]],
                         }
                     }
                 ]
