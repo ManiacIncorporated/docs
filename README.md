@@ -32,7 +32,7 @@ Maniac is an enterprise AI platform that offers a drop-in replacement for your e
 {% step %}
 #### Sign up for Maniac
 
-Head over to [**https://app.maniac.ai/auth/register**](https://app.maniac.ai/auth/register)
+Head over to [https://app.maniac.ai/auth/register](https://app.maniac.ai/auth/register)
 {% endstep %}
 
 {% step %}
@@ -63,7 +63,7 @@ From your project settings
 #### Install the library
 
 ```python
-from maniac import Maniac
+pip install maniac
 ```
 
 #### Initialize client

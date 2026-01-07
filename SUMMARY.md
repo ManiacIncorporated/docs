@@ -5,6 +5,7 @@
 ## Getting Started
 
 * [Quick Start](getting-started/quickstart.md)
+* [Upload Existing Data](getting-started/upload-existing-data.md)
 * [Installation](getting-started/installation.md)
 * [Authentication](getting-started/authentication.md)
 
@@ -14,4 +15,4 @@
 
 ***
 
-* [Upload Existing Datasets](upload-existing-datasets.md)
+* [Using the Datasets Feature](using-the-datasets-feature.md)
