@@ -1,3 +1,7 @@
+---
+hidden: true
+---
+
 # Quick Start
 
 Get up and running with Maniac in under 5 minutes.

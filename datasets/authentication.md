@@ -1,3 +1,7 @@
+---
+hidden: true
+---
+
 # Authentication
 
 Maniac uses API keys for authentication. This guide covers how to obtain, configure, and manage your API keys securely.

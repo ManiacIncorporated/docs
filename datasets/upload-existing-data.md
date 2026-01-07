@@ -2,7 +2,7 @@
 description: Adding pre-existing data to a container
 ---
 
-# Upload Existing Datasets
+# Upload Existing Data
 
 Maniac lets you upload existing datasets directly into a container . These might be inference logs from a different inference provider, or a labeled dataset. Once uploaded, the data appears alongside inference logs and can be used for optimization and evaluation.
 
@@ -39,7 +39,6 @@ client.chat.completions.register(
     container=container,
     dataset=dataset,
 )
-
 ```
 
 Each dataset entry consists of:
@@ -139,5 +138,4 @@ for batch_start in range(START, end, BATCH_SIZE):
     )
 
     print(f"Uploaded samples {batch_start}–{batch_end - 1}")
-
 ```

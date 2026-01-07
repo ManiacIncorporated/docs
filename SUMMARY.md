@@ -1,13 +1,16 @@
 # Table of contents
 
-* [Maniac: Your best model in one click.](README.md)
-
 ## Getting Started
 
-* [Quick Start](getting-started/quickstart.md)
-* [Upload Existing Data](getting-started/upload-existing-data.md)
-* [Installation](getting-started/installation.md)
-* [Authentication](getting-started/authentication.md)
+* [Maniac: Your best model in one click.](README.md)
+
+## Datasets
+
+* [Upload Existing Data](datasets/upload-existing-data.md)
+* [Using the Datasets Feature](datasets/using-the-datasets-feature.md)
+* [Creating Evaluations](datasets/creating-evaluations.md)
+* [Authentication](datasets/authentication.md)
+* [Quick Start](datasets/quickstart.md)
 
 ## API Reference
 
@@ -15,5 +18,8 @@
 
 ***
 
-* [Using the Datasets Feature](using-the-datasets-feature.md)
-* [Creating Evaluations](creating-evaluations.md)
+* [Supported Base Models](supported-base-models.md)
+
+## Group 2
+
+* [Page 2](group-2/page-2.md)
