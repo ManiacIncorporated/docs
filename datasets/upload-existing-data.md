@@ -10,15 +10,16 @@ Maniac lets you upload existing datasets directly into a container. These might 
 
 ```python
 from maniac import Maniac
+maniac = Maniac()
 
-client = Maniac()
-
-container = client.containers.create(
+# First, create a container if you don't already have onee
+container = maniac.containers.create(
     label="my-container",
     initial_model="some-base-model",
     initial_system_prompt="Your system prompt here",
 )
 
+# Second, create the messages object that will populate your container
 dataset = [
     {
         "input": {
@@ -35,20 +36,21 @@ dataset = [
     }
 ]
 
-client.chat.completions.register(
-    container=container,
+# Register completions. These will now show up on the Maniac dashboard in your container.
+maniac.chat.completions.register(
+    container="maniac:my-container,
     dataset=dataset,
 )
 ```
 
 Each dataset entry consists of:
 
-* `input` : the messages sent to the model
-* `output` : the expected assistant response
+* `input` : the messages sent to the model (system prompt & user prompt)
+* `output` : the assistant response
 
 ## Example: Uploading a HuggingFace Dataset
 
-Let's walk through an example using the [LEDGAR](https://aclanthology.org/2020.lrec-1.155.pdf) (Tuggener et al. 2020) dataset, used for legal clause classification.&#x20;
+Let's walk through an example using the [LEDGAR](https://aclanthology.org/2020.lrec-1.155.pdf) (Tuggener et al. 2020) dataset, great for training and testing legal clause classification models.&#x20;
 
 #### Prerequisites
 
@@ -91,10 +93,10 @@ You can also skip this step and upload a dataset to an existing container, where
 ```python
 from maniac import Maniac
 
-client = Maniac()
+maniac = Maniac()
 
-container = client.containers.create(
-    label="ledgar-register",
+container = maniac.containers.create(
+    label="LEDGAR-register",
     initial_model="openai/gpt-4o-mini",
     initial_system_prompt=system_prompt,
 )
@@ -142,3 +144,5 @@ for batch_start in range(START, end, BATCH_SIZE):
 
     print(f"Uploaded samples {batch_start}–{batch_end - 1}")
 ```
+
+> **Note:** Unlike generating completions inside a container—where the container’s system prompt is automatically applied—**registering (logging) existing completions requires the system prompt to be included explicitly with each messages object**. Registered completions do not inherit the container-level system prompt.

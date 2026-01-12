@@ -82,6 +82,7 @@ Containers log inference and automatically build datasets for fine-tuning and ev
 container = maniac.containers.create(
   label = "my-container"
   initial_model = "openai/gpt-5",
+  initial_system_prompt = "You are a helpful math tutor."
 )
 ```
 
@@ -91,20 +92,20 @@ Running inference will auto-generate inference logs. Data can also be manually u
 
 {% tabs %}
 {% tab title="Chat Completions API" %}
-<pre class="language-python" data-overflow="wrap"><code class="lang-python">response = maniac.chat.completions.create(
-    container<a data-footnote-ref href="#user-content-fn-1"> </a>= "my-container",
-    messages=[
-        {"role": "system", "content": "You are a helpful math tutor."},
-        {"role": "user", "content": "A train travels 120 miles in 2 hours. What is its average speed?"}
-    ],
-    judge_prompt="Compare two math solutions. Is A better than B? Consider: calculation accuracy, clear explanations, educational value."
+```python
+response = maniac.chat.completions.create(
+    model = "maniac:my-container",
+    messages = [{"role": "user", "content": "A train travels 120 miles in 2 hours. What is its average speed?"}],
+    judge_prompt = "Compare two math solutions. Is A better than B? Consider: calculation accuracy, clear explanations, educational value."
 )
 
 print(response["choices"][0]["message"]["content"])
 # Output: "The average speed is 60 miles per hour. This is calculated by dividing distance (120 miles) by time (2 hours): 120 ÷ 2 = 60 mph."
-</code></pre>
+```
 {% endtab %}
 {% endtabs %}
+
+> **Note:** We recommend defining the system prompt at the **container level**. All inference requests executed through that container will automatically inherit this system prompt. If a request’s `messages` array includes its own system prompt, it will override the container-level system prompt for that request only.
 
 {% embed url="https://youtu.be/5ygzMi4okJ8" %}
 
