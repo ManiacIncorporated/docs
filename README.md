@@ -71,7 +71,7 @@ pip install maniac
 <pre class="language-python"><code class="lang-python"><a data-footnote-ref href="#user-content-fn-1">from maniac import Maniac</a>
 
 # Simple initialization - Maniac handles all providers automatically
-client = Maniac(api_key="your-maniac-api-key")
+maniac = Maniac(api_key="your-maniac-api-key")
 </code></pre>
 
 #### Create a container
@@ -91,10 +91,8 @@ Running inference will auto-generate inference logs. Data can also be manually u
 
 {% tabs %}
 {% tab title="Chat Completions API" %}
-{% code overflow="wrap" %}
-```python
-response = client.chat.completions.create(
-    container = "my-container",
+<pre class="language-python" data-overflow="wrap"><code class="lang-python">response = maniac.chat.completions.create(
+    container<a data-footnote-ref href="#user-content-fn-1"> </a>= "my-container",
     messages=[
         {"role": "system", "content": "You are a helpful math tutor."},
         {"role": "user", "content": "A train travels 120 miles in 2 hours. What is its average speed?"}
@@ -104,8 +102,7 @@ response = client.chat.completions.create(
 
 print(response["choices"][0]["message"]["content"])
 # Output: "The average speed is 60 miles per hour. This is calculated by dividing distance (120 miles) by time (2 hours): 120 ÷ 2 = 60 mph."
-```
-{% endcode %}
+</code></pre>
 {% endtab %}
 {% endtabs %}
 
