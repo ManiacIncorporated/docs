@@ -38,7 +38,7 @@ dataset = [
 
 # Register completions. These will now show up on the Maniac dashboard in your container.
 maniac.chat.completions.register(
-    container="maniac:my-container,
+    model="maniac:my-container,
     dataset=dataset,
 )
 ```
