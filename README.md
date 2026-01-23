@@ -97,6 +97,7 @@ response = maniac.chat.completions.create(
     model = "maniac:my-container",
     messages = [{"role": "user", "content": "A train travels 120 miles in 2 hours. What is its average speed?"}],
     judge_prompt = "Compare two math solutions. Is A better than B? Consider: calculation accuracy, clear explanations, educational value."
+    reasoning = {"effort": "medium"} # Optional reasoning parameter
 )
 
 print(response["choices"][0]["message"]["content"])
