@@ -76,11 +76,32 @@ export MANIAC_BASE_URL="https://inference.maniac.ai/api/v1
 Containers log inference and automatically build datasets for fine-tuning and evaluation. <mark style="color:$info;">`initial_model`</mark> sets the model used in that container until a Maniac model is deployed.
 
 ```python
-container = maniac.containers.create(
-  label = "my-container"
-  initial_model = "openai/gpt-5",
-  initial_system_prompt = "You are a helpful math tutor."
+import os
+import requests
+
+BASE_URL = os.getenv("MANIAC_BASE_URL")
+API_KEY = os.getenv("MANIAC_API_KEY")
+
+headers = {
+    "Authorization": f"Bearer {API_KEY}",
+    "Content-Type": "application/json",
+}
+
+response = requests.post(
+    f"{BASE_URL}/containers",
+    headers=headers,
+    json={
+        "label": "my-container",
+        "initial_model": "openai/gpt-5",
+        "api": "chat.completions",
+        "default_system_prompt": "You are a helpful math tutor.",
+    },
 )
+
+response.raise_for_status()
+container = resp.json()
+
+print("Created container:", container["label"])
 ```
 
 #### Run inference in a container
@@ -90,12 +111,24 @@ Running inference will auto-generate inference logs. Data can also be manually u
 {% tabs %}
 {% tab title="Chat Completions API" %}
 ```python
-response = maniac.chat.completions.create(
-    model = "maniac:my-container",
-    messages = [{"role": "user", "content": "A train travels 120 miles in 2 hours. What is its average speed?"}],
-    judge_prompt = "Compare two math solutions. Is A better than B? Consider: calculation accuracy, clear explanations, educational value."
-    reasoning = {"effort": "medium"} # Optional reasoning parameter
+response = requests.post(
+    f"{BASE_URL}/chat/completions",
+    headers=headers,
+    json={
+        "model": "maniac:my-container",
+        "messages": [
+            {
+                "role": "user",
+                "content": "A train travels 120 miles in 2 hours. What is its average speed?"
+            }
+        ],
+        "tags": ["quickstart"],
+        "metadata": {"source": "docs"},
+    },
 )
+
+resp.raise_for_status()
+completion = resp.json()
 
 print(response["choices"][0]["message"]["content"])
 # Output: "The average speed is 60 miles per hour. This is calculated by dividing distance (120 miles) by time (2 hours): 120 ÷ 2 = 60 mph."
