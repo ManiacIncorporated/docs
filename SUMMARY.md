@@ -3,6 +3,7 @@
 ## Getting Started
 
 * [Maniac: Your best model in one click.](README.md)
+* [Maniac: Your best model in one click.](getting-started/readme-1.md)
 
 ## Datasets
 
