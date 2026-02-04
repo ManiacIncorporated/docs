@@ -92,7 +92,7 @@ response = requests.post(
     headers=headers,
     json={
         "label": "my-container",
-        "initial_model": "openai/gpt-5",
+        "initial_model": "openai/gpt-5.2",
         "api": "chat.completions",
         "default_system_prompt": "You are a helpful math tutor.",
     },
