@@ -23,3 +23,4 @@
 ## API Reference
 
 * [REST API](api-reference/rest-api.md)
+* [Coming in 48 hours](api-reference/coming-in-48-hours.md)
