@@ -60,13 +60,7 @@ From your project settings
 
 ## Dropping Maniac into your Codebase
 
-#### Install the library
-
-```python
-pip install requests
-```
-
-#### Set env variables
+#### Set environment variables
 
 ```python
 export MANIAC_API_KEY="your-api-key"
@@ -122,8 +116,6 @@ response = requests.post(
                 "content": "A train travels 120 miles in 2 hours. What is its average speed?"
             }
         ],
-        "tags": ["quickstart"],
-        "metadata": {"source": "docs"},
     },
 )
 
