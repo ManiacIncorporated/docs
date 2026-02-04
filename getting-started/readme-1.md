@@ -63,18 +63,15 @@ From your project settings
 #### Install the library
 
 ```python
-pip install maniac
+pip install requests
 ```
 
-#### Initialize client
+#### Set env variables
 
-<pre class="language-python"><code class="lang-python"><a data-footnote-ref href="#user-content-fn-1">from maniac import Maniac</a>
-
-# Simple initialization - Maniac handles all providers automatically
-maniac = Maniac(api_key="your-maniac-api-key")
-</code></pre>
-
-#### Create a container
+```python
+export MANIAC_API_KEY="your-api-key"
+export MANIAC_BASE_URL="https://inference.maniac.ai/api/v1
+```
 
 Containers log inference and automatically build datasets for fine-tuning and evaluation. <mark style="color:$info;">`initial_model`</mark> sets the model used in that container until a Maniac model is deployed.
 
@@ -161,5 +158,3 @@ Optimized models can be be deployed into a container from the **Models** tab. On
 :e-mail: Email us at support@maniac.ai
 
 We'll get back to you within a day.
-
-[^1]: 
