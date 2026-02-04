@@ -69,6 +69,8 @@ export MANIAC_BASE_URL="https://platform.maniac.ai/api/v1
 
 Containers log inference and automatically build datasets for fine-tuning and evaluation. <mark style="color:$info;">`initial_model`</mark> sets the model used in that container until a Maniac model is deployed.
 
+#### Create a container
+
 ```python
 import os
 import requests
@@ -148,11 +150,11 @@ From the **Evals** tab inside a container, **Add Eval**.
 
 {% tabs %}
 {% tab title="Judge Eval" %}
-<div data-with-frame="true"><figure><img src="../.gitbook/assets/Screenshot 2026-01-06 at 12.43.14 PM.png" alt=""><figcaption></figcaption></figure></div>
+<div data-with-frame="true"><figure><img src=".gitbook/assets/Screenshot 2026-01-06 at 12.43.14 PM.png" alt=""><figcaption></figcaption></figure></div>
 {% endtab %}
 
 {% tab title="Code Eval" %}
-<div data-with-frame="true"><figure><img src="../.gitbook/assets/Screenshot 2026-01-06 at 1.15.10 PM.png" alt=""><figcaption></figcaption></figure></div>
+<div data-with-frame="true"><figure><img src=".gitbook/assets/Screenshot 2026-01-06 at 1.15.10 PM.png" alt=""><figcaption></figcaption></figure></div>
 
 
 {% endtab %}
@@ -176,7 +178,7 @@ Each stage of the pipeline is modular, allowing you to select base models, the e
 
 Optimized models can be be deployed into a container from the **Models** tab. Once deployed, you can chat with your generated models, and inference requests are now routed through the Maniac model instead of the <mark style="color:$info;">`initial_model`</mark>.
 
-<div data-with-frame="true"><figure><img src="../.gitbook/assets/Screenshot 2026-01-06 at 2.05.29 PM.png" alt=""><figcaption></figcaption></figure></div>
+<div data-with-frame="true"><figure><img src=".gitbook/assets/Screenshot 2026-01-06 at 2.05.29 PM.png" alt=""><figcaption></figcaption></figure></div>
 
 ### Need help?
 
