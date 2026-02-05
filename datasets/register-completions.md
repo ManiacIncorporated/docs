@@ -4,11 +4,11 @@ description: Adding pre-existing data to a container.
 
 # Register Completions
 
-Maniac lets you upload existing datasets directly into a container. These might be inference logs from a different inference provider, or a labeled dataset. Once uploaded, these logs can be used for optimization and evaluation.
+Maniac lets you direct existing LLM traffic from a different inference provider into a container or upload a static dataset. Once uploaded, these logs can be used for optimization and evaluation.
 
 ## Example: Uploading a HuggingFace Dataset
 
-Let's walk through an example using the [LEDGAR](https://aclanthology.org/2020.lrec-1.155.pdf) (Tuggener et al. 2020) dataset, great for training and testing legal clause classification models.&#x20;
+Let's walk through an example of uploading a static dataset using [LEDGAR](https://aclanthology.org/2020.lrec-1.155.pdf) (Tuggener et al. 2020), great for training and testing legal classification models.&#x20;
 
 #### Prerequisites
 
