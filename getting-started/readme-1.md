@@ -159,7 +159,7 @@ Optimized models can be be deployed into a container from the **Models** tab. On
 
 ### Need help?
 
-:e-mail: Email us at support@maniac.ai
+:e-mail: Email us at helpme@maniac.ai
 
 We'll get back to you within a day.
 
