@@ -7,7 +7,7 @@
 
 ## Datasets
 
-* [Register Completions](datasets/register-completions.md)
+* [Upload Datasets](datasets/upload-datasets.md)
 * [Upload Existing Data](datasets/upload-existing-data.md)
 * [Using the Datasets Feature](datasets/using-the-datasets-feature.md)
 * [Authentication](datasets/authentication.md)
