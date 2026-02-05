@@ -67,7 +67,7 @@ export MANIAC_API_KEY="your-api-key"
 export MANIAC_BASE_URL="https://platform.maniac.ai/api/v1
 ```
 
-Containers log inference and automatically build datasets for fine-tuning and evaluation. <mark style="color:$info;">`initial_model`</mark> sets the model used in that container until a Maniac model is deployed.
+Containers log inference and automatically build datasets for fine-tuning and evaluation. <mark style="color:$info;">`initial_model`</mark> sets the model used in that container until a Maniac model is deployed in its place.
 
 #### Create a container
 
