@@ -161,7 +161,7 @@ response = requests.post(
 response.raise_for_status()
 completion = response.json()
 
-print(response["choices"][0]["message"]["content"])
+print(completion["choices"][0]["message"]["content"])
 # Output: "The average speed is 60 miles per hour. This is calculated by dividing distance (120 miles) by time (2 hours): 120 ÷ 2 = 60 mph."
 ```
 {% endtab %}
