@@ -4,46 +4,7 @@ description: Adding pre-existing data to a container.
 
 # Register Completions
 
-Maniac lets you upload existing datasets directly into a container. These might be inference logs from a different inference provider, or a labeled dataset. Once uploaded, the data appears alongside inference logs and can be used for optimization and evaluation.
-
-## Example
-
-```python
-import os
-import requests
-
-BASE_URL = os.getenv("MANIAC_BASE_URL")
-API_KEY = os.getenv("MANIAC_API_KEY")
-
-headers = {
-    "Authorization": f"Bearer {API_KEY}",
-    "Content-Type": "application/json",
-}
-
-_input = {
-  "model": "openai/gpt-5"
-  "messages": [{
-    "role": "user",
-    "content": "Hello!"
-  }]
-}
-
-_output = some_other_provider.chat.completions.create(**params)
-
-requests.post(
-    f"{BASE_URL}/chat/completions/register",
-    headers=headers,
-    json={
-        "container": "my-container",
-        "items": [
-            "input": _input,
-            "output": _output
-        ],
-    },
-)
-```
-
-Each dataset entry consists of an input and output in chat completions format, as well as optional metadata.&#x20;
+Maniac lets you upload existing datasets directly into a container. These might be inference logs from a different inference provider, or a labeled dataset. Once uploaded, these logs can be used for optimization and evaluation.
 
 ## Example: Uploading a HuggingFace Dataset
 
@@ -53,7 +14,6 @@ Let's walk through an example using the [LEDGAR](https://aclanthology.org/2020.l
 
 ```python
 export MANIAC_API_KEY=...
-pip install maniac datasets
 ```
 
 #### Load the HuggingFace Dataset
@@ -89,9 +49,7 @@ system_prompt = (
 You can also skip this step and upload a dataset to an existing container, where it will be combined with any existing inference logs.
 
 ```python
-from maniac import Maniac
 import requests
-maniac = Maniac()
 
 response = requests.post(
     f"{BASE_URL}/containers",
@@ -110,7 +68,7 @@ container = response.json()
 
 #### Upload Data in Batches
 
-For large datasets, it's recommended uploading in batches to avoid timeouts.&#x20;
+For large datasets, it's recommended uploading in batches to avoid timeouts. Each dataset entry consists of an input and output in chat completions format, as well as optional metadata.&#x20;
 
 ```python
 BATCH_SIZE = 1500

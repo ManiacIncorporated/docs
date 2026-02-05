@@ -100,11 +100,48 @@ container = response.json()
 print("Created container:", container["label"])
 ```
 
-#### Run inference in a container
+#### Generating Inference Logs
 
-Running inference will auto-generate inference logs. Data can also be manually uploaded.
+Now that you've made a container, let's add some data to it. You can either register completions with any existing provider, or run inference through Maniac. In both cases, inference logs will auto-populate in your container. External datasets can also be manually uploaded.&#x20;
 
 {% tabs %}
+{% tab title="Registering Completions" %}
+```python
+import os
+import requests
+
+BASE_URL = os.getenv("MANIAC_BASE_URL")
+API_KEY = os.getenv("MANIAC_API_KEY")
+
+headers = {
+    "Authorization": f"Bearer {API_KEY}",
+    "Content-Type": "application/json",
+}
+
+_input = {
+  "model": "openai/gpt-5"
+  "messages": [{
+    "role": "user",
+    "content": "Hello!"
+  }]
+}
+
+_output = some_other_provider.chat.completions.create(**params)
+
+requests.post(
+    f"{BASE_URL}/chat/completions/register",
+    headers=headers,
+    json={
+        "container": "my-container",
+        "items": [
+            "input": _input,
+            "output": _output
+        ],
+    },
+)
+```
+{% endtab %}
+
 {% tab title="Chat Completions API" %}
 ```python
 response = requests.post(
