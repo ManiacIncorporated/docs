@@ -1,6 +1,5 @@
 ---
 description: Adding pre-existing data to a container.
-hidden: true
 ---
 
 # Register Completions
