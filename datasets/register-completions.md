@@ -3,50 +3,48 @@ description: Adding pre-existing data to a container.
 hidden: true
 ---
 
-# Upload Existing Data
+# Register Completions
 
-Maniac lets you upload existing completions directly into a container. These might be inference logs from a different inference provider, or a labeled dataset. Once uploaded, the data appears alongside inference logs and can be used for optimization and evaluation.
+Maniac lets you upload existing datasets directly into a container. These might be inference logs from a different inference provider, or a labeled dataset. Once uploaded, the data appears alongside inference logs and can be used for optimization and evaluation.
 
-## Boilerplate
+## Example
 
 ```python
+import os
 import requests
 
-# First, create a container if you don't already have onee
-container = maniac.containers.create(
-    label="my-container",
-    initial_model="some-base-model",
-    initial_system_prompt="Your system prompt here",
-)
+BASE_URL = os.getenv("MANIAC_BASE_URL")
+API_KEY = os.getenv("MANIAC_API_KEY")
 
-# Second, create the messages object that will populate your container
-dataset = [
-    {
-        "input": {
-            "messages": [
-                {"role": "system", "content": "..."},
-                {"role": "user", "content": "..."},
-            ]
-        },
-        "output": {
-            "choices": [
-                {"message": {"role": "assistant", "content": "..."}}
-            ]
-        },
-    }
-]
+headers = {
+    "Authorization": f"Bearer {API_KEY}",
+    "Content-Type": "application/json",
+}
 
-# Register completions. These will now show up on the Maniac dashboard in your container.
-maniac.chat.completions.register(
-    model="maniac:my-container,
-    dataset=dataset,
+_input = {
+  "model": "openai/gpt-5"
+  "messages": [{
+    "role": "user",
+    "content": "Hello!"
+  }]
+}
+
+_output = some_other_provider.chat.completions.create(**params)
+
+requests.post(
+    f"{BASE_URL}/chat/completions/register",
+    headers=headers,
+    json={
+        "container": "my-container",
+        "items": [
+            "input": _input,
+            "output": _output
+        ],
+    },
 )
 ```
 
-Each dataset entry consists of:
-
-* `input` : the messages sent to the model (system prompt & user prompt)
-* `output` : the assistant response
+Each dataset entry consists of an input and output in chat completions format, as well as optional metadata.&#x20;
 
 ## Example: Uploading a HuggingFace Dataset
 
@@ -83,7 +81,8 @@ system_prompt = (
     "You are a legal clause classifier.\n"
     "Given a clause, return exactly one label from this list:\n"
     + "\n".join(f"- {label}" for label in label_names)
-    + "\nRespond with only the label name.")
+    + "\nRespond with only the label name."
+)
 ```
 
 #### Create a container
@@ -92,14 +91,22 @@ You can also skip this step and upload a dataset to an existing container, where
 
 ```python
 from maniac import Maniac
-
+import requests
 maniac = Maniac()
 
-container = maniac.containers.create(
-    label="LEDGAR-register",
-    initial_model="openai/gpt-4o-mini",
-    initial_system_prompt=system_prompt,
+response = requests.post(
+    f"{BASE_URL}/containers",
+    headers=headers,
+    json={
+        "label": "ledgar-container",
+        "initial_model": "openai/gpt-5.2",
+        "api": "chat.completions",
+        "default_system_prompt": system_prompt,
+    },
 )
+
+response.raise_for_status()
+container = response.json()
 ```
 
 #### Upload Data in Batches
@@ -137,9 +144,13 @@ for batch_start in range(START, end, BATCH_SIZE):
             },
         })
 
-    client.chat.completions.register(
-        container=container,
-        dataset=dataset,
+    requests.post(
+        f"{BASE_URL}/chat/completions/register",
+        headers=headers,
+        json={
+            "container": "ledgar-container",
+            "items": dataset
+        },
     )
 
     print(f"Uploaded samples {batch_start}–{batch_end - 1}")
