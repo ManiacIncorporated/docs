@@ -119,7 +119,7 @@ headers = {
 }
 
 _input = {
-  "model": "openai/gpt-5"
+  "model": "openai/gpt-5.2"
   "messages": [{
     "role": "user",
     "content": "Hello!"
