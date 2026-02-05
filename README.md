@@ -102,7 +102,7 @@ print("Created container:", container["label"])
 
 #### Generating Inference Logs
 
-Now that you've made a container, let's add some data to it. You can either register completions with any existing provider, or run inference through Maniac. In both cases, inference logs will auto-populate in your container. External datasets can also be manually uploaded.&#x20;
+Now that you've made a container, let's add some data to it. You can either register completions with any existing provider, or run inference through Maniac. In both cases, inference logs will auto-populate in your container. External datasets can also be [manually uploaded](datasets/register-completions.md).&#x20;
 
 {% tabs %}
 {% tab title="Registering Completions" %}
@@ -142,7 +142,7 @@ requests.post(
 ```
 {% endtab %}
 
-{% tab title="Chat Completions API" %}
+{% tab title="Running Inference Through Maniac" %}
 ```python
 response = requests.post(
     f"{BASE_URL}/chat/completions",
