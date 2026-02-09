@@ -4,6 +4,7 @@
 
 * [Maniac: Your best model in one click.](README.md)
 * [Maniac: Your best model in one click.](getting-started/readme-1.md)
+* [Copy of Maniac: Your best model in one click.](getting-started/readme-2.md)
 
 ## Datasets
 

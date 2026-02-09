@@ -1,4 +1,5 @@
 ---
+hidden: true
 layout:
   width: default
   title:
@@ -15,7 +16,7 @@ layout:
     visible: true
 ---
 
-# Maniac: Your best model in one click.
+# Copy of Maniac: Your best model in one click.
 
 Maniac is an enterprise AI platform that makes it easy to replace existing LLM API calls with fine-tuned, task-specific models. Drop Maniac in with one line of code to:
 
@@ -81,26 +82,23 @@ Containers log inference and automatically build datasets for fine-tuning and ev
 ```python
 container = maniac.containers.create(
   label = "my-container"
+  initial_model = "openai/gpt-5",
   default_system_prompt = "You are a helpful math tutor."
 )
 ```
 
 #### Log Completions
 
-Now that you've made a container, let's add some data to it.
+Now that you've made a container, let's add some data to it. Maniac mirrors your completions with any inference provider to auto-populate inference logs in your container. Your inference cost and latency are unaffected. External datasets can also be [manually uploaded](../datasets/upload-datasets.md).&#x20;
 
 {% tabs %}
 {% tab title="Chat Completions API" %}
 ```python
 response = maniac.chat.completions.register(
-    container = "maniac:my-container",
+    model = "maniac:my-container",
     messages = [{"role": "user", "content": "A train travels 120 miles in 2 hours. What is its average speed?"}],
     judge_prompt = "Compare two math solutions. Is A better than B? Consider: calculation accuracy, clear explanations, educational value."
-    # Optional params
-    reasoning = {"effort": "medium"} 
-    tools = tools
-    response_format={"type": "json_object"}
-    temperature = 0.7
+    reasoning = {"effort": "medium"} # Optional reasoning parameter
 )
 
 print(response["choices"][0]["message"]["content"])
@@ -109,13 +107,15 @@ print(response["choices"][0]["message"]["content"])
 {% endtab %}
 {% endtabs %}
 
+> **Note:** We recommend defining the system prompt at the **container level**. All inference requests executed through that container will automatically inherit this system prompt. If a request’s `messages` array includes its own system prompt, it will override the container-level system prompt for that request only.
+
 {% embed url="https://youtu.be/5ygzMi4okJ8" %}
 
 ***
 
 ## Optimizing your model
 
-The inference logs in your container now serve as training data for a new SLM—fully yours, lower latency, most cost effective, and optimized specifically for your task.
+The inference logs in your container now serve as training data for a new SLM—fully yours, lower latency, cheaper, and optimized specifically for your task.
 
 {% stepper %}
 {% step %}
@@ -127,11 +127,11 @@ From the **Evals** tab inside a container, **Add Eval**.
 
 {% tabs %}
 {% tab title="Judge Eval" %}
-<div data-with-frame="true"><figure><img src=".gitbook/assets/Screenshot 2026-01-06 at 12.43.14 PM.png" alt=""><figcaption></figcaption></figure></div>
+<div data-with-frame="true"><figure><img src="../.gitbook/assets/Screenshot 2026-01-06 at 12.43.14 PM.png" alt=""><figcaption></figcaption></figure></div>
 {% endtab %}
 
 {% tab title="Code Eval" %}
-<div data-with-frame="true"><figure><img src=".gitbook/assets/Screenshot 2026-01-06 at 1.15.10 PM.png" alt=""><figcaption></figcaption></figure></div>
+<div data-with-frame="true"><figure><img src="../.gitbook/assets/Screenshot 2026-01-06 at 1.15.10 PM.png" alt=""><figcaption></figcaption></figure></div>
 
 
 {% endtab %}
@@ -155,7 +155,7 @@ Each stage of the pipeline is modular, allowing you to select base models, the e
 
 Optimized models can be be deployed into a container from the **Models** tab. Once deployed, you can chat with your generated models, and inference requests are now routed through the Maniac model instead of the <mark style="color:$info;">`initial_model`</mark>.
 
-<div data-with-frame="true"><figure><img src=".gitbook/assets/Screenshot 2026-01-06 at 2.05.29 PM.png" alt=""><figcaption></figcaption></figure></div>
+<div data-with-frame="true"><figure><img src="../.gitbook/assets/Screenshot 2026-01-06 at 2.05.29 PM.png" alt=""><figcaption></figcaption></figure></div>
 
 ### Need help?
 

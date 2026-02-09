@@ -61,47 +61,108 @@ From your project settings
 
 ## Dropping Maniac into your Codebase
 
-#### Install the library
+#### Set environment variables
 
 ```python
-pip install maniac
+export MANIAC_API_KEY="your-api-key"
+export MANIAC_BASE_URL="https://platform.maniac.ai/api/v1
 ```
 
-#### Initialize client
-
-<pre class="language-python"><code class="lang-python"><a data-footnote-ref href="#user-content-fn-1">from maniac import Maniac</a>
-
-# Simple initialization - Maniac handles all providers automatically
-maniac = Maniac(api_key="your-maniac-api-key")
-</code></pre>
+Containers log inference and automatically build datasets for fine-tuning and evaluation. <mark style="color:$info;">`initial_model`</mark> sets the model used in that container until a Maniac model is deployed in its place.
 
 #### Create a container
 
-Containers log inference and automatically build datasets for fine-tuning and evaluation. <mark style="color:$info;">`initial_model`</mark> sets the model used in that container until a Maniac model is deployed.
-
 ```python
-container = maniac.containers.create(
-  label = "my-container"
-  initial_model = "openai/gpt-5",
-  initial_system_prompt = "You are a helpful math tutor."
+import os
+import requests
+
+BASE_URL = os.getenv("MANIAC_BASE_URL")
+API_KEY = os.getenv("MANIAC_API_KEY")
+
+headers = {
+    "Authorization": f"Bearer {API_KEY}",
+    "Content-Type": "application/json",
+}
+
+response = requests.post(
+    f"{BASE_URL}/containers",
+    headers=headers,
+    json={
+        "label": "my-container",
+        "initial_model": "openai/gpt-5.2",
+        "api": "chat.completions",
+        "default_system_prompt": "You are a helpful math tutor.",
+    },
 )
+
+response.raise_for_status()
+container = response.json()
+
+print("Created container:", container["label"])
 ```
 
-#### Run inference in a container
+#### Generating Inference Logs
 
-Running inference will auto-generate inference logs. Data can also be manually uploaded.
+Now that you've made a container, let's add some data to it. You can either register completions with any existing provider, or run inference through Maniac. In both cases, inference logs will auto-populate in your container. External datasets can also be [manually uploaded](../datasets/upload-datasets.md).&#x20;
 
 {% tabs %}
-{% tab title="Chat Completions API" %}
+{% tab title="Registering Completions" %}
 ```python
-response = maniac.chat.completions.create(
-    model = "maniac:my-container",
-    messages = [{"role": "user", "content": "A train travels 120 miles in 2 hours. What is its average speed?"}],
-    judge_prompt = "Compare two math solutions. Is A better than B? Consider: calculation accuracy, clear explanations, educational value."
-    reasoning = {"effort": "medium"} # Optional reasoning parameter
+import os
+import requests
+
+BASE_URL = os.getenv("MANIAC_BASE_URL")
+API_KEY = os.getenv("MANIAC_API_KEY")
+
+headers = {
+    "Authorization": f"Bearer {API_KEY}",
+    "Content-Type": "application/json",
+}
+
+_input = {
+  "model": "openai/gpt-5.2"
+  "messages": [{
+    "role": "user",
+    "content": "Hello!"
+  }]
+}
+
+_output = some_other_provider.chat.completions.create(**params)
+
+requests.post(
+    f"{BASE_URL}/chat/completions/register",
+    headers=headers,
+    json={
+        "container": "my-container",
+        "items": [
+            "input": _input,
+            "output": _output
+        ],
+    },
+)
+```
+{% endtab %}
+
+{% tab title="Running Inference Through Maniac" %}
+```python
+response = requests.post(
+    f"{BASE_URL}/chat/completions",
+    headers=headers,
+    json={
+        "model": "maniac:my-container",
+        "messages": [
+            {
+                "role": "user",
+                "content": "A train travels 120 miles in 2 hours. What is its average speed?"
+            }
+        ],
+    },
 )
 
-print(response["choices"][0]["message"]["content"])
+response.raise_for_status()
+completion = response.json()
+
+print(completion["choices"][0]["message"]["content"])
 # Output: "The average speed is 60 miles per hour. This is calculated by dividing distance (120 miles) by time (2 hours): 120 ÷ 2 = 60 mph."
 ```
 {% endtab %}
@@ -159,8 +220,6 @@ Optimized models can be be deployed into a container from the **Models** tab. On
 
 ### Need help?
 
-:e-mail: Email us at helpme@maniac.ai
+:e-mail: Email us at support@maniac.ai
 
 We'll get back to you within a day.
-
-[^1]: 
