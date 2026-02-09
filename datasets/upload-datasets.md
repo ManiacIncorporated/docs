@@ -1,8 +1,9 @@
 ---
 description: Adding pre-existing data to a container.
+hidden: true
 ---
 
-# Register Completions
+# Upload Datasets
 
 Maniac lets you direct existing LLM traffic from a different inference provider into a container or upload a static dataset. Once uploaded, these logs can be used for optimization and evaluation.
 
