@@ -3,9 +3,9 @@ description: Adding pre-existing data to a container.
 hidden: true
 ---
 
-# Upload Existing Data
+# Registering in Batches
 
-Maniac lets you upload existing completions directly into a container. These might be inference logs from a different inference provider, or a labeled dataset. Once uploaded, the data appears alongside inference logs and can be used for optimization and evaluation.
+Maniac lets you upload existing completions directly into a container. These might be inference logs from a different inference provider, or a labeled dataset.&#x20;
 
 ## Boilerplate
 
@@ -15,7 +15,7 @@ import requests
 # First, create a container if you don't already have onee
 container = maniac.containers.create(
     label="my-container",
-    initial_model="some-base-model",
+    initial_model="some-base-model", # If you want to track the model that originated these completions
     initial_system_prompt="Your system prompt here",
 )
 
@@ -97,8 +97,7 @@ maniac = Maniac()
 
 container = maniac.containers.create(
     label="LEDGAR-register",
-    initial_model="openai/gpt-4o-mini",
-    initial_system_prompt=system_prompt,
+    default_system_prompt=system_prompt,
 )
 ```
 

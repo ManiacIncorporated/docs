@@ -9,7 +9,7 @@
 ## Datasets
 
 * [Upload Datasets](datasets/upload-datasets.md)
-* [Upload Existing Data](datasets/upload-existing-data.md)
+* [Registering in Batches](datasets/registering-in-batches.md)
 * [Using the Datasets Feature](datasets/using-the-datasets-feature.md)
 * [Authentication](datasets/authentication.md)
 * [Quick Start](datasets/quickstart.md)
