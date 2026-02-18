@@ -3,7 +3,6 @@ description: >-
   The Maniac API provides openai compatible inference endpoints for interacting
   with both frontier models and your custom models. This reference details the
   available endpoints.
-hidden: true
 ---
 
 # REST API
