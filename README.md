@@ -1,20 +1,3 @@
----
-layout:
-  width: default
-  title:
-    visible: true
-  description:
-    visible: false
-  tableOfContents:
-    visible: true
-  outline:
-    visible: true
-  pagination:
-    visible: true
-  metadata:
-    visible: true
----
-
 # Maniac: Your best model in one click.
 
 Maniac is an enterprise AI platform that makes it easy to replace existing LLM API calls with fine-tuned, task-specific models. Drop Maniac in with one line of code to:
@@ -90,21 +73,21 @@ container = maniac.containers.create(
 Now that you've made a container, let's add some data to it.
 
 {% tabs %}
-{% tab title="Chat Completions API" %}
+{% tab title="Python" %}
 ```python
 response = maniac.chat.completions.register(
-    container = "maniac:my-container",
-    messages = [{"role": "user", "content": "A train travels 120 miles in 2 hours. What is its average speed?"}],
-    judge_prompt = "Compare two math solutions. Is A better than B? Consider: calculation accuracy, clear explanations, educational value."
-    # Optional params
-    reasoning = {"effort": "medium"} 
-    tools = tools
-    response_format={"type": "json_object"}
-    temperature = 0.7
+    container = "my-container",
+    items = [{
+        "input": {
+            "messages": [{"role": "user", "content": "Hello!"}]
+        },
+        "output": {
+            "choices": [{
+                "message": [{"role": "assistant", "content": "Hello! How can I help?"}]
+            }]
+        }
+    }]
 )
-
-print(response["choices"][0]["message"]["content"])
-# Output: "The average speed is 60 miles per hour. This is calculated by dividing distance (120 miles) by time (2 hours): 120 ÷ 2 = 60 mph."
 ```
 {% endtab %}
 {% endtabs %}
