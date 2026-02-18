@@ -37,8 +37,8 @@ dataset = [
 
 # Register completions. These will now show up on the Maniac dashboard in your container.
 maniac.chat.completions.register(
-    model="maniac:my-container,
-    dataset=dataset,
+    model="my-container,
+    items=dataset,
 )
 ```
 
@@ -137,7 +137,7 @@ for batch_start in range(START, end, BATCH_SIZE):
 
     client.chat.completions.register(
         container=container,
-        dataset=dataset,
+        items=dataset,
     )
 
     print(f"Uploaded samples {batch_start}–{batch_end - 1}")
