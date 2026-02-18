@@ -25,3 +25,7 @@
 ## API Reference
 
 * [REST API](api-reference/rest-api.md)
+
+## Examples
+
+* [Vercel AI SDK](examples/vercel-ai-sdk.md)
