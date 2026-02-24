@@ -18,7 +18,7 @@ layout:
 
 # Copy of Maniac: Your best model in one click.
 
-Maniac is an enterprise AI platform that makes it easy to replace existing LLM API calls with fine-tuned, task-specific models. Drop Maniac in with one line of code to:
+Maniac is an enterprise AI platform that makes it easy to replace existing LLM API calls with fine-tuned, task-specific models. Drop in Maniac with one line of code to:
 
 * Capture and structure production **LLM traffic**
 * Automatically **fine-tune** and **evaluate** Small Language Models (SLMs) on your tasks
