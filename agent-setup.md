@@ -17,7 +17,14 @@ Find all files that make LLM / AI API calls. Look for:
 - Any HTTP calls to `api.openai.com`, `api.anthropic.com`, or similar LLM endpoints
 - Other LLM SDKs (Cohere, Mistral, LiteLLM, etc.)
 
-List every call site you find. Then pick the **single most important one** — the call that best represents the core LLM task in this application (e.g. the main chat completion, the primary agent call, the key generation step). You will instrument only this one call site.
+List every call site you find. Then pick the **single best candidate for a Small Language Model (SLM)**. Good indicators are:
+
+- **Text-in, text-out** — the input and output are primarily natural language (not tool-use-heavy or multi-modal)
+- **High throughput** — the call happens frequently or at scale
+- **Quality-sensitive** — getting the output right matters a lot for the product
+- **Repetitive patterns** — similar inputs recur often, which SLMs learn well
+
+If none of these stand out clearly, SLMs are still generally better on cost and latency — just pick the call you think is the best fit. You will instrument only this one call site.
 
 ---
 
@@ -85,9 +92,13 @@ Set `CONTAINER_LABEL` to a short, descriptive kebab-case label for the task (e.g
 
 ## TypeScript / JavaScript integration
 
-### 2a. Install the dependency
+### 2a. Install the SDK
 
-No Maniac-specific npm package is required. The integration uses the REST API directly.
+```bash
+npm install maniac-js
+```
+
+If the project uses `yarn` or `pnpm`, use the equivalent command. Add `maniac-js` to `package.json` dependencies.
 
 ### 2b. Set the environment variable
 
@@ -99,45 +110,30 @@ MANIAC_API_KEY=your-maniac-api-key
 
 ### 2c. Add the registration call
 
-At the call site you identified, add a Maniac registration call **after** the existing LLM call. Do not remove or modify the existing call.
+At the call site you identified, add a Maniac registration call **after** the existing LLM call. Do not remove or modify the existing call. The pattern is:
 
 ```typescript
-async function registerManiacCompletion({
-  container,
-  input,
-  output,
-}: {
-  container: string;
-  input: { messages: Array<{ role: string; content: string }> };
-  output: { choices: Array<{ message: { role: string; content: string } }> };
-}) {
-  await fetch("https://platform.maniac.ai/api/v1/chat/completions/register", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.MANIAC_API_KEY}`,
-    },
-    body: JSON.stringify({ container, items: [{ input, output }] }),
-  });
-}
-```
+import Maniac from "maniac-js";
 
-Then call it after the existing LLM call:
+const maniac = new Maniac();
 
-```typescript
 // --- existing code that calls the LLM ---
 // const response = await yourExistingLLMCall(...)
 // ---
 
 // Register the completion with Maniac (logging only — does not affect inference)
-await registerManiacCompletion({
+await maniac.chat.completions.register({
   container: "CONTAINER_LABEL",
-  input: {
-    messages: [{ role: "user", content: userInput }],
-  },
-  output: {
-    choices: [{ message: { role: "assistant", content: llmOutput } }],
-  },
+  items: [{
+    input: {
+      messages: [{ role: "user", content: userInput }],
+    },
+    output: {
+      choices: [{
+        message: { role: "assistant", content: llmOutput },
+      }],
+    },
+  }],
 });
 ```
 
@@ -145,41 +141,7 @@ Adapt the variable names (`userInput`, `llmOutput`) to match what exists in the 
 
 Set `CONTAINER_LABEL` to a short, descriptive kebab-case label for the task (e.g. `"support-chat"`, `"code-review"`, `"summarizer"`).
 
-#### Vercel AI SDK alternative
-
-If the project uses the Vercel AI SDK, prefer the middleware approach instead of the raw fetch call above. Wrap the model with registration middleware:
-
-```typescript
-import { wrapLanguageModel } from "ai";
-
-function maniacRegistrationMiddleware({ container }: { container: string }) {
-  return {
-    specificationVersion: "v3",
-    wrapGenerate: async ({ doGenerate, params }) => {
-      const result = await doGenerate();
-      const text = result.content
-        .filter((c: any) => c.type === "text")
-        .map((c: any) => c.text)
-        .join("");
-      if (text) {
-        registerManiacCompletion({
-          container,
-          input: { messages: params.prompt },
-          output: {
-            choices: [{ message: { role: "assistant", content: text } }],
-          },
-        });
-      }
-      return result;
-    },
-  };
-}
-
-const model = wrapLanguageModel({
-  model: yourExistingModel,
-  middleware: maniacRegistrationMiddleware({ container: "CONTAINER_LABEL" }),
-});
-```
+The `Maniac` client reads `MANIAC_API_KEY` from the environment automatically. You can also pass it explicitly: `new Maniac({ apiKey: "..." })`.
 
 ---
 

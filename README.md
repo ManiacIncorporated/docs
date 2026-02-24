@@ -45,28 +45,60 @@ From your project settings
 
 #### Install the library
 
-```python
+{% tabs %}
+{% tab title="Python" %}
+```bash
 pip install maniac
 ```
+{% endtab %}
+{% tab title="TypeScript" %}
+```bash
+npm install maniac-js
+```
+{% endtab %}
+{% endtabs %}
 
 #### Initialize client
 
-<pre class="language-python"><code class="lang-python"><a data-footnote-ref href="#user-content-fn-1">from maniac import Maniac</a>
+{% tabs %}
+{% tab title="Python" %}
+```python
+from maniac import Maniac
 
-# Simple initialization - Maniac handles all providers automatically
 maniac = Maniac(api_key="your-maniac-api-key")
-</code></pre>
+```
+{% endtab %}
+{% tab title="TypeScript" %}
+```typescript
+import Maniac from "maniac-js";
+
+const maniac = new Maniac();
+```
+{% endtab %}
+{% endtabs %}
 
 #### Create a container
 
 Containers log inference and automatically build datasets for fine-tuning and evaluation. <mark style="color:red;">`initial_model`</mark> sets the model used in that container until a Maniac model is deployed in its place.
 
+{% tabs %}
+{% tab title="Python" %}
 ```python
 container = maniac.containers.create(
-  label = "my-container"
+  label = "my-container",
   default_system_prompt = "You are a helpful math tutor."
 )
 ```
+{% endtab %}
+{% tab title="TypeScript" %}
+```typescript
+const container = await maniac.containers.create({
+  label: "my-container",
+  initial_model: "openai/gpt-5.2",
+});
+```
+{% endtab %}
+{% endtabs %}
 
 #### Log Completions
 
@@ -88,6 +120,23 @@ response = maniac.chat.completions.register(
         }
     }]
 )
+```
+{% endtab %}
+{% tab title="TypeScript" %}
+```typescript
+await maniac.chat.completions.register({
+  container: "my-container",
+  items: [{
+    input: {
+      messages: [{ role: "user", content: "Hello!" }],
+    },
+    output: {
+      choices: [{
+        message: { role: "assistant", content: "Hello! How can I help?" },
+      }],
+    },
+  }],
+});
 ```
 {% endtab %}
 {% endtabs %}
