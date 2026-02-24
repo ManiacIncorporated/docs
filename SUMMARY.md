@@ -29,3 +29,7 @@
 ## Examples
 
 * [Vercel AI SDK](examples/vercel-ai-sdk.md)
+
+## Agent Setup
+
+* [Agent Setup](agent-setup.md)
