@@ -43,19 +43,11 @@ From your project settings
 
 ## Dropping Maniac into your Codebase
 
-{% tabs %}
-{% tab title="Agentic Setup" %}
-Copy this prompt into your AI coding agent (Cursor, Copilot, Claude Code, etc.) and it will instrument your codebase automatically:
+If you prefer an agentic setup, copy this prompt and give it to your preferred coding agent:
 
-> Fetch and follow https://raw.githubusercontent.com/ManiacIncorporated/docs/main/agent-setup.md to instrument this repo for Maniac telemetry.
-
-That's it — the agent will find the best LLM call site, add the Maniac logging hook, and walk you through the changes before applying them.
-{% endtab %}
-
-{% tab title="Manual Setup" %}
-Follow the steps below to add Maniac to your codebase by hand.
-{% endtab %}
-{% endtabs %}
+```
+Fetch and follow https://raw.githubusercontent.com/ManiacIncorporated/docs/main/agent-setup.md to instrument this repo for Maniac telemetry.
+```
 
 #### Install the library
 
