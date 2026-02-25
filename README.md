@@ -43,7 +43,7 @@ From your project settings
 
 ## Dropping Maniac into your Codebase
 
-If you prefer an agentic setup, copy this prompt and give it to your preferred coding agent:
+For an agentic setup, copy this prompt and give it to your preferred coding agent:
 
 ```
 Fetch and follow https://raw.githubusercontent.com/ManiacIncorporated/docs/main/agent-setup.md to instrument this repo for Maniac telemetry.
