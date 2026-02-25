@@ -1,4 +1,4 @@
-# Maniac: Your best model in one click.
+# Maniac: Continually optimizing models from your LLM telemetry and evals.
 
 Maniac is an enterprise AI platform that makes it easy to replace existing LLM API calls with fine-tuned, task-specific models. Drop in Maniac with one line of code to:
 
