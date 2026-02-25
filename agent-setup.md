@@ -58,7 +58,7 @@ MANIAC_API_KEY=your-maniac-api-key
 
 Add the following to the call site you identified. This creates a Maniac container (a task namespace that stores inference logs) and registers completions **after** the existing LLM call. Do not remove or modify the existing call.
 
-Set `CONTAINER_LABEL` to a short, descriptive kebab-case label for the task (e.g. `"support-chat"`, `"code-review"`, `"summarizer"`). Set `INITIAL_MODEL` to the model the existing code is using (e.g. `"openai/gpt-4o"`, `"anthropic/claude-sonnet-4"`).
+Set `CONTAINER_LABEL` to a short, descriptive kebab-case label for the task (e.g. `"support-chat"`, `"code-review"`, `"summarizer"`).
 
 ```python
 import os
@@ -69,7 +69,6 @@ maniac = Maniac(api_key=os.getenv("MANIAC_API_KEY"))
 # Create the container once (safe to call again — will use existing if label matches)
 maniac.containers.create(
     label="CONTAINER_LABEL",
-    initial_model="INITIAL_MODEL",
 )
 
 # --- existing code that calls the LLM ---
@@ -120,7 +119,7 @@ MANIAC_API_KEY=your-maniac-api-key
 
 Add the following to the call site you identified. This creates a Maniac container (a task namespace that stores inference logs) and registers completions **after** the existing LLM call. Do not remove or modify the existing call.
 
-Set `CONTAINER_LABEL` to a short, descriptive kebab-case label for the task (e.g. `"support-chat"`, `"code-review"`, `"summarizer"`). Set `INITIAL_MODEL` to the model the existing code is using (e.g. `"openai/gpt-4o"`, `"anthropic/claude-sonnet-4"`).
+Set `CONTAINER_LABEL` to a short, descriptive kebab-case label for the task (e.g. `"support-chat"`, `"code-review"`, `"summarizer"`).
 
 ```typescript
 import Maniac from "maniac-js";
@@ -130,7 +129,6 @@ const maniac = new Maniac();
 // Create the container once (safe to call again — will use existing if label matches)
 await maniac.containers.create({
   label: "CONTAINER_LABEL",
-  initial_model: "INITIAL_MODEL",
 });
 
 // --- existing code that calls the LLM ---
