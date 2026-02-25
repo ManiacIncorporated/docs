@@ -54,15 +54,23 @@ Add `MANIAC_API_KEY` to the project's `.env` file (or `.env.example` / `.env.loc
 MANIAC_API_KEY=your-maniac-api-key
 ```
 
-### 2c. Add the registration call
+### 2c. Create a container and register completions
 
-At the call site you identified, add a Maniac registration call **after** the existing LLM call. Do not remove or modify the existing call. The pattern is:
+Add the following to the call site you identified. This creates a Maniac container (a task namespace that stores inference logs) and registers completions **after** the existing LLM call. Do not remove or modify the existing call.
+
+Set `CONTAINER_LABEL` to a short, descriptive kebab-case label for the task (e.g. `"support-chat"`, `"code-review"`, `"summarizer"`). Set `INITIAL_MODEL` to the model the existing code is using (e.g. `"openai/gpt-4o"`, `"anthropic/claude-sonnet-4"`).
 
 ```python
 import os
 from maniac import Maniac
 
 maniac = Maniac(api_key=os.getenv("MANIAC_API_KEY"))
+
+# Create the container once (safe to call again — will use existing if label matches)
+maniac.containers.create(
+    label="CONTAINER_LABEL",
+    initial_model="INITIAL_MODEL",
+)
 
 # --- existing code that calls the LLM ---
 # response = your_existing_llm_call(...)
@@ -86,7 +94,7 @@ maniac.chat.completions.register(
 
 Adapt the variable names (`user_input`, `llm_output`) to match what exists in the code. If the existing call uses a `messages` array, pass it directly into `input.messages`. If the response is an OpenAI-style object, extract `.choices[0].message.content` for the output.
 
-Set `CONTAINER_LABEL` to a short, descriptive kebab-case label for the task (e.g. `"support-chat"`, `"code-review"`, `"summarizer"`).
+The container creation should run once at startup or module load — not on every request. The registration call goes after each LLM call.
 
 ---
 
@@ -108,14 +116,22 @@ Add `MANIAC_API_KEY` to the project's `.env` file (or `.env.example` / `.env.loc
 MANIAC_API_KEY=your-maniac-api-key
 ```
 
-### 2c. Add the registration call
+### 2c. Create a container and register completions
 
-At the call site you identified, add a Maniac registration call **after** the existing LLM call. Do not remove or modify the existing call. The pattern is:
+Add the following to the call site you identified. This creates a Maniac container (a task namespace that stores inference logs) and registers completions **after** the existing LLM call. Do not remove or modify the existing call.
+
+Set `CONTAINER_LABEL` to a short, descriptive kebab-case label for the task (e.g. `"support-chat"`, `"code-review"`, `"summarizer"`). Set `INITIAL_MODEL` to the model the existing code is using (e.g. `"openai/gpt-4o"`, `"anthropic/claude-sonnet-4"`).
 
 ```typescript
 import Maniac from "maniac-js";
 
 const maniac = new Maniac();
+
+// Create the container once (safe to call again — will use existing if label matches)
+await maniac.containers.create({
+  label: "CONTAINER_LABEL",
+  initial_model: "INITIAL_MODEL",
+});
 
 // --- existing code that calls the LLM ---
 // const response = await yourExistingLLMCall(...)
@@ -139,7 +155,7 @@ await maniac.chat.completions.register({
 
 Adapt the variable names (`userInput`, `llmOutput`) to match what exists in the code. If the existing call uses a `messages` array, pass it directly into `input.messages`. If the response is an OpenAI-style object, extract `.choices[0].message.content` for the output.
 
-Set `CONTAINER_LABEL` to a short, descriptive kebab-case label for the task (e.g. `"support-chat"`, `"code-review"`, `"summarizer"`).
+The container creation should run once at startup or module load — not on every request. The registration call goes after each LLM call.
 
 The `Maniac` client reads `MANIAC_API_KEY` from the environment automatically. You can also pass it explicitly: `new Maniac({ apiKey: "..." })`.
 
