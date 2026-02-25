@@ -2,7 +2,7 @@
 
 You are instrumenting a codebase to log LLM inference data to **Maniac**, an enterprise AI platform for fine-tuning task-specific models. Follow these instructions precisely.
 
-> **Important:** This integration only *records* LLM completions for training data collection. It does **not** modify, intercept, or affect existing inference in any way. Your application's behavior, latency, and outputs remain completely unchanged.
+> **Important:** This integration only *records* LLM completions for training data collection. It does **not** modify, intercept, or affect existing inference in any way. Your application's behavior, outputs, and costs remain completely unchanged.
 
 ---
 
@@ -169,7 +169,7 @@ Before making any edits, show the user:
 2. The exact code changes you plan to make (as a diff)
 3. This reminder:
 
-> **These changes only log completions to Maniac for training data collection. They do not modify, intercept, or affect your existing inference in any way. Your app's behavior remains identical.**
+> **These changes only log completions to Maniac for training data collection. They do not modify, intercept, or affect your existing inference in any way. Your app's behavior, outputs, and costs remain identical.**
 
 Then ask: **"Are these changes OK to implement?"**
 
