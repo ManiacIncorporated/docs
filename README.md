@@ -177,13 +177,9 @@ From the **Evals** tab inside a container, **Add Eval**.
 {% endstep %}
 
 {% step %}
-### Launch <mark style="color:green;">Optimization</mark>
+### <mark style="color:green;">Optimization</mark> happens automatically
 
-Once you've defined an eval, the **Optimization** dashboard lets you configure and run post-training pipelines using techniques such as SFT, GRPO, and GEPA.&#x20;
-
-Each stage of the pipeline is modular, allowing you to select base models, the evaluation to optimize against, adjust hyperparameters, swap classifier heads, and experiment with different training strategies.
-
-{% embed url="https://youtu.be/O07rVLiWMR4" %}
+Once your telemetry hooks and evals are in place, Maniac automatically optimizes a model for your task — no manual configuration required.
 {% endstep %}
 {% endstepper %}
 
