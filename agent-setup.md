@@ -92,7 +92,7 @@ maniac.chat.completions.register(
 )
 ```
 
-Adapt the variable names (`user_input`, `llm_output`) to match what exists in the code. If the existing call uses a `messages` array, pass it directly into `input.messages`. If the response is an OpenAI-style object, extract `.choices[0].message.content` for the output.
+Adapt the variable names (`user_input`, `llm_output`) to match what exists in the code. Extract the user's input and the assistant's response from the existing call and format them into the chat completions structure shown above.
 
 The container creation should run once at startup or module load — not on every request. The registration call goes after each LLM call.
 
@@ -153,7 +153,7 @@ await maniac.chat.completions.register({
 });
 ```
 
-Adapt the variable names (`userInput`, `llmOutput`) to match what exists in the code. If the existing call uses a `messages` array, pass it directly into `input.messages`. If the response is an OpenAI-style object, extract `.choices[0].message.content` for the output.
+Adapt the variable names (`userInput`, `llmOutput`) to match what exists in the code. Extract the user's input and the assistant's response from the existing call and format them into the chat completions structure shown above.
 
 The container creation should run once at startup or module load — not on every request. The registration call goes after each LLM call.
 
