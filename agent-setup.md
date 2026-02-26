@@ -2,7 +2,7 @@
 
 You are instrumenting a codebase to log LLM inference data to **Maniac**, an enterprise AI platform for fine-tuning task-specific models. Follow these instructions precisely.
 
-> **Important:** This integration only *records* LLM completions for training data collection. It does **not** modify, intercept, or affect existing inference in any way. Your application's behavior, outputs, and costs remain completely unchanged.
+> **Important:** This integration only _records_ LLM completions for training data collection. It does **not** modify, intercept, or affect existing inference in any way. Your application's behavior, outputs, and costs remain completely unchanged.
 
 ---
 
@@ -66,7 +66,7 @@ from maniac import Maniac
 
 maniac = Maniac(api_key=os.getenv("MANIAC_API_KEY"))
 
-# Create the container once (safe to call again — will use existing if label matches)
+# Create the container once
 maniac.containers.create(
     label="CONTAINER_LABEL",
     initial_model="INITIAL_MODEL",
@@ -127,7 +127,7 @@ import Maniac from "maniac-js";
 
 const maniac = new Maniac();
 
-// Create the container once (safe to call again — will use existing if label matches)
+// Create the container once
 await maniac.containers.create({
   label: "CONTAINER_LABEL",
   initial_model: "INITIAL_MODEL",
@@ -140,16 +140,20 @@ await maniac.containers.create({
 // Register the completion with Maniac (logging only — does not affect inference)
 await maniac.chat.completions.register({
   container: "CONTAINER_LABEL",
-  items: [{
-    input: {
-      messages: [{ role: "user", content: userInput }],
+  items: [
+    {
+      input: {
+        messages: [{ role: "user", content: userInput }],
+      },
+      output: {
+        choices: [
+          {
+            message: { role: "assistant", content: llmOutput },
+          },
+        ],
+      },
     },
-    output: {
-      choices: [{
-        message: { role: "assistant", content: llmOutput },
-      }],
-    },
-  }],
+  ],
 });
 ```
 
