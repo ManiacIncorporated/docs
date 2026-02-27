@@ -13,25 +13,25 @@ All with virtually no changes to your existing codebase.
 
 {% stepper %}
 {% step %}
-#### Sign up for Maniac
+**Sign up for Maniac**
 
 Head over to [https://app.maniac.ai/auth/register](https://app.maniac.ai/auth/register)
 {% endstep %}
 
 {% step %}
-#### **Create a new Organization**
+**Create a new Organization**
 
-Organizations house multiple projects.&#x20;
+Organizations house multiple projects.
 {% endstep %}
 
 {% step %}
-#### Add a Project
+**Add a Project**
 
 All your work — containers, evals, and deployments — live here.
 {% endstep %}
 
 {% step %}
-#### **Generate an API key**
+**Generate an API key**
 
 From your project settings
 {% endstep %}
@@ -57,6 +57,7 @@ Fetch and follow https://raw.githubusercontent.com/ManiacIncorporated/docs/main/
 pip install maniac
 ```
 {% endtab %}
+
 {% tab title="TypeScript" %}
 ```bash
 npm install maniac-js
@@ -74,6 +75,7 @@ from maniac import Maniac
 maniac = Maniac(api_key="your-maniac-api-key")
 ```
 {% endtab %}
+
 {% tab title="TypeScript" %}
 ```typescript
 import Maniac from "maniac-js";
@@ -96,6 +98,7 @@ container = maniac.containers.create(
 )
 ```
 {% endtab %}
+
 {% tab title="TypeScript" %}
 ```typescript
 const container = await maniac.containers.create({
@@ -108,7 +111,7 @@ const container = await maniac.containers.create({
 
 #### Log Completions
 
-Now that you've made a container, let's add some data to it.
+Now that you've made a container, let's add some data to it. Note that the inputs and outputs of items are both required to be in openai chat completions format. The output field is not required.&#x20;
 
 {% tabs %}
 {% tab title="Python" %}
@@ -128,6 +131,7 @@ response = maniac.chat.completions.register(
 )
 ```
 {% endtab %}
+
 {% tab title="TypeScript" %}
 ```typescript
 await maniac.chat.completions.register({
@@ -157,7 +161,7 @@ The inference logs in your container now serve as training data for a new SLM—
 
 {% stepper %}
 {% step %}
-### Create an <mark style="color:green;">Eval</mark>
+#### Create an <mark style="color:green;">Eval</mark>
 
 Evaluations define the optimization target. They can be implemented as arbitrary code or defined using judge prompts.
 
@@ -170,14 +174,12 @@ From the **Evals** tab inside a container, **Add Eval**.
 
 {% tab title="Code Eval" %}
 <div data-with-frame="true"><figure><img src=".gitbook/assets/Screenshot 2026-01-06 at 1.15.10 PM.png" alt=""><figcaption></figcaption></figure></div>
-
-
 {% endtab %}
 {% endtabs %}
 {% endstep %}
 
 {% step %}
-### <mark style="color:green;">Optimization</mark> happens automatically
+#### <mark style="color:green;">Optimization</mark> happens automatically
 
 Once your telemetry hooks and evals are in place, Maniac automatically optimizes a model for your task — no manual configuration required.
 {% endstep %}
@@ -196,5 +198,3 @@ Optimized models can be be deployed into a container from the **Models** tab. On
 :e-mail: Email us at helpme@maniac.ai
 
 We'll get back to you within a day.
-
-[^1]: 

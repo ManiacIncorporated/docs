@@ -45,7 +45,7 @@ maniac.chat.completions.register(
 Each dataset entry consists of:
 
 * `input` : the messages sent to the model (system prompt & user prompt)
-* `output` : the assistant response
+* `output`  (optional): the assistant response
 
 ## Example: Uploading a HuggingFace Dataset
 
