@@ -9,6 +9,7 @@
 ## Datasets
 
 * [Registering in Batches](datasets/registering-in-batches.md)
+* [Building New Agents](datasets/building-new-agents.md)
 * [Upload Datasets](datasets/upload-datasets.md)
 * [Using the Datasets Feature](datasets/using-the-datasets-feature.md)
 * [Authentication](datasets/authentication.md)
