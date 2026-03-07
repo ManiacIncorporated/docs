@@ -3,6 +3,7 @@
 ## Getting Started
 
 * [Maniac: Continually optimizing models from your LLM telemetry and evals.](README.md)
+* [Agent Setup](agent-setup.md)
 * [Maniac: Continually optimizing models from your LLM telemetry and evals.](getting-started/readme-1.md)
 * [Copy of Maniac: Continually optimizing models from your LLM telemetry and evals.](getting-started/readme-2.md)
 
@@ -30,7 +31,3 @@
 ## Examples
 
 * [Vercel AI SDK](examples/vercel-ai-sdk.md)
-
-## Agent Setup
-
-* [Agent Setup](agent-setup.md)

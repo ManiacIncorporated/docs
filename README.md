@@ -21,7 +21,7 @@ Head over to [https://app.maniac.ai/auth/register](https://app.maniac.ai/auth/re
 {% step %}
 **Grab your API key**
 
-From project settings or on the Containers page.
+From Project Settings or on the Containers page.
 {% endstep %}
 
 {% step %}
