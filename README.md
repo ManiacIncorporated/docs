@@ -19,21 +19,17 @@ Head over to [https://app.maniac.ai/auth/register](https://app.maniac.ai/auth/re
 {% endstep %}
 
 {% step %}
-**Create a new Organization**
+**Grab your API key**
 
-Organizations house multiple projects.
+From project settings or on the Containers page.
 {% endstep %}
 
 {% step %}
-**Add a Project**
+**Set the environment variable**
 
-All your work — containers, evals, and deployments — live here.
-{% endstep %}
-
-{% step %}
-**Generate an API key**
-
-From your project settings
+```bash
+export MANIAC_API_KEY=your-api-key
+```
 {% endstep %}
 {% endstepper %}
 
