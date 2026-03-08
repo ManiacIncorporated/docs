@@ -90,7 +90,8 @@ Containers log inference and automatically build datasets for fine-tuning and ev
 ```python
 container = maniac.containers.create(
   label = "my-container",
-  default_system_prompt = "You are a helpful math tutor."
+  default_system_prompt = "You are a helpful math tutor.",
+  initial_model = "openai/gpt-5.2"
 )
 ```
 {% endtab %}
@@ -107,7 +108,7 @@ const container = await maniac.containers.create({
 
 #### Log Completions
 
-Now that you've made a container, let's add some data to it. Note that the inputs and outputs of items are both required to be in openai chat completions format. The output field is not required.&#x20;
+Now that you've made a container, let's add some data to it. Note that the inputs and outputs of items are both required to be in openai chat completions format. The output field is not required.
 
 {% tabs %}
 {% tab title="Python" %}
@@ -157,7 +158,7 @@ The inference logs in your container now serve as training data for a new SLM—
 
 {% stepper %}
 {% step %}
-#### Create an <mark style="color:green;">Eval</mark>
+**Create an&#x20;**<mark style="color:green;">**Eval**</mark>
 
 Evaluations define the optimization target. They can be implemented as arbitrary code or defined using judge prompts.
 
@@ -175,7 +176,7 @@ From the **Evals** tab inside a container, **Add Eval**.
 {% endstep %}
 
 {% step %}
-#### <mark style="color:green;">Optimization</mark> happens automatically
+<mark style="color:green;">**Optimization**</mark>**&#x20;happens automatically**
 
 Once your telemetry hooks and evals are in place, Maniac automatically optimizes a model for your task — no manual configuration required.
 {% endstep %}
